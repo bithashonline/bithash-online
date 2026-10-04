@@ -20,6 +20,7 @@ Use BUILD-PLAN.md for dependencies and acceptance tests. October 3 steering supe
 ## Completed
 - [x] Prepare scoped local Git repository on main, README, root exclusions and automated-test workflow; 25 tests pass locally on October 3.
 - [x] Create and verify private GitHub repository: https://github.com/bithashpad/puzzle-compute-launchpad; configure local origin and account no-reply identity.
+- [ ] Complete CLI authorization and push initial source; user approval needed for workflow scope after automatic approval review rejected that access expansion. Local initial commit exists; remote still empty. Verify uploaded tree and first CI result after push.
 - [x] Research official Pump creation/sharing/fee docs and Solana transaction basics; save canonical dated note.
 - [x] Pin official PumpSDK2.0.0/web3.js1.98.4 and construct unsigned direct/shared launch previews;7new launch tests pass.
 - [x] Measure sample packet size: shared1304bytes exceeds1232; direct859fits. No atomic execution claimed.
