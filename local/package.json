@@ -1,0 +1,1 @@
+{"name":"puzzle-compute-local","private":true,"type":"module","engines":{"node":">=22.16.0"},"scripts":{"test":"node --experimental-sqlite --test","demo":"node --experimental-sqlite demo.js"}}

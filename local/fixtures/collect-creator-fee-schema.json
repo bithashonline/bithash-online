@@ -1,0 +1,95 @@
+{
+  "instruction": {
+    "name": "collect_creator_fee",
+    "docs": [
+      "Collects creator_fee from creator_vault to the coin creator account"
+    ],
+    "discriminator": [
+      20,
+      22,
+      86,
+      123,
+      198,
+      28,
+      219,
+      132
+    ],
+    "accounts": [
+      {
+        "name": "creator",
+        "writable": true
+      },
+      {
+        "name": "creator_vault",
+        "writable": true,
+        "pda": {
+          "seeds": [
+            {
+              "kind": "const",
+              "value": [
+                99,
+                114,
+                101,
+                97,
+                116,
+                111,
+                114,
+                45,
+                118,
+                97,
+                117,
+                108,
+                116
+              ]
+            },
+            {
+              "kind": "account",
+              "path": "creator"
+            }
+          ]
+        }
+      },
+      {
+        "name": "system_program",
+        "address": "11111111111111111111111111111111"
+      },
+      {
+        "name": "event_authority",
+        "pda": {
+          "seeds": [
+            {
+              "kind": "const",
+              "value": [
+                95,
+                95,
+                101,
+                118,
+                101,
+                110,
+                116,
+                95,
+                97,
+                117,
+                116,
+                104,
+                111,
+                114,
+                105,
+                116,
+                121
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "program"
+      }
+    ],
+    "args": []
+  },
+  "source": "https://raw.githubusercontent.com/pump-fun/pump-public-docs/main/idl/pump.json",
+  "snapshotDate": "2026-10-02",
+  "address": "6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P",
+  "sourceSha256": "ffe966c42f1af41652ee753fe2f1e3f7cd4077d7e6f49faf3138959c8b56064b"
+}
