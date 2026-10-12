@@ -1,0 +1,198 @@
+{
+  "schema": "bithash.synthetic-benchmark-v1",
+  "description": "Public deterministic test vectors; no funded target or user-supplied address",
+  "profiles": [
+    {
+      "id": "small",
+      "blocks": 64,
+      "threads": 256,
+      "points": 64,
+      "mode": "validate",
+      "start": "1099511627776",
+      "end": "1099513724928",
+      "count": "2097152",
+      "targets": [
+        {
+          "offset": "0",
+          "address": "1JSKV3Y8HxBCKPA5fo6mGurfaHHq79kA3Z",
+          "expectedMatch": true
+        },
+        {
+          "offset": "1048575",
+          "address": "1GyMJVTHrzQdPL3xc5mugK8Zvm1uwGC8X4",
+          "expectedMatch": true
+        },
+        {
+          "offset": "1048576",
+          "address": "15SsG1mW7yq8veyxRkGj8qP8QjxJp766jr",
+          "expectedMatch": true
+        },
+        {
+          "offset": "2097151",
+          "address": "1H3HCA3iGBym4M3UQ5MowxRoWSN3W3VmwP",
+          "expectedMatch": true
+        },
+        {
+          "offset": "-1",
+          "address": "19L4hSQmtwr1PbrFZydeLP66XxoCdwY3hE",
+          "expectedMatch": false
+        },
+        {
+          "offset": "2097152",
+          "address": "13ZeVc6xvRb9hAckWe14MdfhbN63CB14ii",
+          "expectedMatch": false
+        }
+      ]
+    },
+    {
+      "id": "small",
+      "blocks": 64,
+      "threads": 256,
+      "points": 64,
+      "mode": "benchmark",
+      "start": "1099511627776",
+      "end": "1133871366144",
+      "count": "34359738368",
+      "targets": [
+        {
+          "offset": "34359738367",
+          "address": "1E2ZeBuxT13LUU7Ld3sWGT1Bqt4RbicqUf",
+          "expectedMatch": true
+        },
+        {
+          "offset": "34359738368",
+          "address": "1JMhkszzT7MDNf3ZAKCMyCsFtHFsgu5yw1",
+          "expectedMatch": false
+        }
+      ]
+    },
+    {
+      "id": "medium",
+      "blocks": 128,
+      "threads": 256,
+      "points": 128,
+      "mode": "validate",
+      "start": "1099511627776",
+      "end": "1099520016384",
+      "count": "8388608",
+      "targets": [
+        {
+          "offset": "0",
+          "address": "1JSKV3Y8HxBCKPA5fo6mGurfaHHq79kA3Z",
+          "expectedMatch": true
+        },
+        {
+          "offset": "4194303",
+          "address": "197NZAPfXy7Vgty9qFKnuroCy26Dr2woQV",
+          "expectedMatch": true
+        },
+        {
+          "offset": "4194304",
+          "address": "1FSFmdR95Ngg3PoaycRSsYHgGZY3gWqo25",
+          "expectedMatch": true
+        },
+        {
+          "offset": "8388607",
+          "address": "16pQFYLdgAEP15pmjxXRLH3G2ipYJjU9eL",
+          "expectedMatch": true
+        },
+        {
+          "offset": "-1",
+          "address": "19L4hSQmtwr1PbrFZydeLP66XxoCdwY3hE",
+          "expectedMatch": false
+        },
+        {
+          "offset": "8388608",
+          "address": "1CStwRdaLUoqpZqAhXB9MqdGg5JBQriEAr",
+          "expectedMatch": false
+        }
+      ]
+    },
+    {
+      "id": "medium",
+      "blocks": 128,
+      "threads": 256,
+      "points": 128,
+      "mode": "benchmark",
+      "start": "1099511627776",
+      "end": "1133871366144",
+      "count": "34359738368",
+      "targets": [
+        {
+          "offset": "34359738367",
+          "address": "1E2ZeBuxT13LUU7Ld3sWGT1Bqt4RbicqUf",
+          "expectedMatch": true
+        },
+        {
+          "offset": "34359738368",
+          "address": "1JMhkszzT7MDNf3ZAKCMyCsFtHFsgu5yw1",
+          "expectedMatch": false
+        }
+      ]
+    },
+    {
+      "id": "large",
+      "blocks": 128,
+      "threads": 256,
+      "points": 256,
+      "mode": "validate",
+      "start": "1099511627776",
+      "end": "1099528404992",
+      "count": "16777216",
+      "targets": [
+        {
+          "offset": "0",
+          "address": "1JSKV3Y8HxBCKPA5fo6mGurfaHHq79kA3Z",
+          "expectedMatch": true
+        },
+        {
+          "offset": "8388607",
+          "address": "16pQFYLdgAEP15pmjxXRLH3G2ipYJjU9eL",
+          "expectedMatch": true
+        },
+        {
+          "offset": "8388608",
+          "address": "1CStwRdaLUoqpZqAhXB9MqdGg5JBQriEAr",
+          "expectedMatch": true
+        },
+        {
+          "offset": "16777215",
+          "address": "14q4WjN4iyQ9ZrM7fqztYo9LW5uCnwMzVg",
+          "expectedMatch": true
+        },
+        {
+          "offset": "-1",
+          "address": "19L4hSQmtwr1PbrFZydeLP66XxoCdwY3hE",
+          "expectedMatch": false
+        },
+        {
+          "offset": "16777216",
+          "address": "1LuanRUkweUesvCfUtoPrtuYcn7caDcWVg",
+          "expectedMatch": false
+        }
+      ]
+    },
+    {
+      "id": "large",
+      "blocks": 128,
+      "threads": 256,
+      "points": 256,
+      "mode": "benchmark",
+      "start": "1099511627776",
+      "end": "1133871366144",
+      "count": "34359738368",
+      "targets": [
+        {
+          "offset": "34359738367",
+          "address": "1E2ZeBuxT13LUU7Ld3sWGT1Bqt4RbicqUf",
+          "expectedMatch": true
+        },
+        {
+          "offset": "34359738368",
+          "address": "1JMhkszzT7MDNf3ZAKCMyCsFtHFsgu5yw1",
+          "expectedMatch": false
+        }
+      ]
+    }
+  ]
+}

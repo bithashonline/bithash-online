@@ -1,0 +1,24 @@
+{
+  "schema": "bithash.benchmark-package.v1",
+  "files": {
+    "BITCRACK-LICENSE.MIT": "d1ca4c0aaddbafcbd85036ba73b8f298a17a7da31520ff4b21c28fa419f36fc0",
+    "bithash-benchmark": "432d9f83cc5c1e625d496a5dac50f80f2636794b6beffadce2bcc3154adef819",
+    "CUDA-LICENSE": "e2c71babfd18a8e69542dd7e9ca018f9caa438094001a58e6bc4d8c999bf0d07",
+    "run.py": "7a8bc98a68e16b49e110612d811d5de7921278df93abe172cc72c61490ac60ab",
+    "vectors.json": "0ed4d72e0f5d8ad3f4efe218c1013f567e20f3591051e45ca530a34d6439ee7c",
+    "lib/libcudart.so.12": "8774224f5b11a73b15d074a3fcce7327322c5c4cfdfd924d6a826779eec968fe"
+  },
+  "sourceHashes": {
+    "build.sh": "306932b5e208df36f6776269a8b3d6c611986b0b888d9fc5dc3b02e57335969b",
+    "check-vectors.cpp": "4a95e238914d24cd0d1420f65703ad36c58241c85f5601853b6ecad10310cb18",
+    "generate-vectors.mjs": "050bd5db7c4ee92b3049f598c66a0975532ae6b0c00f153a9bd6b2c70f64b36e",
+    "main.cpp": "0ff1289fa237120fe6b80dd474baeccc477dff7c1ebe30bbff1f73f8d6bc5745",
+    "package.py": "6d3cffab54fb8c3b0210e890d48fd6706ff2b57a27270499d8c0bee354571d17",
+    "prepare.py": "6bb2a7d354aa235c98f201a3c2e67267b5fcd44c5e885d027f486ea7938bbb6c",
+    "README.md": "180e03392b3b203ed5df6240c4bf4e197896c381ff4cdf2e6da9c2ef32357a98",
+    "run.py": "7a8bc98a68e16b49e110612d811d5de7921278df93abe172cc72c61490ac60ab",
+    "vectors.h": "da284cdf174918725fd0a1a5c7fe1109dee97220ba125fce67c3758f3da10f80",
+    "vectors.json": "0ed4d72e0f5d8ad3f4efe218c1013f567e20f3591051e45ca530a34d6439ee7c"
+  },
+  "upstreamCommit": "6bf8059ef075eb1622298395866b0bd02375e1d9"
+}
