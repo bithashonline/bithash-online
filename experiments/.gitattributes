@@ -1,3 +1,4 @@
 # Evidence hashes refer to exact bytes, including original line endings.
 results/** -text whitespace=cr-at-eol
+artifacts/** -text whitespace=cr-at-eol
 runs/** -text whitespace=cr-at-eol,-blank-at-eof

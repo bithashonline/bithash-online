@@ -1,0 +1,19 @@
+{
+  "gpu": "a5000",
+  "podId": "sg6nuj66fgv7j9",
+  "hourlyComputeUsd": 0.27,
+  "hourlyStorageUsd": 0.004,
+  "region": "CA-MTL-1",
+  "cloud": "Secure Cloud",
+  "vcpu": 9,
+  "memoryGB": 50,
+  "temporaryDiskGB": 30,
+  "persistentDiskGB": 0,
+  "image": "runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404",
+  "status": "deleted",
+  "createdAt": "2026-10-12T07:17:12Z",
+  "stoppedAt": "2026-10-12T07:26:10Z",
+  "deletedAt": "2026-10-12T07:26:39Z",
+  "evidence": "Authenticated provider UI and audit logs, timestamps converted from America/Toronto to UTC; generated credential deletion confirmed",
+  "stopFallback": "Manual test of own-Pod REST stop returned HTTP403; root cause not established. Fallback must not be relied on. Used console stop and delete."
+}

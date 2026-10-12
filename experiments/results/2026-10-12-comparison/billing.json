@@ -1,0 +1,18 @@
+{
+  "date": "2026-10-12",
+  "currency": "USD",
+  "source": "Operator observation of authenticated Runpod billing UI; not an itemized invoice",
+  "startingDisplayedBalance": 9.69,
+  "finalDisplayedBalance": 9.48,
+  "displayedCreditConsumption": 0.21,
+  "finalDisplayedHourlySpend": 0,
+  "autoPayEnabled": false,
+  "allAllocatedComparisonPodsDeleted": true,
+  "additionalCreditPurchased": false,
+  "recurringOrDeferredDeploymentCreated": false,
+  "authorizedTotalCap": 2,
+  "estimatedTotalActiveRentalUsd": 0.21187777777777778,
+  "estimateMethod": "Sum of each Pod's created-to-stopped duration times observed compute plus rounded temporary disk hourly quote",
+  "itemizedInvoiceInspected": false,
+  "screenshot": "comparison-billing.jpg"
+}

@@ -1,0 +1,13 @@
+{
+  "gpu": "3090",
+  "date": "2026-10-12",
+  "status": "unavailable-not-tested",
+  "secureCloud": "Capacity unavailable at deployment; deferred-deployment subscription cancelled without subscribing",
+  "communityCloud": "Unavailable with compatible CUDA filters, one GPU, any region and no minimum bandwidth",
+  "communityDisplayedComputeUsdPerHour": 0.22,
+  "quoteIsAllocatedPrice": false,
+  "allocatedPods": 0,
+  "scheduledDeployments": 0,
+  "measuredCandidatesPerSecond": null,
+  "evidence": "Authenticated provider UI observation; 3090-unavailable.jpg"
+}

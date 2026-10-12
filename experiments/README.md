@@ -9,6 +9,7 @@ This directory records actual experiments, including unsuccessful runs and limit
 | EXP-003 | 2026-10-11 | Authenticated CPU worker receipts | Recorded local result: 53 tests passed, including subprocess-to-HTTP-to-database receipt handling. | Historical summary below; original complete test transcript was not archived here. |
 | EXP-004 | 2026-10-12 | Coverage-aware scheduler | Recorded local result: 63 tests passed. External claims affect scheduling preference without crediting own work. No real pool interval map imported. | [Synthetic demo](results/2026-10-12-coverage-demo.json); captured reruns in `runs/`. |
 | EXP-005 | 2026-10-12 | RTX 4090 throughput baseline | Six cases passed. Fastest short scan 2.886 billion candidates/s; same synthetic range repeated across three settings. Rental stopped/deleted. | [Detailed record, original report and screenshots](2026-10-12-rtx4090-benchmark.md) |
+| EXP-006 | 2026-10-12 | A5000 / 4090 / 5090 repeated comparison | 36/36 cases passed. A5000 best tested value at observed quotes; 3090 unavailable. All rentals deleted; displayed cost USD0.21. Stop API test failed with HTTP403. | [Comparison, raw reports, limitations and evidence](2026-10-12-gpu-comparison.md) |
 
 ## What these results establish
 
@@ -38,7 +39,7 @@ Do not archive credentials, treasury keys, discovered candidate secrets, authent
 
 ## Still untested
 
-- Long-duration sustained candidates/second and end-to-end candidates/dollar; EXP-005 provides only an initial short controlled baseline.
+- Long-duration sustained candidates/second and production end-to-end candidates/dollar; EXP-005/006 provide short controlled measurements. EXP-006 ranks three available GPUs; RTX3090 remains untested.
 - Large-range GPU worker correctness and multi-GPU scaling.
 - Automated rental, shutdown/watchdog, GPU reporting and interrupted-job recovery as one remote system.
 - Live puzzle #71 search or real creator-fee funding.

@@ -1,0 +1,19 @@
+{
+  "gpu": "5090",
+  "podId": "kcrx5upswb3u0i",
+  "hourlyComputeUsd": 1.19,
+  "hourlyStorageUsd": 0.004,
+  "region": "EU-RO-1",
+  "cloud": "Secure Cloud",
+  "vcpu": 16,
+  "memoryGB": 92,
+  "temporaryDiskGB": 30,
+  "persistentDiskGB": 0,
+  "image": "runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404",
+  "status": "deleted",
+  "createdAt": "2026-10-12T07:28:43Z",
+  "stoppedAt": "2026-10-12T07:33:30Z",
+  "deletedAt": "2026-10-12T07:33:48Z",
+  "evidence": "Authenticated provider UI and audit logs, timestamps converted from America/Toronto to UTC; generated credential deletion confirmed",
+  "stopFallback": "REST own-Pod stop rejected HTTP403 on prior A5000; not relied on. Console shutdown required."
+}

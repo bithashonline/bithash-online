@@ -1,0 +1,135 @@
+{
+  "status": "partial",
+  "missing": [
+    "3090"
+  ],
+  "ranking": [
+    {
+      "gpu": "a5000",
+      "reportSha256": "52ae33e0ce7e2536fb4df5abf5a6724bbf004af6156d3c74ef660e40cdddad53",
+      "hourlyUsd": 0.274,
+      "best": {
+        "profile": "large",
+        "minCandidatesPerSecond": 1190984455.5,
+        "medianCandidatesPerSecond": 1194452033.42,
+        "maxCandidatesPerSecond": 1196094297.13,
+        "medianIncludingInit": 1140873058.6935015,
+        "trillionCandidatesPerDollar": 15.69353036610219
+      },
+      "profiles": [
+        {
+          "profile": "large",
+          "minCandidatesPerSecond": 1190984455.5,
+          "medianCandidatesPerSecond": 1194452033.42,
+          "maxCandidatesPerSecond": 1196094297.13,
+          "medianIncludingInit": 1140873058.6935015,
+          "trillionCandidatesPerDollar": 15.69353036610219
+        },
+        {
+          "profile": "medium",
+          "minCandidatesPerSecond": 1059219550.46,
+          "medianCandidatesPerSecond": 1062459654.74,
+          "maxCandidatesPerSecond": 1066581384.93,
+          "medianIncludingInit": 1031483090.730994,
+          "trillionCandidatesPerDollar": 13.959323930890509
+        },
+        {
+          "profile": "small",
+          "minCandidatesPerSecond": 837403177.696,
+          "medianCandidatesPerSecond": 837486498.274,
+          "maxCandidatesPerSecond": 855585899.868,
+          "medianIncludingInit": 826437334.4840356,
+          "trillionCandidatesPerDollar": 11.003472240096352
+        }
+      ],
+      "wallSeconds": 318.998575,
+      "estimatedRentalUsd": 0.04094777777777778,
+      "experimentTrillionAttemptsPerDollar": 7.5526664710932625
+    },
+    {
+      "gpu": "4090",
+      "reportSha256": "99d4d7354880922d003af3932dbdb24e91f86715a41f01193d7c356b1e9671f7",
+      "hourlyUsd": 0.894,
+      "best": {
+        "profile": "large",
+        "minCandidatesPerSecond": 2890996041.95,
+        "medianCandidatesPerSecond": 2892220212.63,
+        "maxCandidatesPerSecond": 2905221995.9,
+        "medianIncludingInit": 2529348113.4825153,
+        "trillionCandidatesPerDollar": 11.646524346161074
+      },
+      "profiles": [
+        {
+          "profile": "large",
+          "minCandidatesPerSecond": 2890996041.95,
+          "medianCandidatesPerSecond": 2892220212.63,
+          "maxCandidatesPerSecond": 2905221995.9,
+          "medianIncludingInit": 2529348113.4825153,
+          "trillionCandidatesPerDollar": 11.646524346161074
+        },
+        {
+          "profile": "medium",
+          "minCandidatesPerSecond": 2671125818.98,
+          "medianCandidatesPerSecond": 2673974772.98,
+          "maxCandidatesPerSecond": 2680371487.14,
+          "medianIncludingInit": 2487210018.8782516,
+          "trillionCandidatesPerDollar": 10.767683649583892
+        },
+        {
+          "profile": "small",
+          "minCandidatesPerSecond": 1318602862.83,
+          "medianCandidatesPerSecond": 1324218660.47,
+          "maxCandidatesPerSecond": 1329977370,
+          "medianIncludingInit": 1299431613.75563,
+          "trillionCandidatesPerDollar": 5.332424136120806
+        }
+      ],
+      "wallSeconds": 166.817557,
+      "estimatedRentalUsd": 0.07574166666666667,
+      "experimentTrillionAttemptsPerDollar": 4.083154251794477
+    },
+    {
+      "gpu": "5090",
+      "reportSha256": "e911b0e5b9a0af03b0c216ee49d379f8a0691d96de0336656f555703e79991a0",
+      "hourlyUsd": 1.194,
+      "best": {
+        "profile": "large",
+        "minCandidatesPerSecond": 3781604404.51,
+        "medianCandidatesPerSecond": 3784906476.88,
+        "maxCandidatesPerSecond": 3804974722.1,
+        "medianIncludingInit": 3355156514.326627,
+        "trillionCandidatesPerDollar": 11.411778322251255
+      },
+      "profiles": [
+        {
+          "profile": "large",
+          "minCandidatesPerSecond": 3781604404.51,
+          "medianCandidatesPerSecond": 3784906476.88,
+          "maxCandidatesPerSecond": 3804974722.1,
+          "medianIncludingInit": 3355156514.326627,
+          "trillionCandidatesPerDollar": 11.411778322251255
+        },
+        {
+          "profile": "medium",
+          "minCandidatesPerSecond": 3431562697.81,
+          "medianCandidatesPerSecond": 3437451885.77,
+          "maxCandidatesPerSecond": 3452793628.25,
+          "medianIncludingInit": 3241184658.054927,
+          "trillionCandidatesPerDollar": 10.364176540010051
+        },
+        {
+          "profile": "small",
+          "minCandidatesPerSecond": 1511629919.74,
+          "medianCandidatesPerSecond": 1512929234.83,
+          "maxCandidatesPerSecond": 1514866560.6,
+          "medianIncludingInit": 1492093302.3416362,
+          "trillionCandidatesPerDollar": 4.561595682904523
+        }
+      ],
+      "wallSeconds": 137.272939,
+      "estimatedRentalUsd": 0.09518833333333333,
+      "experimentTrillionAttemptsPerDollar": 3.248979128618703
+    }
+  ],
+  "limitations": "Host-reported controlled workload, repeated overlapping ranges, sampled correctness; not remote attestation or actual puzzle71 coverage. Scan-only projection and measured short-run overhead are distinct. Prices and availability can change."
+}
