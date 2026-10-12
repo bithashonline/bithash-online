@@ -1,0 +1,32 @@
+{
+  "schema": "bithash.comparison-package.v1",
+  "files": {
+    "BITCRACK-LICENSE.MIT": "d1ca4c0aaddbafcbd85036ba73b8f298a17a7da31520ff4b21c28fa419f36fc0",
+    "CUDA-LICENSE": "e2c71babfd18a8e69542dd7e9ca018f9caa438094001a58e6bc4d8c999bf0d07",
+    "bithash-benchmark": "50cc815754e9bde88315d92c3e1741ab0028821b6be4a0c67626024ad81ed485",
+    "lib/libcudart.so.12": "8774224f5b11a73b15d074a3fcce7327322c5c4cfdfd924d6a826779eec968fe",
+    "run.py": "1f01f79ef47d5bac3d1f2dd6754bd8fb0e3f06a138f776c4a64b0eb47853c961",
+    "stop-watchdog.py": "ba58e41842cba67bff203f2d4b9a49cea83ddd27f20bb4d2ca450f582f24aff9",
+    "vectors.json": "0ed4d72e0f5d8ad3f4efe218c1013f567e20f3591051e45ca530a34d6439ee7c"
+  },
+  "sourceHashes": {
+    ".gitattributes": "730a35ae3d558080083c3103d9ac8100c3f6561678092abe341701dfa331eb1d",
+    ".gitignore": "862263fa1f46c20f0d1e4dac5ffcc75abd55c08211b2c3864c5f8764b9d87793",
+    "build.sh": "e62fcafa9bc0f18b0530c006bd0c91ada10ae929e2e814ecfe1188f541ae7b31",
+    "LICENSE.BitCrack": "d1ca4c0aaddbafcbd85036ba73b8f298a17a7da31520ff4b21c28fa419f36fc0",
+    "main.cpp": "0ff1289fa237120fe6b80dd474baeccc477dff7c1ebe30bbff1f73f8d6bc5745",
+    "package.py": "b75d9a1421766386ea5d24258bfb69da7a0c90abe3ffd8ed55c8f675e94f22c8",
+    "prepare.py": "6bb2a7d354aa235c98f201a3c2e67267b5fcd44c5e885d027f486ea7938bbb6c",
+    "README.md": "9d6d2583beb1c46c0f474ef8eb1362872438ea1278c38820ca1eef514db16361",
+    "run.py": "1f01f79ef47d5bac3d1f2dd6754bd8fb0e3f06a138f776c4a64b0eb47853c961",
+    "stop-watchdog.py": "ba58e41842cba67bff203f2d4b9a49cea83ddd27f20bb4d2ca450f582f24aff9",
+    "vectors.h": "da284cdf174918725fd0a1a5c7fe1109dee97220ba125fce67c3758f3da10f80",
+    "vectors.json": "0ed4d72e0f5d8ad3f4efe218c1013f567e20f3591051e45ca530a34d6439ee7c"
+  },
+  "upstreamCommit": "6bf8059ef075eb1622298395866b0bd02375e1d9",
+  "cudaTargets": [
+    "sm_86",
+    "sm_89",
+    "compute_89 PTX"
+  ]
+}
