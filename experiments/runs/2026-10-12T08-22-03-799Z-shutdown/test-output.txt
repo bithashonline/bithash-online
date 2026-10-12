@@ -1,0 +1,163 @@
+TAP version 13
+# Subtest: CLI fails before network access without controller credential or inside a Pod
+ok 1 - CLI fails before network access without controller credential or inside a Pod
+  ---
+  duration_ms: 184.8058
+  type: 'test'
+  ...
+# (node:10640) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: integer budget shortens absolute deadline and reserves shutdown headroom
+ok 2 - integer budget shortens absolute deadline and reserves shutdown headroom
+  ---
+  duration_ms: 3.6034
+  type: 'test'
+  ...
+# Subtest: invalid policies cannot extend runtime or silently enable destructive cleanup
+ok 3 - invalid policies cannot extend runtime or silently enable destructive cleanup
+  ---
+  duration_ms: 0.8525
+  type: 'test'
+  ...
+# Subtest: registration is immutable and restart cannot reset deadline
+ok 4 - registration is immutable and restart cannot reset deadline
+  ---
+  duration_ms: 32.1835
+  type: 'test'
+  ...
+# Subtest: no mutation before deadline; stop, delete and subsequent absence are separate observations
+ok 5 - no mutation before deadline; stop, delete and subsequent absence are separate observations
+  ---
+  duration_ms: 58.9123
+  type: 'test'
+  ...
+# Subtest: 200 stop response with RUNNING status does not claim success; retries stop-only policy
+ok 6 - 200 stop response with RUNNING status does not claim success; retries stop-only policy
+  ---
+  duration_ms: 49.8309
+  type: 'test'
+  ...
+# Subtest: 403 stop failure is recorded and does not prevent separately authorized disposal
+ok 7 - 403 stop failure is recorded and does not prevent separately authorized disposal
+  ---
+  duration_ms: 66.0207
+  type: 'test'
+  ...
+# Subtest: 403 on both operations stays unresolved and retries, never releases billing responsibility
+ok 8 - 403 on both operations stays unresolved and retries, never releases billing responsibility
+  ---
+  duration_ms: 60.9812
+  type: 'test'
+  ...
+# Subtest: timeout after accepted delete reconciles with GET after process restart
+ok 9 - timeout after accepted delete reconciles with GET after process restart
+  ---
+  duration_ms: 60.9265
+  type: 'test'
+  ...
+# Subtest: GET timeout cannot block deadline stop of a previously verified Pod
+ok 10 - GET timeout cannot block deadline stop of a previously verified Pod
+  ---
+  duration_ms: 703.1333
+  type: 'test'
+  ...
+# Subtest: unverified or mismatched Pod cannot receive stop/delete commands
+ok 11 - unverified or mismatched Pod cannot receive stop/delete commands
+  ---
+  duration_ms: 49.8864
+  type: 'test'
+  ...
+# Subtest: changed identity after verification also blocks mutation
+ok 12 - changed identity after verification also blocks mutation
+  ---
+  duration_ms: 47.9077
+  type: 'test'
+  ...
+# Subtest: future-dated registration cannot postpone an already-billing allocation
+ok 13 - future-dated registration cannot postpone an already-billing allocation
+  ---
+  duration_ms: 25.8279
+  type: 'test'
+  ...
+# Subtest: persistent or unknown storage blocks deletion while preserving stop action
+ok 14 - persistent or unknown storage blocks deletion while preserving stop action
+  ---
+  duration_ms: 68.8302
+  type: 'test'
+  ...
+# Subtest: stop-only policy never deletes and catches a later provider resume
+ok 15 - stop-only policy never deletes and catches a later provider resume
+  ---
+  duration_ms: 52.2831
+  type: 'test'
+  ...
+# Subtest: price above registered ceiling stops early and never expands the budget
+ok 16 - price above registered ceiling stops early and never expands the budget
+  ---
+  duration_ms: 38.615
+  type: 'test'
+  ...
+# Subtest: clock rollback latches a stop and restart does not clear it
+ok 17 - clock rollback latches a stop and restart does not clear it
+  ---
+  duration_ms: 42.3399
+  type: 'test'
+  ...
+# Subtest: operator stop stays latched through restart
+ok 18 - operator stop stays latched through restart
+  ---
+  duration_ms: 46.5577
+  type: 'test'
+  ...
+# Subtest: unknown exception messages cannot leak through persisted events
+ok 19 - unknown exception messages cannot leak through persisted events
+  ---
+  duration_ms: 34.087
+  type: 'test'
+  ...
+# Subtest: real subprocess crash after accepted stop recovers persisted intent
+ok 20 - real subprocess crash after accepted stop recovers persisted intent
+  ---
+  duration_ms: 109.5372
+  type: 'test'
+  ...
+# Subtest: transport uses fixed HTTPS origin, bearer header and rejects redirects; returns allowlisted fields only
+ok 21 - transport uses fixed HTTPS origin, bearer header and rejects redirects; returns allowlisted fields only
+  ---
+  duration_ms: 4.3125
+  type: 'test'
+  ...
+# Subtest: 401/403/429/500 bodies and thrown fetch details never become error messages
+ok 22 - 401/403/429/500 bodies and thrown fetch details never become error messages
+  ---
+  duration_ms: 0.7796
+  type: 'test'
+  ...
+# Subtest: GET 404 differs from forbidden; malformed responses are rejected
+ok 23 - GET 404 differs from forbidden; malformed responses are rejected
+  ---
+  duration_ms: 1.7964
+  type: 'test'
+  ...
+# Subtest: missing network-volume metadata remains unknown, never silently disposable
+ok 24 - missing network-volume metadata remains unknown, never silently disposable
+  ---
+  duration_ms: 0.6047
+  type: 'test'
+  ...
+# Subtest: real loopback HTTP exercises stop, status, delete, 404 and bounded timeout without Runpod access
+ok 25 - real loopback HTTP exercises stop, status, delete, 404 and bounded timeout without Runpod access
+  ---
+  duration_ms: 93.4467
+  type: 'test'
+  ...
+1..25
+# tests 25
+# suites 0
+# pass 25
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1636.5548
+

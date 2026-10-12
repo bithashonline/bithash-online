@@ -1,0 +1,24 @@
+import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
+import { resolve, relative, isAbsolute, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+const root=dirname(dirname(fileURLToPath(import.meta.url)));
+const dir=resolve(root,process.argv[2]??'');
+const rel=relative(resolve(root,'experiments/runs'),dir);
+assert(rel&&!rel.startsWith('..')&&!isAbsolute(rel),'Expected a captured experiment under experiments/runs');
+const hash=b=>createHash('sha256').update(b).digest('hex');
+const json=p=>JSON.parse(readFileSync(p,'utf8').replace(/^\uFEFF/,''));
+const result=json(resolve(dir,'result.json')),manifest=json(resolve(dir,'source-manifest.json'));
+assert.equal(result.schema,'bithash.shutdown-experiment.v1');assert.equal(result.outcome,'passed');
+assert.equal(result.tests.fail,0);assert(result.tests.pass>=25);assert.equal(result.testExitCode,0);assert.equal(result.demoExitCode,0);
+assert.equal(result.liveProviderValidated,false);assert.equal(result.controllerDeployed,false);assert.equal(result.spendUsd,0);
+for(const item of manifest){assert(item.path.startsWith('ops/runpod-shutdown/')&&!item.path.includes('..'));assert.equal(hash(readFileSync(resolve(root,item.path))),item.sha256,item.path);}
+assert.equal(hash(readFileSync(resolve(dir,'test-output.txt'))),result.testTranscriptSha256);
+assert.equal(hash(readFileSync(resolve(dir,'demo.json'))),result.demoSha256);
+const demo=json(resolve(dir,'demo.json'));
+assert.equal(demo.snapshots.at(-1).pods[0].phase,'absence_observed');
+assert.equal(demo.snapshots[1].pods[0].lastError,'http_403');
+assert.equal(demo.snapshots[2].pods[0].deleteAttempts,1);
+assert(demo.snapshots.every(s=>s.pods.every(p=>p.billingReconciled===false&&p.permitsNewRental===false)));
+console.log(JSON.stringify({status:'passed',sourceFiles:manifest.length,tests:result.tests.pass,liveProviderValidated:false}));

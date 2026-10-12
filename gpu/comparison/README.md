@@ -1,5 +1,7 @@
 # EXP-006: GPU cost-efficiency comparison
 
+Follow-up: [EXP-007 external shutdown controller](../../experiments/2026-10-12-shutdown-controller.md) passes local failure/restart tests; live-provider acceptance is still pending. The original helper below remains part of the historical runtime artifact.
+
 **Observed limitation (October12):** testing the own-Pod REST stop request on the A5000 returned HTTP403. The scheduled fallback must therefore be treated as nonfunctional with that injected credential. Console stop/delete was used and verified. Do not rely on this helper to enforce rental limits; an independent authenticated provider controller still needs implementation and testing. The published runtime artifact retains the original helper for experiment reproducibility.
 
 Authorized October 12, 2026: RTX A5000, RTX 3090, RTX 5090 and a repeat RTX 4090, one at a time, USD2 total rental cap and at most30 minutes perPod. [Completed results](../../experiments/2026-10-12-gpu-comparison.md): A5000, 4090 and 5090 passed all36 cases; 3090 unavailable. A5000 had the highest measured candidates/dollar at the observed quotes. All rentals deleted; no puzzle71 work performed.

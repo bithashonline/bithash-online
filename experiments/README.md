@@ -10,6 +10,7 @@ This directory records actual experiments, including unsuccessful runs and limit
 | EXP-004 | 2026-10-12 | Coverage-aware scheduler | Recorded local result: 63 tests passed. External claims affect scheduling preference without crediting own work. No real pool interval map imported. | [Synthetic demo](results/2026-10-12-coverage-demo.json); captured reruns in `runs/`. |
 | EXP-005 | 2026-10-12 | RTX 4090 throughput baseline | Six cases passed. Fastest short scan 2.886 billion candidates/s; same synthetic range repeated across three settings. Rental stopped/deleted. | [Detailed record, original report and screenshots](2026-10-12-rtx4090-benchmark.md) |
 | EXP-006 | 2026-10-12 | A5000 / 4090 / 5090 repeated comparison | 36/36 cases passed. A5000 best tested value at observed quotes; 3090 unavailable. All rentals deleted; displayed cost USD0.21. Stop API test failed with HTTP403. | [Comparison, raw reports, limitations and evidence](2026-10-12-gpu-comparison.md) |
+| EXP-007 | 2026-10-12 | External shutdown controller | 25/25 local tests passed, including subprocess crash recovery and loopback HTTP. No live Runpod validation or deployment; USD0 spent. | [Source, captured tests, demo and remaining acceptance](2026-10-12-shutdown-controller.md) |
 
 ## What these results establish
 

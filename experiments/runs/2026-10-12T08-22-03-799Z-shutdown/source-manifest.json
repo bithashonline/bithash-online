@@ -1,0 +1,46 @@
+[
+  {
+    "path": "ops/runpod-shutdown/.gitattributes",
+    "sha256": "730a35ae3d558080083c3103d9ac8100c3f6561678092abe341701dfa331eb1d"
+  },
+  {
+    "path": "ops/runpod-shutdown/cli.mjs",
+    "sha256": "c17050eb77b6ace259e6769eba7c8e8b95365f051132c0b2d5d8ecf39a1b86e6"
+  },
+  {
+    "path": "ops/runpod-shutdown/cli.test.mjs",
+    "sha256": "8e30cc6dff86f0e8083cdea2945f9fc71fade619193d99ba496c801c1fd93a7c"
+  },
+  {
+    "path": "ops/runpod-shutdown/controller.mjs",
+    "sha256": "40c27c96e639cb5dff122c0777a9e806afc038a001a05f53e8870043c54fa982"
+  },
+  {
+    "path": "ops/runpod-shutdown/controller.test.mjs",
+    "sha256": "99b855215a603e38ed1f35506350cc8f7481842e3ce39a14254b0c3b770d3a71"
+  },
+  {
+    "path": "ops/runpod-shutdown/demo.mjs",
+    "sha256": "6add3753a6bf705ea84b08f413976edd2cbb477898b86df5219c85243d3e9a4f"
+  },
+  {
+    "path": "ops/runpod-shutdown/example-lease.json",
+    "sha256": "3ce7bf2334efaf434b456a14350a02bfa3e97a6e79fc87f5ca8ad816b81de420"
+  },
+  {
+    "path": "ops/runpod-shutdown/fixtures/crash-after-stop.mjs",
+    "sha256": "d52b47f8854fe266097a1229336e92430ab078dc41b928c9dc91dc348cb94bb0"
+  },
+  {
+    "path": "ops/runpod-shutdown/provider.mjs",
+    "sha256": "856fd83cb46accc982971763ad70fbe2113c49609d24b1e02df7b6371df3359e"
+  },
+  {
+    "path": "ops/runpod-shutdown/provider.test.mjs",
+    "sha256": "5ee9c33c28779edd15e5b0f3bd8880a6307fd06116f64b1770d62348e86b0ec9"
+  },
+  {
+    "path": "ops/runpod-shutdown/README.md",
+    "sha256": "de5119cbc56ed34953e5195499cea1277829978d820c432a92a67221c524a2d4"
+  }
+]

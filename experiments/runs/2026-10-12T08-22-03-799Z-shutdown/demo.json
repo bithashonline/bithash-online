@@ -1,0 +1,116 @@
+{
+  "schema": "bithash.shutdown-demo.v1",
+  "evidence": "simulated provider with real SQLite persistence; no Runpod request or rental",
+  "snapshots": [
+    {
+      "stage": "identity_checked",
+      "pods": [
+        {
+          "podId": "fixturepod001",
+          "deadline": "2026-10-12T12:21:53.868Z",
+          "triggerAt": "2026-10-12T12:20:53.868Z",
+          "identityVerified": true,
+          "reason": null,
+          "phase": "registered",
+          "stopAttempts": 0,
+          "deleteAttempts": 0,
+          "lastError": null,
+          "billingReconciled": false,
+          "permitsNewRental": false
+        }
+      ]
+    },
+    {
+      "stage": "stop_rejected_403",
+      "pods": [
+        {
+          "podId": "fixturepod001",
+          "deadline": "2026-10-12T12:21:53.868Z",
+          "triggerAt": "2026-10-12T12:20:53.868Z",
+          "identityVerified": true,
+          "reason": "deadline_or_budget",
+          "phase": "stop_pending",
+          "stopAttempts": 1,
+          "deleteAttempts": 0,
+          "lastError": "http_403",
+          "billingReconciled": false,
+          "permitsNewRental": false
+        }
+      ]
+    },
+    {
+      "stage": "restart_then_delete_requested",
+      "pods": [
+        {
+          "podId": "fixturepod001",
+          "deadline": "2026-10-12T12:21:53.868Z",
+          "triggerAt": "2026-10-12T12:20:53.868Z",
+          "identityVerified": true,
+          "reason": "deadline_or_budget",
+          "phase": "delete_pending",
+          "stopAttempts": 1,
+          "deleteAttempts": 1,
+          "lastError": null,
+          "billingReconciled": false,
+          "permitsNewRental": false
+        }
+      ]
+    },
+    {
+      "stage": "provider_absence_observed",
+      "pods": [
+        {
+          "podId": "fixturepod001",
+          "deadline": "2026-10-12T12:21:53.868Z",
+          "triggerAt": "2026-10-12T12:20:53.868Z",
+          "identityVerified": true,
+          "reason": "deadline_or_budget",
+          "phase": "absence_observed",
+          "stopAttempts": 1,
+          "deleteAttempts": 1,
+          "lastError": null,
+          "billingReconciled": false,
+          "permitsNewRental": false
+        }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "at": 1791806400000,
+      "pod": "fixturepod001",
+      "kind": "registered",
+      "code": null
+    },
+    {
+      "at": 1791807653868,
+      "pod": "fixturepod001",
+      "kind": "stop_intent",
+      "code": null
+    },
+    {
+      "at": 1791807653868,
+      "pod": "fixturepod001",
+      "kind": "request_failed",
+      "code": "http_403"
+    },
+    {
+      "at": 1791807653868,
+      "pod": "fixturepod001",
+      "kind": "delete_intent",
+      "code": null
+    },
+    {
+      "at": 1791807653868,
+      "pod": "fixturepod001",
+      "kind": "delete_accepted",
+      "code": null
+    },
+    {
+      "at": 1791807653868,
+      "pod": "fixturepod001",
+      "kind": "provider_404_observed",
+      "code": null
+    }
+  ]
+}

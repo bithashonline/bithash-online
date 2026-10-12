@@ -1,0 +1,11 @@
+{
+  "schema": "bithash.shutdown-lease.v1",
+  "podId": "fixturepod001",
+  "expectedName": "bithash-shutdown-test",
+  "startedAt": "2026-10-12T12:00:00.000Z",
+  "notAfter": "2026-10-12T12:30:00.000Z",
+  "maxSpendMicrousd": "100000",
+  "hourlyCeilingMicrousd": "274000",
+  "shutdownHeadroomSeconds": 60,
+  "deleteDisposablePod": false
+}

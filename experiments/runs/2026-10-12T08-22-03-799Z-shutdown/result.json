@@ -1,0 +1,21 @@
+{
+  "schema": "bithash.shutdown-experiment.v1",
+  "startedAt": "2026-10-12T08:22:03.799Z",
+  "completedAt": "2026-10-12T08:22:05.590Z",
+  "evidence": "local state-machine, subprocess-crash and loopback HTTP tests; simulated provider demo; no Runpod access or spending",
+  "nodeVersion": "v22.16.0",
+  "platform": "win32",
+  "tests": {
+    "tests": 25,
+    "pass": 25,
+    "fail": 0
+  },
+  "testExitCode": 0,
+  "demoExitCode": 0,
+  "outcome": "passed",
+  "testTranscriptSha256": "41b533af5cdeb8648b5bb3702f03ecc7a28ec868201d34ae1fb03e7c355ef48e",
+  "demoSha256": "8c21ba72c4a4283445f8bcd29840156edc20b5337c7fa3a1c2d9038c330a4486",
+  "liveProviderValidated": false,
+  "controllerDeployed": false,
+  "spendUsd": 0
+}
