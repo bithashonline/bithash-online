@@ -1,0 +1,94 @@
+{
+  "mode": "SYNTHETIC CPU FIXTURE DEMO / NO LIVE POOL DATA OR GPU RENTAL",
+  "before": {
+    "targetId": "puzzle-3",
+    "targetVersion": 1,
+    "status": "available",
+    "externalEvidence": "unverified-source-reports",
+    "sourceFeedConnected": false,
+    "totalCandidates": "4",
+    "externalReportedCandidates": "2",
+    "activeSnapshots": 1,
+    "historicalSnapshots": 1,
+    "inactiveSnapshots": 0,
+    "ownAllocatedCandidates": "0",
+    "ownCheckpointedCandidates": "0",
+    "ownEvidence": "controller checkpoints; separate from external reports; not exhaustive-search attestation",
+    "policy": "prefer-unreported-then-fallback",
+    "permanentlyExcludedByExternalReports": "0",
+    "dispatchEnabled": false
+  },
+  "firstSelection": {
+    "targetId": "puzzle-3",
+    "targetVersion": 1,
+    "start": "6",
+    "end": "8",
+    "preference": "unreported",
+    "externalSnapshotIds": [
+      "synthetic-demo"
+    ],
+    "selectedAt": 100,
+    "dispatchEnabled": false,
+    "evidence": "planning-only; external reports are not proof of search"
+  },
+  "fallbackSelection": {
+    "targetId": "puzzle-3",
+    "targetVersion": 1,
+    "start": "4",
+    "end": "6",
+    "preference": "external-reported-fallback",
+    "externalSnapshotIds": [
+      "synthetic-demo"
+    ],
+    "selectedAt": 100,
+    "dispatchEnabled": false,
+    "evidence": "planning-only; external reports are not proof of search"
+  },
+  "after": {
+    "targetId": "puzzle-3",
+    "targetVersion": 1,
+    "status": "available",
+    "externalEvidence": "unverified-source-reports",
+    "sourceFeedConnected": false,
+    "totalCandidates": "4",
+    "externalReportedCandidates": "2",
+    "activeSnapshots": 1,
+    "historicalSnapshots": 1,
+    "inactiveSnapshots": 0,
+    "ownAllocatedCandidates": "4",
+    "ownCheckpointedCandidates": "2",
+    "ownEvidence": "controller checkpoints; separate from external reports; not exhaustive-search attestation",
+    "policy": "prefer-unreported-then-fallback",
+    "permanentlyExcludedByExternalReports": "0",
+    "dispatchEnabled": false
+  },
+  "puzzle71": {
+    "targetId": "puzzle-71",
+    "targetVersion": 1,
+    "status": "available",
+    "externalEvidence": "unverified-source-reports",
+    "sourceFeedConnected": false,
+    "totalCandidates": "1180591620717411303424",
+    "externalReportedCandidates": "0",
+    "activeSnapshots": 0,
+    "historicalSnapshots": 0,
+    "inactiveSnapshots": 0,
+    "ownAllocatedCandidates": "0",
+    "ownCheckpointedCandidates": "0",
+    "ownEvidence": "controller checkpoints; separate from external reports; not exhaustive-search attestation",
+    "policy": "prefer-unreported-then-fallback",
+    "permanentlyExcludedByExternalReports": "0",
+    "dispatchEnabled": false
+  },
+  "puzzle71Preview": {
+    "targetId": "puzzle-71",
+    "targetVersion": 1,
+    "start": "1180591620717411303424",
+    "end": "1180591620717412303424",
+    "preference": "unreported",
+    "externalSnapshotIds": [],
+    "selectedAt": 100,
+    "dispatchEnabled": false,
+    "evidence": "planning-only; external reports are not proof of search"
+  }
+}

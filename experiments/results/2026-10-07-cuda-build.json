@@ -1,0 +1,35 @@
+{
+  "schema": "bithash.cuda-build.v1",
+  "builtAt": "2026-10-08T01:26:19.4589371Z",
+  "compiled": true,
+  "gpuValidated": false,
+  "upstreamCommit": "6bf8059ef075eb1622298395866b0bd02375e1d9",
+  "binarySha256": "4148dce03b6a5a0f7e688b77dc9b00f77190bb2902c1c37b7cb19835368febe6",
+  "architecture": "Linux x86-64 / CUDA sm_89",
+  "host": "Ubuntu 24.04.1 WSL; g++ 13.3.0",
+  "compiler": "CUDA nvcc 12.4.131",
+  "localGraphics": [
+    "AMD Radeon RX 9070 XT",
+    "AMD Radeon(TM) Graphics"
+  ],
+  "tests": {
+    "gpuFixtureCasesRequired": 14,
+    "backendPassed": 47,
+    "nativeRejectedInvalidInputs": 6,
+    "gpuFixtureCasesPassed": 0
+  },
+  "buildLogSha256": "ac69132f2082604302c82c2d0a500d731f0a54b24c98e60ac098904ad9c4f819",
+  "recipes": {
+    "build.sh": "51e2f762f238f7a0f6d9790ffecc6538021a8e2280bfbfe6e9ccf11b77eaf0db",
+    "cuda-components.json": "a6512810585c7a8f61b6b7bd1eba2acbd6b9de4e8cc30a8162d7747e4096856f",
+    "fixture-main.cpp": "6d8ece50ddb8d719a881d37d82be4cc02cc774e890696d595f9edc3010c6ec94",
+    "prepare.py": "4b9f550b33645268628217ce60de8af5df5e5fd5f2f917542bf65647f778be5e",
+    "README.md": "820dbd71a34ef095b197ad5c2abeb8da4507ab0510acae1435abf7279f06127a",
+    "reference-vectors.json": "8f47d3b3ce110e3776978eb45261a613e6c74af0b62e1204ed89da5e26d1045e",
+    "upstream-lock.json": "425bf288f2538f1d06eb85be53ac39603288413bb6f7b5bdbf87f697aafef98e",
+    "validate.py": "6e549dd86dd8eedd8c9dc9a24e355f1ad954f0003cdf5558361a1b6a94896082",
+    "validation.mjs": "1d05e343dfcbe567b7c95b4cd834aaad88fd4b44c6d069834bd9ebe1ab932537"
+  },
+  "realFundsSpent": "0",
+  "imageBuilt": false
+}

@@ -1,0 +1,24 @@
+{
+  "schema": "bithash.backend-experiment.v1",
+  "startedAt": "2026-10-12T05:51:56.057Z",
+  "completedAt": "2026-10-12T05:51:57.489Z",
+  "evidence": "local CPU fixtures and simulated control-plane tests; no GPU or provider rental",
+  "command": "node --experimental-sqlite --test --test-reporter=tap",
+  "nodeVersion": "v22.16.0",
+  "platform": "win32",
+  "gitHead": "ed5a7036018aa3f29951e5197fae6539caae4cb3",
+  "workingTreeWasDirty": true,
+  "sourceIdentity": "source-manifest.json hashes working files; gitHead alone is not the tested source snapshot",
+  "exitCode": 0,
+  "signal": null,
+  "errorCode": null,
+  "outcome": "passed",
+  "counts": {
+    "tests": "63",
+    "pass": "63",
+    "fail": "0",
+    "skipped": "0",
+    "cancelled": "0"
+  },
+  "transcriptSha256": "866d1aeac21ed2817db51d10a1d883b3eeab8b527dc7533ec8588c9092a8a6a6"
+}
