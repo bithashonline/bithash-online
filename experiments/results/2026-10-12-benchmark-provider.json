@@ -1,0 +1,74 @@
+{
+  "schema": "bithash.provider-observation.v1",
+  "experiment": "EXP-005",
+  "evidenceClass": "human-observed authenticated Runpod UI",
+  "podId": "3besdk1g8lt387",
+  "name": "bithash-throughput-benchmark",
+  "hardware": {
+    "gpu": "RTX 4090",
+    "gpuCount": 1,
+    "memoryGB": 94,
+    "vcpu": 16,
+    "cpu": "AMD EPYC 7452 32-Core Processor",
+    "region": "EUR-IS-2",
+    "cloud": "Secure Cloud"
+  },
+  "image": "runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404",
+  "temporaryDiskGB": 30,
+  "persistentDiskGB": 0,
+  "quotedHourlyUsd": {
+    "compute": 0.89,
+    "storageDisplayedRounded": 0.004
+  },
+  "authorization": {
+    "maxUsd": 1,
+    "maxPodLifetimeMinutes": 30,
+    "recurring": false
+  },
+  "startingDisplayedCreditUsd": 9.93,
+  "observedAllocatedUtc": "2026-10-12T06:31:21Z",
+  "lifecycleStatus": "deleted",
+  "preAllocationFailures": [
+    "First deployment rejected as out of capacity; second attempt returned to deployment view without allocation. Refreshed selection then succeeded."
+  ],
+  "limitations": [
+    "UI observations are not an invoice or cryptographic attestation."
+  ],
+  "auditEvents": [
+    {
+      "at": "2026-10-12T06:31:18Z",
+      "action": "created"
+    },
+    {
+      "at": "2026-10-12T06:47:00Z",
+      "action": "stopped"
+    },
+    {
+      "at": "2026-10-12T06:47:25Z",
+      "action": "deleted"
+    }
+  ],
+  "billingAfterDeletion": {
+    "billingExplorerLag": "Provider states billing data is one hour behind",
+    "invoiceReconciled": false,
+    "autoPayEnabled": false,
+    "displayedCreditUsd": 9.72,
+    "observedAtUtc": "2026-10-12T06:48:00Z",
+    "displayedCreditChangeUsd": 0.21,
+    "currentHourlySpendUsd": 0,
+    "estimatedRunningCostUsd": 0.2339366667
+  },
+  "operationalIssues": [
+    "Browser connection lost before execution; restored without creating a second Pod.",
+    "Benchmark completed in 92 seconds; downloading the report blocked for about 674 seconds and delayed shutdown. All resulting idle rental time is included in lifecycle evidence."
+  ],
+  "credentialCleanup": "Provider audit logs show the Pod-generated API credential deleted with the Pod; no secret values archived.",
+  "refreshedBilling": {
+    "displayedCreditChangeUsd": 0.24,
+    "autoPayEnabled": false,
+    "currentHourlySpendUsd": 0,
+    "observedAtUtc": "2026-10-12T06:51:10.1354203Z",
+    "invoiceReconciled": false,
+    "displayedCreditUsd": 9.69
+  }
+}

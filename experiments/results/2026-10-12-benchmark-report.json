@@ -1,0 +1,441 @@
+{
+  "schema": "bithash.gpu-benchmark.v1",
+  "startedAt": "2026-10-12T06:33:26.811757+00:00",
+  "status": "passed",
+  "cases": [
+    {
+      "profile": "small",
+      "mode": "validate",
+      "startedAt": "2026-10-12T06:33:27.055635+00:00",
+      "status": "passed",
+      "completedAt": "2026-10-12T06:33:32.240681+00:00",
+      "result": {
+        "schema": "bithash.gpu-benchmark-case.v1",
+        "profile": "small",
+        "mode": "validate",
+        "start": "1099511627776",
+        "end": "1099513724928",
+        "attempted": "2097152",
+        "expectedMatches": 4,
+        "matches": 4,
+        "correct": true,
+        "initializationSeconds": 3.54815184,
+        "scanSeconds": 0.013819708,
+        "candidatesPerSecond": 151750818.469
+      }
+    },
+    {
+      "profile": "medium",
+      "mode": "validate",
+      "startedAt": "2026-10-12T06:33:32.241641+00:00",
+      "status": "passed",
+      "completedAt": "2026-10-12T06:33:39.042642+00:00",
+      "result": {
+        "schema": "bithash.gpu-benchmark-case.v1",
+        "profile": "medium",
+        "mode": "validate",
+        "start": "1099511627776",
+        "end": "1099520016384",
+        "attempted": "8388608",
+        "expectedMatches": 4,
+        "matches": 4,
+        "correct": true,
+        "initializationSeconds": 4.67222237,
+        "scanSeconds": 0.017182666,
+        "candidatesPerSecond": 488201772.647
+      }
+    },
+    {
+      "profile": "large",
+      "mode": "validate",
+      "startedAt": "2026-10-12T06:33:39.043313+00:00",
+      "status": "passed",
+      "completedAt": "2026-10-12T06:33:46.245579+00:00",
+      "result": {
+        "schema": "bithash.gpu-benchmark-case.v1",
+        "profile": "large",
+        "mode": "validate",
+        "start": "1099511627776",
+        "end": "1099528404992",
+        "attempted": "16777216",
+        "expectedMatches": 4,
+        "matches": 4,
+        "correct": true,
+        "initializationSeconds": 5.318664005,
+        "scanSeconds": 0.029521628,
+        "candidatesPerSecond": 568302533.993
+      }
+    },
+    {
+      "profile": "small",
+      "mode": "benchmark",
+      "startedAt": "2026-10-12T06:33:46.246475+00:00",
+      "status": "passed",
+      "completedAt": "2026-10-12T06:34:19.619062+00:00",
+      "result": {
+        "schema": "bithash.gpu-benchmark-case.v1",
+        "profile": "small",
+        "mode": "benchmark",
+        "start": "1099511627776",
+        "end": "1133871366144",
+        "attempted": "34359738368",
+        "expectedMatches": 1,
+        "matches": 1,
+        "correct": true,
+        "initializationSeconds": 3.401431742,
+        "scanSeconds": 27.044650238,
+        "candidatesPerSecond": 1270481890.71
+      }
+    },
+    {
+      "profile": "medium",
+      "mode": "benchmark",
+      "startedAt": "2026-10-12T06:34:19.619943+00:00",
+      "status": "passed",
+      "completedAt": "2026-10-12T06:34:42.672618+00:00",
+      "result": {
+        "schema": "bithash.gpu-benchmark-case.v1",
+        "profile": "medium",
+        "mode": "benchmark",
+        "start": "1099511627776",
+        "end": "1133871366144",
+        "attempted": "34359738368",
+        "expectedMatches": 1,
+        "matches": 1,
+        "correct": true,
+        "initializationSeconds": 7.657023321,
+        "scanSeconds": 13.775809028,
+        "candidatesPerSecond": 2494208383.56
+      }
+    },
+    {
+      "profile": "large",
+      "mode": "benchmark",
+      "startedAt": "2026-10-12T06:34:42.673688+00:00",
+      "status": "passed",
+      "completedAt": "2026-10-12T06:34:58.856551+00:00",
+      "result": {
+        "schema": "bithash.gpu-benchmark-case.v1",
+        "profile": "large",
+        "mode": "benchmark",
+        "start": "1099511627776",
+        "end": "1133871366144",
+        "attempted": "34359738368",
+        "expectedMatches": 1,
+        "matches": 1,
+        "correct": true,
+        "initializationSeconds": 4.120980579,
+        "scanSeconds": 11.907092016,
+        "candidatesPerSecond": 2885653215.9
+      }
+    }
+  ],
+  "evidence": "host-reported GPU execution and device counter; not remote attestation",
+  "workload": "fixed synthetic public known-answer ranges; no funded target",
+  "puzzle71Candidates": "0",
+  "billingEvidence": "collected separately from provider",
+  "limitations": [
+    "Repeated profiles scan overlapping synthetic ranges; totals are not unique puzzle coverage",
+    "Device counter and boundary matches detect some errors, not a proof of every cryptographic calculation"
+  ],
+  "packageManifestSha256": "369051c8e27b687b6a60c3e03c1ece63b51c3989d9097f032f87f8436babeff4",
+  "binarySha256": "432d9f83cc5c1e625d496a5dac50f80f2636794b6beffadce2bcc3154adef819",
+  "vectorsSha256": "0ed4d72e0f5d8ad3f4efe218c1013f567e20f3591051e45ca530a34d6439ee7c",
+  "hardware": {
+    "source": "host-reported nvidia-smi",
+    "model": "NVIDIA GeForce RTX 4090",
+    "driver": "595.91.07"
+  },
+  "completedAt": "2026-10-12T06:34:58.857973+00:00",
+  "wallSeconds": 92.046211,
+  "telemetrySamples": [
+    {
+      "gpuUtilizationPercent": 0.0,
+      "temperatureC": 29.0,
+      "powerW": 28.73,
+      "smClockMHz": 210.0,
+      "memoryMiB": 1.0,
+      "observedAt": "2026-10-12T06:33:28.276914+00:00"
+    },
+    {
+      "gpuUtilizationPercent": 0.0,
+      "temperatureC": 30.0,
+      "powerW": 45.68,
+      "smClockMHz": 2520.0,
+      "memoryMiB": 528.0,
+      "observedAt": "2026-10-12T06:33:30.465566+00:00"
+    },
+    {
+      "gpuUtilizationPercent": 0.0,
+      "temperatureC": 31.0,
+      "powerW": 87.46,
+      "smClockMHz": 2520.0,
+      "memoryMiB": 2.0,
+      "observedAt": "2026-10-12T06:33:33.332358+00:00"
+    },
+    {
+      "gpuUtilizationPercent": 0.0,
+      "temperatureC": 31.0,
+      "powerW": 83.72,
+      "smClockMHz": 2520.0,
+      "memoryMiB": 396.0,
+      "observedAt": "2026-10-12T06:33:35.920330+00:00"
+    },
+    {
+      "gpuUtilizationPercent": 0.0,
+      "temperatureC": 32.0,
+      "powerW": 90.18,
+      "smClockMHz": 2520.0,
+      "memoryMiB": 1.0,
+      "observedAt": "2026-10-12T06:33:39.378717+00:00"
+    },
+    {
+      "gpuUtilizationPercent": 0.0,
+      "temperatureC": 32.0,
+      "powerW": 82.87,
+      "smClockMHz": 2520.0,
+      "memoryMiB": 21.0,
+      "observedAt": "2026-10-12T06:33:41.954060+00:00"
+    },
+    {
+      "gpuUtilizationPercent": 7.0,
+      "temperatureC": 32.0,
+      "powerW": 83.47,
+      "smClockMHz": 2520.0,
+      "memoryMiB": 910.0,
+      "observedAt": "2026-10-12T06:33:44.321915+00:00"
+    },
+    {
+      "gpuUtilizationPercent": 0.0,
+      "temperatureC": 32.0,
+      "powerW": 91.64,
+      "smClockMHz": 2520.0,
+      "memoryMiB": 1.0,
+      "observedAt": "2026-10-12T06:33:47.340124+00:00"
+    },
+    {
+      "gpuUtilizationPercent": 0.0,
+      "temperatureC": 32.0,
+      "powerW": 87.01,
+      "smClockMHz": 2520.0,
+      "memoryMiB": 526.0,
+      "observedAt": "2026-10-12T06:33:49.647417+00:00"
+    },
+    {
+      "gpuUtilizationPercent": 75.0,
+      "temperatureC": 44.0,
+      "powerW": 302.57,
+      "smClockMHz": 2715.0,
+      "memoryMiB": 494.0,
+      "observedAt": "2026-10-12T06:33:52.188878+00:00"
+    },
+    {
+      "gpuUtilizationPercent": 93.0,
+      "temperatureC": 45.0,
+      "powerW": 307.89,
+      "smClockMHz": 2715.0,
+      "memoryMiB": 494.0,
+      "observedAt": "2026-10-12T06:33:54.476963+00:00"
+    },
+    {
+      "gpuUtilizationPercent": 89.0,
+      "temperatureC": 46.0,
+      "powerW": 306.08,
+      "smClockMHz": 2715.0,
+      "memoryMiB": 494.0,
+      "observedAt": "2026-10-12T06:33:56.743779+00:00"
+    },
+    {
+      "gpuUtilizationPercent": 92.0,
+      "temperatureC": 47.0,
+      "powerW": 310.88,
+      "smClockMHz": 2715.0,
+      "memoryMiB": 494.0,
+      "observedAt": "2026-10-12T06:33:59.155938+00:00"
+    },
+    {
+      "gpuUtilizationPercent": 91.0,
+      "temperatureC": 47.0,
+      "powerW": 300.19,
+      "smClockMHz": 2715.0,
+      "memoryMiB": 494.0,
+      "observedAt": "2026-10-12T06:34:01.411707+00:00"
+    },
+    {
+      "gpuUtilizationPercent": 3.0,
+      "temperatureC": 40.0,
+      "powerW": 262.19,
+      "smClockMHz": 2715.0,
+      "memoryMiB": 494.0,
+      "observedAt": "2026-10-12T06:34:03.674965+00:00"
+    },
+    {
+      "gpuUtilizationPercent": 88.0,
+      "temperatureC": 49.0,
+      "powerW": 307.81,
+      "smClockMHz": 2715.0,
+      "memoryMiB": 494.0,
+      "observedAt": "2026-10-12T06:34:05.978048+00:00"
+    },
+    {
+      "gpuUtilizationPercent": 90.0,
+      "temperatureC": 50.0,
+      "powerW": 311.25,
+      "smClockMHz": 2715.0,
+      "memoryMiB": 494.0,
+      "observedAt": "2026-10-12T06:34:08.246718+00:00"
+    },
+    {
+      "gpuUtilizationPercent": 90.0,
+      "temperatureC": 50.0,
+      "powerW": 310.32,
+      "smClockMHz": 2715.0,
+      "memoryMiB": 494.0,
+      "observedAt": "2026-10-12T06:34:10.513442+00:00"
+    },
+    {
+      "gpuUtilizationPercent": 93.0,
+      "temperatureC": 51.0,
+      "powerW": 312.81,
+      "smClockMHz": 2715.0,
+      "memoryMiB": 494.0,
+      "observedAt": "2026-10-12T06:34:12.883551+00:00"
+    },
+    {
+      "gpuUtilizationPercent": 92.0,
+      "temperatureC": 51.0,
+      "powerW": 312.81,
+      "smClockMHz": 2700.0,
+      "memoryMiB": 494.0,
+      "observedAt": "2026-10-12T06:34:15.179588+00:00"
+    },
+    {
+      "gpuUtilizationPercent": 0.0,
+      "temperatureC": 41.0,
+      "powerW": 98.25,
+      "smClockMHz": 2715.0,
+      "memoryMiB": 429.0,
+      "observedAt": "2026-10-12T06:34:19.870954+00:00"
+    },
+    {
+      "gpuUtilizationPercent": 0.0,
+      "temperatureC": 39.0,
+      "powerW": 79.24,
+      "smClockMHz": 2520.0,
+      "memoryMiB": 21.0,
+      "observedAt": "2026-10-12T06:34:23.110173+00:00"
+    },
+    {
+      "gpuUtilizationPercent": 0.0,
+      "temperatureC": 38.0,
+      "powerW": 85.49,
+      "smClockMHz": 2520.0,
+      "memoryMiB": 36.0,
+      "observedAt": "2026-10-12T06:34:25.769086+00:00"
+    },
+    {
+      "gpuUtilizationPercent": 89.0,
+      "temperatureC": 54.0,
+      "powerW": 317.24,
+      "smClockMHz": 2700.0,
+      "memoryMiB": 782.0,
+      "observedAt": "2026-10-12T06:34:28.343552+00:00"
+    },
+    {
+      "gpuUtilizationPercent": 95.0,
+      "temperatureC": 56.0,
+      "powerW": 437.93,
+      "smClockMHz": 2655.0,
+      "memoryMiB": 782.0,
+      "observedAt": "2026-10-12T06:34:30.834737+00:00"
+    },
+    {
+      "gpuUtilizationPercent": 91.0,
+      "temperatureC": 57.0,
+      "powerW": 444.8,
+      "smClockMHz": 2685.0,
+      "memoryMiB": 782.0,
+      "observedAt": "2026-10-12T06:34:33.437596+00:00"
+    },
+    {
+      "gpuUtilizationPercent": 92.0,
+      "temperatureC": 55.0,
+      "powerW": 439.73,
+      "smClockMHz": 2685.0,
+      "memoryMiB": 782.0,
+      "observedAt": "2026-10-12T06:34:35.851602+00:00"
+    },
+    {
+      "gpuUtilizationPercent": 94.0,
+      "temperatureC": 56.0,
+      "powerW": 443.46,
+      "smClockMHz": 2670.0,
+      "memoryMiB": 782.0,
+      "observedAt": "2026-10-12T06:34:38.272730+00:00"
+    },
+    {
+      "gpuUtilizationPercent": 96.0,
+      "temperatureC": 56.0,
+      "powerW": 448.33,
+      "smClockMHz": 2640.0,
+      "memoryMiB": 782.0,
+      "observedAt": "2026-10-12T06:34:40.698412+00:00"
+    },
+    {
+      "gpuUtilizationPercent": 0.0,
+      "temperatureC": 44.0,
+      "powerW": 100.18,
+      "smClockMHz": 2715.0,
+      "memoryMiB": 2.0,
+      "observedAt": "2026-10-12T06:34:43.450929+00:00"
+    },
+    {
+      "gpuUtilizationPercent": 0.0,
+      "temperatureC": 42.0,
+      "powerW": 85.64,
+      "smClockMHz": 2520.0,
+      "memoryMiB": 396.0,
+      "observedAt": "2026-10-12T06:34:45.746958+00:00"
+    },
+    {
+      "gpuUtilizationPercent": 97.0,
+      "temperatureC": 57.0,
+      "powerW": 334.99,
+      "smClockMHz": 2610.0,
+      "memoryMiB": 1166.0,
+      "observedAt": "2026-10-12T06:34:48.055599+00:00"
+    },
+    {
+      "gpuUtilizationPercent": 98.0,
+      "temperatureC": 56.0,
+      "powerW": 447.98,
+      "smClockMHz": 2565.0,
+      "memoryMiB": 1166.0,
+      "observedAt": "2026-10-12T06:34:50.312396+00:00"
+    },
+    {
+      "gpuUtilizationPercent": 97.0,
+      "temperatureC": 57.0,
+      "powerW": 450.18,
+      "smClockMHz": 2580.0,
+      "memoryMiB": 1166.0,
+      "observedAt": "2026-10-12T06:34:52.589920+00:00"
+    },
+    {
+      "gpuUtilizationPercent": 98.0,
+      "temperatureC": 57.0,
+      "powerW": 449.7,
+      "smClockMHz": 2565.0,
+      "memoryMiB": 1166.0,
+      "observedAt": "2026-10-12T06:34:54.841354+00:00"
+    },
+    {
+      "gpuUtilizationPercent": 98.0,
+      "temperatureC": 58.0,
+      "powerW": 451.18,
+      "smClockMHz": 2580.0,
+      "memoryMiB": 1166.0,
+      "observedAt": "2026-10-12T06:34:57.216666+00:00"
+    }
+  ]
+}

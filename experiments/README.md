@@ -8,6 +8,7 @@ This directory records actual experiments, including unsuccessful runs and limit
 | EXP-002 | 2026-10-11 | RTX 4090 known-answer pilot on Runpod | All 14 small fixture cases agreed with independent CPU references. Rental terminated/deleted. Displayed credit consumption USD0.07. | [Detailed record](2026-10-11-rtx4090-pilot.md), [original GPU report](results/2026-10-11-gpu-validation.json), [provider summary](results/2026-10-11-provider-summary.json) |
 | EXP-003 | 2026-10-11 | Authenticated CPU worker receipts | Recorded local result: 53 tests passed, including subprocess-to-HTTP-to-database receipt handling. | Historical summary below; original complete test transcript was not archived here. |
 | EXP-004 | 2026-10-12 | Coverage-aware scheduler | Recorded local result: 63 tests passed. External claims affect scheduling preference without crediting own work. No real pool interval map imported. | [Synthetic demo](results/2026-10-12-coverage-demo.json); captured reruns in `runs/`. |
+| EXP-005 | 2026-10-12 | RTX 4090 throughput baseline | Six cases passed. Fastest short scan 2.886 billion candidates/s; same synthetic range repeated across three settings. Rental stopped/deleted. | [Detailed record, original report and screenshots](2026-10-12-rtx4090-benchmark.md) |
 
 ## What these results establish
 
@@ -37,7 +38,7 @@ Do not archive credentials, treasury keys, discovered candidate secrets, authent
 
 ## Still untested
 
-- Sustained candidates/second and candidates/dollar on a realistic controlled workload.
+- Long-duration sustained candidates/second and end-to-end candidates/dollar; EXP-005 provides only an initial short controlled baseline.
 - Large-range GPU worker correctness and multi-GPU scaling.
 - Automated rental, shutdown/watchdog, GPU reporting and interrupted-job recovery as one remote system.
 - Live puzzle #71 search or real creator-fee funding.
