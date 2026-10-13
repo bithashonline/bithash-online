@@ -1,0 +1,7 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import {initial,fund,advance,fault,available,RATE} from './public/engine.mjs';
+test('allocation carries fractional dust across receipts',()=>{const s=initial();for(let i=0;i<10;i++)fund(s,1);assert.equal(s.compute,8);assert.equal(s.other,2)});
+test('scaling reserves only compute and respects four-rig ceiling',()=>{const s=initial();fund(s,100000000);assert.equal(s.rigs.length,4);assert.equal(s.reserved,4*6*RATE);assert.equal(s.compute,s.spent+s.reserved+available(s));assert.equal(s.other,20000000)});
+test('unknown provider outcomes retain reservation and prevent duplicate capacity',()=>{const s=initial();fund(s,30000000);fault(s,'GPU-01','unknown');const reserved=s.rigs[0].remaining;advance(s);fund(s,10000000);assert.equal(s.rigs.length,4);assert.equal(s.rigs[0].remaining,reserved)});
+test('stale worker releases budget only at simulated termination confirmation',()=>{const s=initial();fund(s,10000000);fault(s,'GPU-01','stale');assert.equal(s.reserved,6*RATE);advance(s);assert.equal(s.reserved,0);assert.equal(s.rigs[0].status,'stopped')});
+test('six hour budget caps spend; stopped instances cease charging',()=>{const s=initial();fund(s,10000000);for(let i=0;i<30;i++)advance(s);assert.equal(s.spent,6*RATE);assert.equal(s.reserved,0);assert.equal(s.compute,s.spent+available(s));assert.equal(s.other,2000000)});
+test('invalid receipts cannot mutate accounting',()=>{const s=initial();for(const n of [NaN,-1,1.2,Infinity,1e15])assert.throws(()=>fund(s,n));assert.equal(s.fees,0)});

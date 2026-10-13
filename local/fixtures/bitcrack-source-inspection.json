@@ -1,0 +1,30 @@
+{
+  "repository": "https://github.com/brichard19/BitCrack",
+  "commit": "6bf8059ef075eb1622298395866b0bd02375e1d9",
+  "commitDate": "2020-01-28T03:14:03Z",
+  "status": "INSPECTED_CANDIDATE_ONLY",
+  "compiled": false,
+  "gpuValidated": false,
+  "files": [
+    {
+      "path": "KeyFinder/main.cpp",
+      "sha256": "fd7252d9118dc3d5410143693d9d50640bd0261cded0b8ce717a01f355099a06"
+    },
+    {
+      "path": "KeyFinderLib/KeyFinder.cpp",
+      "sha256": "73ebfd9f85ef1735df0c0ed592a617c4f19c0b0bcd61512c14f54a237c889563"
+    },
+    {
+      "path": "CudaKeySearchDevice/CudaKeySearchDevice.cpp",
+      "sha256": "86c51968c84e816020588bdbac945bd858d7dd5ee4641f3738d2f181ef888548"
+    },
+    {
+      "path": "Makefile",
+      "sha256": "addb9be38589e235a02f2e6feb409d6cb5aeb3c2c842ddf432a8fd2051852e98"
+    },
+    {
+      "path": "LICENSE.MIT",
+      "sha256": "d1ca4c0aaddbafcbd85036ba73b8f298a17a7da31520ff4b21c28fa419f36fc0"
+    }
+  ]
+}

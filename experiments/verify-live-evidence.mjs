@@ -1,0 +1,13 @@
+import {readFileSync} from 'node:fs';
+import {createHash,verify} from 'node:crypto';
+import assert from 'node:assert/strict';
+const record=JSON.parse(readFileSync(new URL('./2026-10-12-remote-telemetry-proof.json',import.meta.url)));
+const p=record.proof,bytes=Buffer.from(p.domain+JSON.stringify(p.envelope.payload));
+assert.equal(p.domain,'bithash.gpu-telemetry.v1\n');
+assert.equal(createHash('sha256').update(bytes).digest('hex'),p.digest);
+assert.equal(verify(null,bytes,p.enrollment.publicKey,Buffer.from(p.envelope.signature,'base64')),true);
+assert.equal(p.enrollment.kind,'transport-test');
+assert.equal(p.envelope.payload.candidatesChecked,null);
+const controller=readFileSync(new URL('./results/2026-10-12-live-shutdown/controller.json',import.meta.url));
+assert.equal(createHash('sha256').update(controller).digest('hex'),'95b3d5aa32a600140fdedfb7aa9a4f4f05f1f0ce4492e4849a80594d6bdf93d3');
+console.log('Verified archived telemetry signature/digest and shutdown export digest. These authenticate archived bytes, not physical GPU work or exhaustive coverage.');

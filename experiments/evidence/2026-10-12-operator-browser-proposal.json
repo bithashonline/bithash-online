@@ -1,0 +1,105 @@
+{
+  "testMethod": "Authenticated dashboard Create test proposal; no approval or execution.",
+  "sha256": "e2d87b98a45fbeb78925c93d07420be6ab1dc32857158513d9199b317736434f",
+  "record": {
+    "schema": "bithash.action-evidence.v1",
+    "mode": "local-simulation",
+    "authorization": null,
+    "context": {
+      "schema": "bithash.operator-proposal.v1",
+      "mode": "rules-preview",
+      "modelConnected": false,
+      "quote": {
+        "schema": "bithash.synthetic-quote.v1",
+        "source": "built-in simulation fixture",
+        "observedAt": 1791843060,
+        "expiresAt": 1791843660,
+        "provider": "mock",
+        "gpu": "rtx-a5000",
+        "hourlyPerGpuMicrousd": "250000",
+        "currency": "synthetic-USD-microcredits",
+        "liveCapacityVerified": false,
+        "limitations": "Invented test rate; not a Runpod quote or a claim of available GPUs."
+      },
+      "report": {
+        "schema": "bithash.operator-report.v1",
+        "mode": "rules-preview",
+        "modelConnected": false,
+        "readOnly": true,
+        "executionEnabled": false,
+        "evidence": {
+          "schema": "bithash.operator-evidence.v1",
+          "observedAt": "2026-10-12T22:11:00.020Z",
+          "facts": [
+            {
+              "id": "source",
+              "kind": "source",
+              "mode": "local-fixtures",
+              "freshness": "fresh"
+            },
+            {
+              "id": "funding",
+              "kind": "funding",
+              "availableBudget": null,
+              "actualSpend": null,
+              "treasuryConnected": false,
+              "computeBasisPoints": null,
+              "earmark": "unresolved",
+              "spending": "owner-approved-runs"
+            },
+            {
+              "id": "fleet",
+              "kind": "fleet",
+              "providerConnected": false,
+              "verifiedLiveGpus": null
+            }
+          ],
+          "digest": "3a28fb6c8690e720c4c7527570f777aeddf5974bf6a3452408f2a36bfb2717d4"
+        },
+        "advice": {
+          "summary": "Review local worker evidence. GPU hardware, real fees and spend are not verified by this snapshot.",
+          "proposals": [
+            {
+              "action": "review_funding",
+              "evidence": "funding",
+              "reason": "Fees, available funds and provider billing are not connected. Affordability cannot be determined."
+            }
+          ]
+        }
+      },
+      "reason": "Owner-requested simulation with fixed A5000 test pricing. Actual funding and GPU availability remain unknown.",
+      "costCalculation": "ceil(hourly microcredits × GPU count × seconds / 3600)",
+      "approvalRequired": true,
+      "executionEnabled": false
+    },
+    "kind": "proposed",
+    "at": 1791843060,
+    "proposal": {
+      "id": "operator-61479795-73a6-405a-824f-f98dd3f73ad9",
+      "digest": "16c214aef514e111453d21da65908284c6af425bcfe9ce50c9dcb9a99831ee84",
+      "terms": {
+        "id": "operator-61479795-73a6-405a-824f-f98dd3f73ad9",
+        "provider": "mock",
+        "destination": "local-simulation",
+        "gpu": "rtx-a5000",
+        "count": 1,
+        "durationSeconds": 600,
+        "hourlyPerGpuMicrousd": "250000",
+        "overheadMicrousd": "0",
+        "capMicrousd": "41667",
+        "expiresAt": 1791843660
+      },
+      "state": "proposed"
+    },
+    "balance": {
+      "funded": "1000000",
+      "reserved": "250000",
+      "spent": "0",
+      "available": "750000",
+      "currency": "synthetic-USD-microcredits"
+    },
+    "verification": "local-ledger-record",
+    "externalEvidence": [],
+    "limitations": "Local record only; no blockchain transaction, provider receipt or GPU execution verified."
+  }
+}

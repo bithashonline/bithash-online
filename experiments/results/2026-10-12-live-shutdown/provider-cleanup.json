@@ -1,0 +1,21 @@
+{
+  "observedAt": "2026-10-12T23:47:12.442Z",
+  "podId": "90et1ky0nsxu7n",
+  "get": {
+    "status": 404,
+    "detail": "pod not found"
+  },
+  "list": {
+    "pagination": {
+      "hasNextPage": false,
+      "nextCursor": null
+    },
+    "pods": []
+  },
+  "billing": {
+    "windowStart": "2026-10-12T23:00:00Z",
+    "windowEnd": "2026-10-13T00:00:00Z",
+    "records": [],
+    "interpretation": "No billing record posted at read time; not a zero-cost claim."
+  }
+}

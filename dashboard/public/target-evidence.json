@@ -1,0 +1,63 @@
+{
+  "observations": [
+    {
+      "source": "https://blockstream.info/api",
+      "observedUtc": "2026-10-07T23:09:07.307Z",
+      "result": {
+        "address": "1PWo3JeB9jrGwfHDNpdGK54CRas7fsVzXU",
+        "chain_stats": {
+          "funded_txo_count": 69,
+          "funded_txo_sum": 710191680,
+          "spent_txo_count": 0,
+          "spent_txo_sum": 0,
+          "tx_count": 69
+        },
+        "mempool_stats": {
+          "funded_txo_count": 0,
+          "funded_txo_sum": 0,
+          "spent_txo_count": 0,
+          "spent_txo_sum": 0,
+          "tx_count": 0
+        }
+      }
+    },
+    {
+      "source": "https://mempool.space/api",
+      "observedUtc": "2026-10-07T23:09:07.137Z",
+      "result": {
+        "address": "1PWo3JeB9jrGwfHDNpdGK54CRas7fsVzXU",
+        "chain_stats": {
+          "funded_txo_count": 69,
+          "funded_txo_sum": 710191680,
+          "spent_txo_count": 0,
+          "spent_txo_sum": 0,
+          "tx_count": 69
+        },
+        "mempool_stats": {
+          "funded_txo_count": 0,
+          "funded_txo_sum": 0,
+          "spent_txo_count": 0,
+          "spent_txo_sum": 0,
+          "tx_count": 0
+        }
+      }
+    }
+  ],
+  "assessment": {
+    "target": {
+      "id": "public-puzzle-71",
+      "version": 1,
+      "address": "1PWo3JeB9jrGwfHDNpdGK54CRas7fsVzXU",
+      "start": "1180591620717411303424",
+      "endExclusive": "2361183241434822606848",
+      "rangeSource": "https://btcpuzzle.info/puzzle/71"
+    },
+    "assessedUtc": "2026-10-07T23:09:07.307Z",
+    "status": "FUNDED_NO_SPEND_OBSERVED",
+    "reasons": [],
+    "corroboratedBalanceSatoshis": "710191680",
+    "searchEnabled": false,
+    "publicKeyStatus": "NOT_VERIFIED",
+    "limits": "Explorer agreement is not a full-node verification or proof nobody knows the key. No live dispatch authorization."
+  }
+}

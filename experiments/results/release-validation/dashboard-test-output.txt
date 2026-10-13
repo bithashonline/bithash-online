@@ -1,0 +1,112 @@
+TAP version 13
+# Subtest: evidence links reject script, external sessions and traversal URLs
+ok 1 - evidence links reject script, external sessions and traversal URLs
+  ---
+  duration_ms: 0.7084
+  type: 'test'
+  ...
+# Subtest: feed escapes action labels and fails closed on live data
+ok 2 - feed escapes action labels and fails closed on live data
+  ---
+  duration_ms: 1.3222
+  type: 'test'
+  ...
+# Subtest: allocation carries fractional dust across receipts
+ok 3 - allocation carries fractional dust across receipts
+  ---
+  duration_ms: 1.4011
+  type: 'test'
+  ...
+# Subtest: scaling reserves only compute and respects four-rig ceiling
+ok 4 - scaling reserves only compute and respects four-rig ceiling
+  ---
+  duration_ms: 0.2114
+  type: 'test'
+  ...
+# Subtest: unknown provider outcomes retain reservation and prevent duplicate capacity
+ok 5 - unknown provider outcomes retain reservation and prevent duplicate capacity
+  ---
+  duration_ms: 0.2595
+  type: 'test'
+  ...
+# Subtest: stale worker releases budget only at simulated termination confirmation
+ok 6 - stale worker releases budget only at simulated termination confirmation
+  ---
+  duration_ms: 0.0984
+  type: 'test'
+  ...
+# Subtest: six hour budget caps spend; stopped instances cease charging
+ok 7 - six hour budget caps spend; stopped instances cease charging
+  ---
+  duration_ms: 0.1591
+  type: 'test'
+  ...
+# Subtest: invalid receipts cannot mutate accounting
+ok 8 - invalid receipts cannot mutate accounting
+  ---
+  duration_ms: 0.2534
+  type: 'test'
+  ...
+# Subtest: saved prices cannot be mistaken for an executable all-in quote
+ok 9 - saved prices cannot be mistaken for an executable all-in quote
+  ---
+  duration_ms: 0.7885
+  type: 'test'
+  ...
+# Subtest: proof URLs cannot become arbitrary links and transport tests never claim GPU work
+ok 10 - proof URLs cannot become arbitrary links and transport tests never claim GPU work
+  ---
+  duration_ms: 1.0496
+  type: 'test'
+  ...
+# Subtest: disconnection and elapsed snapshots cannot show fresh reports
+ok 11 - disconnection and elapsed snapshots cannot show fresh reports
+  ---
+  duration_ms: 0.648
+  type: 'test'
+  ...
+# Subtest: Phantom signing verifies owner and terms without transaction methods
+ok 12 - Phantom signing verifies owner and terms without transaction methods
+  ---
+  duration_ms: 5.3493
+  type: 'test'
+  ...
+# Subtest: Solscan links require mainnet verified classification and rebuild URL from signature
+ok 13 - Solscan links require mainnet verified classification and rebuild URL from signature
+  ---
+  duration_ms: 0.194
+  type: 'test'
+  ...
+# Subtest: staleness advances without a new server response and lost connection never looks fresh
+ok 14 - staleness advances without a new server response and lost connection never looks fresh
+  ---
+  duration_ms: 0.5093
+  type: 'test'
+  ...
+# Subtest: inactive and missing reports retain their distinct states
+ok 15 - inactive and missing reports retain their distinct states
+  ---
+  duration_ms: 0.4785
+  type: 'test'
+  ...
+# Subtest: API shape validation fails closed
+ok 16 - API shape validation fails closed
+  ---
+  duration_ms: 0.2656
+  type: 'test'
+  ...
+# Subtest: untrusted report labels are escaped, accepted work is separate, and no fake GPU animation
+ok 17 - untrusted report labels are escaped, accepted work is separate, and no fake GPU animation
+  ---
+  duration_ms: 11.1642
+  type: 'test'
+  ...
+1..17
+# tests 17
+# suites 0
+# pass 17
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 108.4411

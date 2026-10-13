@@ -1,0 +1,17 @@
+# Read-only fleet operator
+
+October 12, 2026. Local implementation; no model credential configured, no real model call, no production deployment.
+
+`GET /api/operator` returns a deterministic rules preview from the same read-only dashboard snapshot. The dashboard polls it and explicitly labels the prose as a local rules preview, not AI. Stale workers and disconnected funding produce review proposals. Failed API reads clear the displayed report. This endpoint never calls an external model or changes state, so browser polling cannot create inference charges.
+
+`node --experimental-sqlite operator-cli.js preview DATABASE` creates the same report locally. `operator-cli.js model DATABASE` performs one model review when `BITHASH_OPERATOR_API_KEY` and `BITHASH_OPERATOR_MODEL` are configured in the process environment. Do not supply secrets as CLI arguments, commit them, or place them on GPU workers. No default model, credentials, scheduler or background inference is configured. Model use bills separately from GPU rentals; no model call was made during development.
+
+The model adapter uses OpenAI Responses with strict structured output, no tools, `store:false`, a 20-second timeout, redirects disabled and a 1,200-output-token limit. Official contract: https://developers.openai.com/api/docs/guides/structured-outputs . Input is an allowlisted snapshot of fixture facts, anonymous worker IDs and unknown budget fields. Provider credentials, wallet data, arbitrary worker text and raw logs are not included. Old snapshots reject before network access. Errors return static messages rather than raw provider bodies.
+
+Model outputs must cite an existing evidence ID and use only inspect_worker, refresh_evidence, review_funding or review_capacity proposals. These are inert data: there is no executor, shell, provider client, controller mutation or wallet tool. Unknown actions/references, extra output fields, refusal and incomplete output fail closed. Structured output and citations do not guarantee truthful reasoning; returned prose is labeled fallible AI interpretation. A permitted proposal still needs human review.
+
+The real treasury, available budget, fees and provider spend remain unknown. Fixture counts never establish live GPU capacity or affordability. This version deliberately supports the current local-controller evidence schema; production finance/provider facts require separately verified adapters.
+
+Validation: 74/74 backend tests and 10/10 frontend tests pass. Six operator tests cover stale/unknown evidence, outbound data filtering, tool-free request shape, unsupported actions, invented references, missing configuration, refusal/incomplete output and static failure messages. Model transport was mocked; no real model quality, access, billing or latency validation is claimed. Local CLI preview was exercised against the existing three-worker fixture database. A syntax error in the first schema draft was corrected before the passing full rerun.
+
+Next: configure an operator-only API credential and choose a model, then run one explicitly budgeted live review. The CLI report is not automatically imported into the dashboard; the current UI consumes local rules only. Before ongoing model reviews: establish inference budgets, persist audit records, validate recommendation quality and integrate a cache/service that cannot spend on every dashboard refresh. Real rental actions remain outside this read-only phase.

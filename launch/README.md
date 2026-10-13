@@ -18,4 +18,4 @@ The builder produces real SDK create_v2 and, for sharing, create_fee_sharing_con
 
 Seven tests pass: encoded recipients and shares, creation flags, byte limits, invalid input, signer roles and direct routing. The sample combined shared route is1304bytes and exceeds1232; create/direct alone859 and separate configuration845 fit. Do not automatically split without an explicit recoverable setup design. Real chain simulation, account state validation, metadata publishing, signed wallet UX and cost quotes remain undone.
 
-Detailed research: C:/Users/isaac/Documents/Codex/2026-09-29/what-x20/outputs/project-memory/projects/puzzle-pump-launch-basics-2026-10-03.md.
+Detailed research: <private-workspace>

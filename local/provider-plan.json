@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "project": "BitHash",
+  "selectedProvider": "runpod",
+  "deploymentEnabled": false,
+  "exampleOnly": true,
+  "cloudType": "SECURE",
+  "computeType": "GPU",
+  "gpuTypeIds": [
+    "NVIDIA GeForce RTX 4090"
+  ],
+  "gpuCount": 1,
+  "interruptible": false,
+  "proposedStorage": {
+    "containerDiskInGb": 30,
+    "volumeInGb": 0,
+    "networkVolume": false
+  },
+  "imageDigest": null,
+  "liveQuote": null,
+  "spendingApproved": false,
+  "notes": [
+    "Non-operational example. Obtain a fresh quote and explicit bounded-run approval before any rental.",
+    "Historical benchmark and lifecycle observations are in experiments/. Account balances, funding settings and credential inventory are deliberately excluded."
+  ]
+}

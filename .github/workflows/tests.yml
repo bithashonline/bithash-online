@@ -1,4 +1,4 @@
-name: Local checks
+name: Reproducible checks
 on: [push, pull_request, workflow_dispatch]
 permissions:
   contents: read
@@ -11,14 +11,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22.16.0'
-          cache: npm
-          cache-dependency-path: launch/package-lock.json
-      - name: Test fixture solver, recovery, accounting and receipt observations
-        working-directory: local
-        run: npm test
-      - name: Install pinned launch dependencies without lifecycle scripts
-        working-directory: launch
-        run: npm ci --ignore-scripts --no-audit --no-fund
-      - name: Test unsigned launch builder
-        working-directory: launch
-        run: npm test
+      - run: npm ci --prefix local --ignore-scripts --no-audit --no-fund
+      - run: npm --prefix local test
+      - run: node --experimental-sqlite --test ops/runpod-shutdown/*.test.mjs
+      - run: node --test dashboard/*.test.mjs
+      - run: node experiments/verify-live-evidence.mjs
+      - run: npm ci --prefix launch --ignore-scripts --no-audit --no-fund
+      - run: npm --prefix launch test

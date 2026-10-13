@@ -1,0 +1,38 @@
+[Unit]
+Description=BitHash authenticated activity collector
+After=network-online.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=bithash-collector
+Group=bithash-collector
+WorkingDirectory=/opt/bithash/local
+Environment=BITHASH_COLLECTOR_DB=/var/lib/bithash-collector/state.sqlite
+ExecStart=/usr/bin/node --experimental-sqlite --max-old-space-size=128 /opt/bithash/local/collector-cli.js
+StateDirectory=bithash-collector
+StateDirectoryMode=0700
+UMask=0077
+Restart=always
+RestartSec=5
+TimeoutStopSec=15
+MemoryHigh=192M
+MemoryMax=256M
+CPUQuota=40%
+CPUWeight=20
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+CapabilityBoundingSet=
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+LimitCORE=0
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

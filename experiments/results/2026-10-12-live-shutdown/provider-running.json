@@ -1,0 +1,22 @@
+{
+  "observedAt": "2026-10-12T23:43:16.441Z",
+  "id": "90et1ky0nsxu7n",
+  "status": "RUNNING",
+  "cost": 0.5,
+  "mounts": {},
+  "runtime": {
+    "cpu": {
+      "util": 0
+    },
+    "gpus": [
+      {
+        "memoryUtil": 0,
+        "util": 0
+      }
+    ],
+    "memory": {
+      "util": 0
+    },
+    "uptime": 96
+  }
+}

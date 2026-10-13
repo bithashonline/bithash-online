@@ -1,0 +1,66 @@
+{
+  "items": [
+    {
+      "source": "system",
+      "line": "create container runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404",
+      "ts": "2026-10-12T23:41:04Z"
+    },
+    {
+      "source": "system",
+      "line": "create container: still fetching image runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404",
+      "ts": "2026-10-12T23:41:12Z"
+    },
+    {
+      "source": "system",
+      "line": "rcr.runpod.io/runpod/pytorch@sha256:0a360022e8de4375af99430f84e8b38951acc397252163a37ceac7204d01be35 Pulling from runpod/pytorch",
+      "ts": "2026-10-12T23:41:12Z"
+    },
+    {
+      "source": "system",
+      "line": "Digest: sha256:0a360022e8de4375af99430f84e8b38951acc397252163a37ceac7204d01be35",
+      "ts": "2026-10-12T23:41:12Z"
+    },
+    {
+      "source": "system",
+      "line": "Status: Image is up to date for rcr.runpod.io/runpod/pytorch@sha256:0a360022e8de4375af99430f84e8b38951acc397252163a37ceac7204d01be35",
+      "ts": "2026-10-12T23:41:12Z"
+    },
+    {
+      "source": "system",
+      "line": "create container runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404",
+      "ts": "2026-10-12T23:41:15Z"
+    },
+    {
+      "source": "system",
+      "line": "rcr.runpod.io/runpod/pytorch@sha256:0a360022e8de4375af99430f84e8b38951acc397252163a37ceac7204d01be35 Pulling from runpod/pytorch",
+      "ts": "2026-10-12T23:41:16Z"
+    },
+    {
+      "source": "system",
+      "line": "Digest: sha256:0a360022e8de4375af99430f84e8b38951acc397252163a37ceac7204d01be35",
+      "ts": "2026-10-12T23:41:18Z"
+    },
+    {
+      "source": "system",
+      "line": "Status: Image is up to date for rcr.runpod.io/runpod/pytorch@sha256:0a360022e8de4375af99430f84e8b38951acc397252163a37ceac7204d01be35",
+      "ts": "2026-10-12T23:41:18Z"
+    },
+    {
+      "source": "system",
+      "line": "start container for runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404: begin",
+      "ts": "2026-10-12T23:41:19Z"
+    },
+    {
+      "source": "container",
+      "line": "name, uuid",
+      "ts": "2026-10-12T23:41:20.091122745Z"
+    },
+    {
+      "source": "container",
+      "line": "NVIDIA GeForce RTX 3090, GPU-e7c075c2-953d-505c-940a-b40e6aa8f414",
+      "ts": "2026-10-12T23:41:20.091219374Z"
+    }
+  ],
+  "count": 12,
+  "truncated": false
+}

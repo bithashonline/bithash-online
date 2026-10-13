@@ -1,1 +1,20 @@
-{"name":"puzzle-compute-local","private":true,"type":"module","engines":{"node":">=22.16.0"},"scripts":{"test":"node --experimental-sqlite --test","demo":"node --experimental-sqlite demo.js"}}
+{
+  "name": "puzzle-compute-local",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.16.0"
+  },
+  "scripts": {
+    "test": "node --experimental-sqlite --test",
+    "demo": "node --experimental-sqlite demo.js",
+    "allocation-demo": "node --experimental-sqlite allocation-demo.js",
+    "worker-demo": "node --experimental-sqlite worker-demo.js",
+    "inspect-target": "node inspect-target.js",
+    "provider-demo": "node --experimental-sqlite provider-demo.js",
+    "receipt-demo": "node --experimental-sqlite worker-receipt-demo.js"
+  },
+  "dependencies": {
+    "google-auth-library": "^11.2.0"
+  }
+}

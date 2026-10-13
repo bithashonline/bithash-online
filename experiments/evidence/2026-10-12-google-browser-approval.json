@@ -1,0 +1,44 @@
+{
+  "observedAt": "2026-10-12T22:03:41.839Z",
+  "testMethod": "Agent clicked synthetic approval in the browser after the user signed in with Google. This is a test, not user authorization for a paid rental.",
+  "sha256": "16c64f505d44161a1b9d23713189990acf3463f97d285cea13cf3c10161cd7c9",
+  "record": {
+    "schema": "bithash.action-evidence.v1",
+    "mode": "local-simulation",
+    "authorization": {
+      "method": "google-session",
+      "actor": "google-owner",
+      "digest": "443af5ccfc268883ff4e70cab177dd7495b965e1c6626c94aa3428c632ac97f0",
+      "verification": "server-verified Google identity; local audit record, not an independently verifiable wallet signature"
+    },
+    "kind": "owner_approved",
+    "at": 1791842611,
+    "proposal": {
+      "id": "google-browser-test-001",
+      "digest": "443af5ccfc268883ff4e70cab177dd7495b965e1c6626c94aa3428c632ac97f0",
+      "terms": {
+        "id": "google-browser-test-001",
+        "provider": "mock",
+        "destination": "local-auth-test",
+        "gpu": "rtx-a5000",
+        "count": 1,
+        "durationSeconds": 60,
+        "hourlyPerGpuMicrousd": "250000",
+        "overheadMicrousd": "0",
+        "capMicrousd": "250000",
+        "expiresAt": 1791844403
+      },
+      "state": "reserved"
+    },
+    "balance": {
+      "funded": "1000000",
+      "reserved": "250000",
+      "spent": "0",
+      "available": "750000",
+      "currency": "synthetic-USD-microcredits"
+    },
+    "verification": "local-ledger-record",
+    "externalEvidence": [],
+    "limitations": "Local record only; no blockchain transaction, provider receipt or GPU execution verified."
+  }
+}

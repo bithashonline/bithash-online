@@ -1,0 +1,100 @@
+[
+  {
+    "fixture": "puzzle-1",
+    "start": "1",
+    "end": "2",
+    "attempted": "1",
+    "matched": true
+  },
+  {
+    "fixture": "puzzle-2",
+    "start": "2",
+    "end": "3",
+    "attempted": "1",
+    "matched": false
+  },
+  {
+    "fixture": "puzzle-2",
+    "start": "2",
+    "end": "4",
+    "attempted": "2",
+    "matched": true
+  },
+  {
+    "fixture": "puzzle-2",
+    "start": "3",
+    "end": "4",
+    "attempted": "1",
+    "matched": true
+  },
+  {
+    "fixture": "puzzle-3",
+    "start": "4",
+    "end": "5",
+    "attempted": "1",
+    "matched": false
+  },
+  {
+    "fixture": "puzzle-3",
+    "start": "4",
+    "end": "6",
+    "attempted": "2",
+    "matched": false
+  },
+  {
+    "fixture": "puzzle-3",
+    "start": "4",
+    "end": "7",
+    "attempted": "3",
+    "matched": false
+  },
+  {
+    "fixture": "puzzle-3",
+    "start": "4",
+    "end": "8",
+    "attempted": "4",
+    "matched": true
+  },
+  {
+    "fixture": "puzzle-3",
+    "start": "5",
+    "end": "6",
+    "attempted": "1",
+    "matched": false
+  },
+  {
+    "fixture": "puzzle-3",
+    "start": "5",
+    "end": "7",
+    "attempted": "2",
+    "matched": false
+  },
+  {
+    "fixture": "puzzle-3",
+    "start": "5",
+    "end": "8",
+    "attempted": "3",
+    "matched": true
+  },
+  {
+    "fixture": "puzzle-3",
+    "start": "6",
+    "end": "7",
+    "attempted": "1",
+    "matched": false
+  },
+  {
+    "fixture": "puzzle-3",
+    "start": "6",
+    "end": "8",
+    "attempted": "2",
+    "matched": true
+  },
+  {
+    "fixture": "puzzle-3",
+    "start": "7",
+    "end": "8",
+    "attempted": "1",
+    "matched": true
+  }
+]

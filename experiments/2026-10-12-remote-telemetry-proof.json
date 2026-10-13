@@ -1,0 +1,73 @@
+{
+  "observedAt": "2026-10-12T23:57:14.266Z",
+  "signatureVerified": true,
+  "digestVerified": true,
+  "dashboardProxyMatches": true,
+  "untrustedCertificateRejected": true,
+  "badSignatureRejected": true,
+  "rejectionAddsNoHistory": true,
+  "proof": {
+    "schema": "bithash.gpu-proof.v1",
+    "digest": "2669592bb835b5c834d1f1f1741a9de48ce3a3af46c585cdd4e23cc438f3dbdd",
+    "receivedAt": "2026-10-12T23:54:50.000Z",
+    "domain": "bithash.gpu-telemetry.v1\n",
+    "enrollment": {
+      "id": "c70a14a046688a266ebd4ec64f0a3798",
+      "publicKey": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAvzd0SrEpPOFQTXImbtQ5zX4BhvhddyHuzh6i1kYaWVs=\n-----END PUBLIC KEY-----\n",
+      "build": "sha256:4eeced9b84703491c1978d051cccfb012ae79a5b5ccc4730ca9ca39e3e4392f3",
+      "providerPodId": null,
+      "kind": "transport-test",
+      "expiresAt": 1791851055874
+    },
+    "envelope": {
+      "payload": {
+        "schema": "bithash.gpu-telemetry.v1",
+        "lease": "c70a14a046688a266ebd4ec64f0a3798",
+        "sequence": 1,
+        "state": "idle",
+        "device": "cpu-fixture",
+        "utilizationPercent": null,
+        "candidatesPerSecond": null,
+        "candidatesChecked": null
+      },
+      "signature": "GWC40abXFat1ZUIUg3gCmi7A78K7xQtFisugnMtPF/gKQYsXacyjEK7r+rXNlu0i5NRtw/igA3FLPxAq2DeaAQ=="
+    },
+    "evidence": "authenticated-worker-claim",
+    "hardwareVerified": false,
+    "coverageVerified": false
+  },
+  "snapshot": {
+    "schema": "bithash.remote-progress.v1",
+    "observedAt": "2026-10-12T23:57:14.000Z",
+    "source": "hosted-collector",
+    "history": {
+      "records": 1,
+      "capacity": 100000
+    },
+    "items": [
+      {
+        "id": "c70a14a046688a266ebd4ec64f0a3798",
+        "kind": "transport-test",
+        "providerPodId": null,
+        "build": "sha256:4eeced9b84703491c1978d051cccfb012ae79a5b5ccc4730ca9ca39e3e4392f3",
+        "expiresAt": "2026-10-13T00:24:15.874Z",
+        "freshness": "stale",
+        "lastReceivedAt": "2026-10-12T23:54:50.000Z",
+        "reported": {
+          "schema": "bithash.gpu-telemetry.v1",
+          "lease": "c70a14a046688a266ebd4ec64f0a3798",
+          "sequence": 1,
+          "state": "idle",
+          "device": "cpu-fixture",
+          "utilizationPercent": null,
+          "candidatesPerSecond": null,
+          "candidatesChecked": null
+        },
+        "proof": "/api/gpu-proof/2669592bb835b5c834d1f1f1741a9de48ce3a3af46c585cdd4e23cc438f3dbdd",
+        "evidence": "authenticated-worker-claim",
+        "hardwareVerified": false,
+        "coverageVerified": false
+      }
+    ]
+  }
+}

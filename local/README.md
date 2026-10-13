@@ -1,3 +1,9 @@
+# Backend modules
+
+Current release: Google owner approvals, mock automatic execution, bounded CPU fixtures, signed telemetry, collector proxy and provider read adapters. Install locked dependencies with npm ci --ignore-scripts, then npm test. See ../README.md for current deployment/evidence and limits.
+
+The chronological notes below describe earlier stages; they do not override the current release status.
+
 # Local demonstrator
 
 October 3, 2026. No npm dependencies, credentials, signer, network client, paid adapter or #71 search.
@@ -33,3 +39,13 @@ No real job runtime cap/independent watchdog/provider stop acknowledgement exist
 ## Next independent development
 
 Add read-only creator-fee receipt reconciliation with program/account/mint/signature/instruction validation. Separately pin and validate a GPU solver/image against these fixtures once a compatible GPU environment is established. Do not enable #71 or payment paths until current target state, compatible algorithm, provider terms/account, budget and prize policy are resolved.
+
+## October 7: T01 versioned allocations
+Run npm run allocation-demo for main plus two child fixture budgets; see ALLOCATIONS.md for exact semantics and evidence limits. 27 local tests now pass. Production shares remain unset, receipts are synthetic, and allocations do not enter mock-provider job funding automatically. Next planned task after review is T03.
+
+## BitHash worker and target evidence — October 7
+Run `npm run worker-demo` for a separate-process CPU worker on solved fixtures with checkpoint/restart. Run `npm run inspect-target` for a read-only two-explorer #71 funding snapshot (network required). No GPU, provider credentials or live search are enabled. `npm test` now passes 37 tests. See ../B01-TECHNICAL-EVIDENCE.md for the source pin, actual explorer evidence, scope and remaining GPU work.
+
+Runpod lifecycle dry run: see [RUNPOD-DRYRUN.md](RUNPOD-DRYRUN.md). Run npm run provider-demo; full local suite now has 45 passing tests. No live rental or GPU execution.
+
+October 11: authenticated CPU-fixture receipt service and loopback demo added. Run npm run receipt-demo; see WORKER-RECEIPTS.md. 53 backend tests pass. This adds local HTTP/signing for fixture evidence, not a production treasury signer or GPU provider. Earlier baseline descriptions above are historical.

@@ -1,5 +1,6 @@
 import { DatabaseSync } from 'node:sqlite';
 import { fixtures, integer, search } from './solver.js';
+import { CoverageLedger, initCoverage, previewCoverageRange } from './coverage.js';
 
 function time(t) { if (!Number.isSafeInteger(t) || t < 0) throw Error('Invalid clock'); return t; }
 function positive(n) { n = integer(n); if (n <= 0n) throw Error('Expected positive amount'); return n; }
@@ -18,6 +19,8 @@ export class Controller {
         cap TEXT NOT NULL, billed TEXT NOT NULL DEFAULT '0', provider TEXT, seconds TEXT NOT NULL DEFAULT '0');
       CREATE TABLE IF NOT EXISTS mock_jobs(id TEXT PRIMARY KEY, provider TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS checkpoints(job TEXT, epoch INTEGER, next TEXT, PRIMARY KEY(job,epoch,next));`);
+    initCoverage(this.db);
+    this.coverage = new CoverageLedger(this);
   }
   close() { this.db.close(); }
   transaction(fn) {
@@ -45,23 +48,44 @@ export class Controller {
   }
   job(id) { const j = this.db.prepare('SELECT * FROM jobs WHERE id=?').get(id); if (!j) throw Error('Unknown job'); return j; }
   plan(id, fixtureId, start, end, cap) {
+    return this.transaction(() => this.#plan(id, fixtureId, start, end, cap));
+  }
+  // Range choice and budget reservation share one write transaction, including
+  // when two controller processes use the same database.
+  planNextFixture(id, fixtureId, size, cap, now = Date.now()) {
+    if (!fixtures.some(f => f.id === fixtureId)) throw Error('Scheduling execution is fixture-only');
+    size = positive(size).toString(); cap = positive(cap).toString();
+    const request = JSON.stringify({ fixtureId, size, cap });
+    return this.transaction(() => {
+      const old = this.db.prepare('SELECT * FROM coverage_selections WHERE job=?').get(id);
+      if (old) {
+        if (old.request !== request) throw Error('Conflicting scheduler replay');
+        return { job: this.job(id), selection: JSON.parse(old.decision) };
+      }
+      if (this.db.prepare('SELECT id FROM jobs WHERE id=?').get(id)) throw Error('Job already exists outside scheduler');
+      const selection = previewCoverageRange(this.db, fixtureId, size, now);
+      if (!selection) throw Error('All fixture ranges already allocated');
+      const job = this.#plan(id, fixtureId, selection.start, selection.end, cap);
+      this.db.prepare('INSERT INTO coverage_selections VALUES (?,?,?)').run(id, request, JSON.stringify(selection));
+      return { job, selection };
+    });
+  }
+  #plan(id, fixtureId, start, end, cap) {
     start = integer(start); end = integer(end); cap = positive(cap);
     const f = fixtures.find(f => f.id === fixtureId);
     if (!id || !f || start < BigInt(f.start) || end > BigInt(f.end) || end <= start) throw Error('Invalid fixture range');
-    return this.transaction(() => {
-      const existing = this.db.prepare('SELECT * FROM jobs WHERE id=?').get(id);
-      if (existing) {
-        if (existing.fixture !== fixtureId || existing.start !== start.toString() || existing.end !== end.toString() || existing.cap !== cap.toString()) throw Error('Conflicting job replay');
-        return existing;
-      }
-      for (const j of this.db.prepare('SELECT * FROM jobs WHERE fixture=?').all(fixtureId))
-        if (start < BigInt(j.end) && end > BigInt(j.start)) throw Error('Overlapping range');
-      if (cap > this.balance('available')) throw Error('Budget exhausted');
-      this.post('reserve:' + id, 'reserved', 'available', cap);
-      this.db.prepare('INSERT INTO jobs(id,fixture,start,end,next,status,epoch,expires,cap) VALUES (?,?,?,?,?,?,0,0,?)')
-        .run(id, fixtureId, start.toString(), end.toString(), start.toString(), 'planned', cap.toString());
-      return this.job(id);
-    });
+    const existing = this.db.prepare('SELECT * FROM jobs WHERE id=?').get(id);
+    if (existing) {
+      if (existing.fixture !== fixtureId || existing.start !== start.toString() || existing.end !== end.toString() || existing.cap !== cap.toString()) throw Error('Conflicting job replay');
+      return existing;
+    }
+    for (const j of this.db.prepare('SELECT * FROM jobs WHERE fixture=?').all(fixtureId))
+      if (start < BigInt(j.end) && end > BigInt(j.start)) throw Error('Overlapping range');
+    if (cap > this.balance('available')) throw Error('Budget exhausted');
+    this.post('reserve:' + id, 'reserved', 'available', cap);
+    this.db.prepare('INSERT INTO jobs(id,fixture,start,end,next,status,epoch,expires,cap) VALUES (?,?,?,?,?,?,0,0,?)')
+      .run(id, fixtureId, start.toString(), end.toString(), start.toString(), 'planned', cap.toString());
+    return this.job(id);
   }
   dispatch(id, provider) {
     // Only this exact built-in mock class is accepted. No flag can enable spending.
