@@ -1,0 +1,2 @@
+// User-approved idle loop; decorative, independent of process status.
+export const operatorCharacter=()=>`<picture class="operator-idle-art operator-puppet"><source media="(prefers-reduced-motion: reduce)" srcset="operator-idle-v3-still.png"><img src="operator-idle-v3.gif" width="210" height="210" alt="BitHash Operator breathing gently, blinking and venting steam"></picture>`;

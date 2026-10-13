@@ -1,6 +1,6 @@
 import {readFileSync,writeFileSync,readdirSync,mkdirSync} from 'node:fs';
 import {extname} from 'node:path';
-const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.svg':'image/svg+xml','.png':'image/png','.json':'application/json'};
+const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.svg':'image/svg+xml','.png':'image/png','.gif':'image/gif','.json':'application/json'};
 const assets={};
 for(const name of readdirSync('public')){
  if(!types[extname(name)])throw Error('Unexpected public asset');

@@ -9,3 +9,7 @@ Required private environment: `BITHASH_PASSWORD_VERIFIER` (JSON with 100000 PBKD
 The loopback `server.mjs` remains a separate local approval/simulation backend. The deployed hosted operator view reads the remote bridge and cannot approve runs. Do not infer hosted approval support from the local server.
 
 The graphite/amber pixel-art avatar (`overseer-v2.png`) was generated for BitHash. The deployed artwork and hosted rendering source match Sites v12; no GPU status is inferred from the character artwork.
+
+October 13 animation update: operator-character.mjs now renders a transparent idle GIF with a reduced-motion still. The stable avatar node survives report polling without restarting playback. GPU fan animation still requires fresh provider and signed computing observations. These animation modules/assets match the corresponding published BitHash presentation update; this narrow release does not synchronize later executor or GPU-detail backend changes. Artwork movement is decorative, not evidence of AI execution.
+
+Validation: 12 operator/fleet/time tests passed, embedded Worker build passed, GIF 14 frames loop forever with transparent corners verified in every decoded frame, live custom-domain image loaded and background grid visible. Public release review scanned 13 existing commits and current release files; findings were existing synthetic test values/rejection URLs and historical local paths. No new credential finding in the animation update.
