@@ -36,7 +36,7 @@ function aiQuote(f,availability='HIGH'){
  f.provider.catalog=async()=>{const record={observedAt:new Date(f.x.clock()).toISOString(),filters:{count:1,cloud:'SECURE',minCudaVersion:'12.8'},rows:[{gpu:'rtx-a5000',availability,hourlyPerGpuMicrousd:'270000'}]};return {record,sha256:hash(record),stale:false};};
 }
 function liveChoice(f,ticket){return {schema:'bithash.live-choice.v1',optionId:ticket.options[0].id,model:'gpt-6.1-sol',responseId:'resp_fixture',generatedAt:new Date(f.x.clock()).toISOString(),reason:'Small bounded A5000 benchmark.'};}
-test('AI draft is unapproved, A5000-only, digest-bound, and reconciles duplicate submissions after restart',async t=>{
+test('AI draft is unapproved, A5000-preferred, digest-bound, and reconciles duplicate submissions after restart',async t=>{
  const f=setup(t);aiQuote(f);const ticket=await f.x.planningQuote({maxDurationSeconds:600,capMicrousd:'100000'}),choice=liveChoice(f,ticket);
  const p=await f.x.proposeAi({ticketId:ticket.id,choice});await f.x.tick();assert.equal(f.posts,0);assert.equal(p.state,'proposed');assert.equal(p.terms.gpu,'rtx-a5000');assert.equal(p.terms.planner.choiceDigest,hash(choice));
  f.restart();assert.equal((await f.x.proposeAi({ticketId:ticket.id,choice})).id,p.id);assert.equal(f.x.snapshot().runs.length,1);
@@ -69,3 +69,11 @@ test('model hold is retained and cannot be replaced by a racing spending choice'
  const f=setup(t);aiQuote(f);const ticket=await f.x.planningQuote({maxDurationSeconds:600,capMicrousd:'100000'}),choice={...liveChoice(f,ticket),optionId:'hold'};
  assert.equal((await f.x.proposeAi({ticketId:ticket.id,choice})).state,'held');f.restart();assert.equal((await f.x.proposeAi({ticketId:ticket.id,choice})).state,'held');assert.equal(f.x.snapshot().latestPlanning.state,'held_by_operator');await assert.rejects(f.x.proposeAi({ticketId:ticket.id,choice:liveChoice(f,ticket)}),/conflict/);assert.equal(f.posts,0);
 });
+
+ test('4090 fallback is approval-bound; losing capacity after approval never substitutes hardware',async t=>{
+ const f=setup(t);let unavailable=false;
+ f.provider.catalog=async()=>{const record={observedAt:new Date(f.x.clock()).toISOString(),filters:{count:1,cloud:'SECURE',minCudaVersion:'12.8'},rows:[{gpu:'rtx-a5000',availability:'NONE',hourlyPerGpuMicrousd:'270000'},{gpu:'rtx-4090',availability:unavailable?'NONE':'HIGH',hourlyPerGpuMicrousd:'500000'},{gpu:'rtx-5090',availability:'HIGH',hourlyPerGpuMicrousd:'900000'}]};return {record,sha256:hash(record),stale:false};};
+ const ticket=await f.x.planningQuote({maxDurationSeconds:600,capMicrousd:'300000'}),p=await f.x.proposeAi({ticketId:ticket.id,choice:liveChoice(f,ticket)});
+ assert.equal(p.terms.gpu,'rtx-4090');await f.x.tick();assert.equal(f.posts,0);
+ f.x.approve(p.id,p.digest);unavailable=true;await f.x.tick();assert.equal(f.posts,0);assert.equal(f.x.view(p.id).state,'rejected');
+ });
