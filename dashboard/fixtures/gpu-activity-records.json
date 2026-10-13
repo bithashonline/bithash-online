@@ -1,0 +1,561 @@
+[
+  {
+    "schema": "bithash.gpu-activity-record.v1",
+    "digest": "b998b70ef8620dca34727336eb67995ffccb52a4db0f85ea7a12f85a8a892d2e",
+    "report": {
+      "schema": "bithash.gpu-activity-report.v1",
+      "podId": "17jsao96984h9q",
+      "generatedAt": "2026-10-13T06:20:41.480Z",
+      "model": "gpt-6.1-sol",
+      "responseId": "resp_0131c4fd7692f6bc016acdcd8dce5c87d19836d5a4b5231456",
+      "readOnly": true,
+      "executionEnabled": false,
+      "evidence": {
+        "schema": "bithash.gpu-activity-evidence.v1",
+        "podId": "17jsao96984h9q",
+        "observedAt": "2026-10-13T06:19:54.686Z",
+        "fingerprint": "da38ed953001e72bf4a391be7389f902280bc53c7010418b4f02a1eab5a8252f",
+        "sources": [
+          {
+            "id": "provider",
+            "kind": "provider-observation",
+            "at": "2026-10-13T06:19:34.659Z",
+            "url": null,
+            "data": {
+              "status": "DELETED",
+              "gpuModel": null,
+              "gpuCount": null,
+              "hourlyUsd": null,
+              "evidence": "provider-get-404"
+            }
+          },
+          {
+            "id": "registration",
+            "kind": "controller-registration",
+            "at": "2026-10-13T02:12:10.074Z",
+            "url": null,
+            "data": {
+              "label": "bithash-telemetry-acceptance-20261013",
+              "startedAt": "2026-10-13T02:12:10.074Z",
+              "deadline": "2026-10-13T02:27:10.074Z",
+              "maxSpendMicrousd": "300000",
+              "hourlyCeilingMicrousd": "900000",
+              "phase": "absence_observed",
+              "billingReconciled": false
+            }
+          },
+          {
+            "id": "workload",
+            "kind": "source-configuration",
+            "at": null,
+            "url": "https://github.com/bithashonline/bithash-online/blob/1a18fcfa5449506c0d51065b92dde077f2750c7e/experiments/2026-10-13-hosted-gpu-acceptance.md",
+            "data": {
+              "workload": "Fixed synthetic known-answer test",
+              "provenance": "matched-source-manifest",
+              "rangeAssignment": null,
+              "hardwareVerified": false,
+              "coverageVerified": false
+            }
+          },
+          {
+            "id": "context",
+            "kind": "reporting-context",
+            "at": null,
+            "url": null,
+            "data": {
+              "freshness": "expired",
+              "reportsInWindow": 13,
+              "olderReportsExist": false,
+              "controllerHistoryTruncated": false
+            }
+          },
+          {
+            "id": "worker:061439fb19d3dfdb0bc644ff30e89dbc3c43712a7f8fb0c7f63f2469b89d42fd",
+            "kind": "signed-worker-claim",
+            "at": "2026-10-13T02:20:20.000Z",
+            "url": "/api/gpu-proof/061439fb19d3dfdb0bc644ff30e89dbc3c43712a7f8fb0c7f63f2469b89d42fd",
+            "data": {
+              "workerId": "7cff48c3db07600d1555c42654ad4b75",
+              "sequence": 5,
+              "build": "sha256:17e6a74ec89099ef934493871b380ae52fac22a67611b667849f132ab8b4021b",
+              "state": "error",
+              "device": "nvidia-gpu",
+              "candidatesChecked": "2097152",
+              "candidatesPerSecond": null,
+              "utilizationPercent": null
+            }
+          },
+          {
+            "id": "worker:32f8ade4677bbc3b4c30c5b872416e18c0d94978318e343be24a041705fa80d1",
+            "kind": "signed-worker-claim",
+            "at": "2026-10-13T02:20:13.000Z",
+            "url": "/api/gpu-proof/32f8ade4677bbc3b4c30c5b872416e18c0d94978318e343be24a041705fa80d1",
+            "data": {
+              "workerId": "7cff48c3db07600d1555c42654ad4b75",
+              "sequence": 4,
+              "build": "sha256:17e6a74ec89099ef934493871b380ae52fac22a67611b667849f132ab8b4021b",
+              "state": "computing",
+              "device": "nvidia-gpu",
+              "candidatesChecked": "2097152",
+              "candidatesPerSecond": null,
+              "utilizationPercent": 0
+            }
+          },
+          {
+            "id": "worker:d620b33111f6ac4b74ac184bac4389a15bdb573945d2408cc60a74806a8c373f",
+            "kind": "signed-worker-claim",
+            "at": "2026-10-13T02:20:13.000Z",
+            "url": "/api/gpu-proof/d620b33111f6ac4b74ac184bac4389a15bdb573945d2408cc60a74806a8c373f",
+            "data": {
+              "workerId": "7cff48c3db07600d1555c42654ad4b75",
+              "sequence": 3,
+              "build": "sha256:17e6a74ec89099ef934493871b380ae52fac22a67611b667849f132ab8b4021b",
+              "state": "idle",
+              "device": "nvidia-gpu",
+              "candidatesChecked": "2097152",
+              "candidatesPerSecond": "300193143",
+              "utilizationPercent": 0
+            }
+          },
+          {
+            "id": "worker:d96374a0e6f2011b799905c8ff1c4d36cf6bf09a47c0c7d9cec88bba78eac7ca",
+            "kind": "signed-worker-claim",
+            "at": "2026-10-13T02:20:12.000Z",
+            "url": "/api/gpu-proof/d96374a0e6f2011b799905c8ff1c4d36cf6bf09a47c0c7d9cec88bba78eac7ca",
+            "data": {
+              "workerId": "7cff48c3db07600d1555c42654ad4b75",
+              "sequence": 2,
+              "build": "sha256:17e6a74ec89099ef934493871b380ae52fac22a67611b667849f132ab8b4021b",
+              "state": "computing",
+              "device": "nvidia-gpu",
+              "candidatesChecked": "0",
+              "candidatesPerSecond": null,
+              "utilizationPercent": 0
+            }
+          },
+          {
+            "id": "worker:493b9ff66727a6f77f732258ab1b93b5e7c3e08ab34fd2dd3ed4bfb43594b122",
+            "kind": "signed-worker-claim",
+            "at": "2026-10-13T02:20:12.000Z",
+            "url": "/api/gpu-proof/493b9ff66727a6f77f732258ab1b93b5e7c3e08ab34fd2dd3ed4bfb43594b122",
+            "data": {
+              "workerId": "7cff48c3db07600d1555c42654ad4b75",
+              "sequence": 1,
+              "build": "sha256:17e6a74ec89099ef934493871b380ae52fac22a67611b667849f132ab8b4021b",
+              "state": "idle",
+              "device": "nvidia-gpu",
+              "candidatesChecked": "0",
+              "candidatesPerSecond": null,
+              "utilizationPercent": 0
+            }
+          },
+          {
+            "id": "worker:8a35e800a95e4705d3038549d390378aa8edd6a85f78be935d863812713bb5cc",
+            "kind": "signed-worker-claim",
+            "at": "2026-10-13T02:14:07.000Z",
+            "url": "/api/gpu-proof/8a35e800a95e4705d3038549d390378aa8edd6a85f78be935d863812713bb5cc",
+            "data": {
+              "workerId": "232fc8e9dcb67c7a87be53c6fb2e9072",
+              "sequence": 8,
+              "build": "sha256:17e6a74ec89099ef934493871b380ae52fac22a67611b667849f132ab8b4021b",
+              "state": "idle",
+              "device": "nvidia-gpu",
+              "candidatesChecked": "34361835520",
+              "candidatesPerSecond": "1367062971",
+              "utilizationPercent": 0
+            }
+          },
+          {
+            "id": "worker:64c79bb4b97fafbd185828503b91951d95740b8c1c7cbd593a67c66fa4b5aa51",
+            "kind": "signed-worker-claim",
+            "at": "2026-10-13T02:14:06.000Z",
+            "url": "/api/gpu-proof/64c79bb4b97fafbd185828503b91951d95740b8c1c7cbd593a67c66fa4b5aa51",
+            "data": {
+              "workerId": "232fc8e9dcb67c7a87be53c6fb2e9072",
+              "sequence": 7,
+              "build": "sha256:17e6a74ec89099ef934493871b380ae52fac22a67611b667849f132ab8b4021b",
+              "state": "idle",
+              "device": "nvidia-gpu",
+              "candidatesChecked": "34361835520",
+              "candidatesPerSecond": "1367062971",
+              "utilizationPercent": 97
+            }
+          },
+          {
+            "id": "worker:7eb2e25029fbe282c27c5ecbbaaa15329990f9af0059d03a1d41982a41c50f7b",
+            "kind": "signed-worker-claim",
+            "at": "2026-10-13T02:13:59.000Z",
+            "url": "/api/gpu-proof/7eb2e25029fbe282c27c5ecbbaaa15329990f9af0059d03a1d41982a41c50f7b",
+            "data": {
+              "workerId": "232fc8e9dcb67c7a87be53c6fb2e9072",
+              "sequence": 6,
+              "build": "sha256:17e6a74ec89099ef934493871b380ae52fac22a67611b667849f132ab8b4021b",
+              "state": "computing",
+              "device": "nvidia-gpu",
+              "candidatesChecked": "2097152",
+              "candidatesPerSecond": null,
+              "utilizationPercent": 97
+            }
+          },
+          {
+            "id": "worker:9d7f0f6b2a3fafbd2320fbdb3aef937e45f59ac19c0d8c6867ba9643ac28d236",
+            "kind": "signed-worker-claim",
+            "at": "2026-10-13T02:13:49.000Z",
+            "url": "/api/gpu-proof/9d7f0f6b2a3fafbd2320fbdb3aef937e45f59ac19c0d8c6867ba9643ac28d236",
+            "data": {
+              "workerId": "232fc8e9dcb67c7a87be53c6fb2e9072",
+              "sequence": 5,
+              "build": "sha256:17e6a74ec89099ef934493871b380ae52fac22a67611b667849f132ab8b4021b",
+              "state": "computing",
+              "device": "nvidia-gpu",
+              "candidatesChecked": "2097152",
+              "candidatesPerSecond": null,
+              "utilizationPercent": 97
+            }
+          },
+          {
+            "id": "worker:d406e2e3e8ba3c90b15d8ed5ada559542832735f2996f542672de0ed680b10c2",
+            "kind": "signed-worker-claim",
+            "at": "2026-10-13T02:13:40.000Z",
+            "url": "/api/gpu-proof/d406e2e3e8ba3c90b15d8ed5ada559542832735f2996f542672de0ed680b10c2",
+            "data": {
+              "workerId": "232fc8e9dcb67c7a87be53c6fb2e9072",
+              "sequence": 4,
+              "build": "sha256:17e6a74ec89099ef934493871b380ae52fac22a67611b667849f132ab8b4021b",
+              "state": "computing",
+              "device": "nvidia-gpu",
+              "candidatesChecked": "2097152",
+              "candidatesPerSecond": null,
+              "utilizationPercent": 0
+            }
+          },
+          {
+            "id": "worker:8bcae366b18d844e2074c24a68e1fecc69aa508d67ff3cefa6c307908851fdd2",
+            "kind": "signed-worker-claim",
+            "at": "2026-10-13T02:13:40.000Z",
+            "url": "/api/gpu-proof/8bcae366b18d844e2074c24a68e1fecc69aa508d67ff3cefa6c307908851fdd2",
+            "data": {
+              "workerId": "232fc8e9dcb67c7a87be53c6fb2e9072",
+              "sequence": 3,
+              "build": "sha256:17e6a74ec89099ef934493871b380ae52fac22a67611b667849f132ab8b4021b",
+              "state": "idle",
+              "device": "nvidia-gpu",
+              "candidatesChecked": "2097152",
+              "candidatesPerSecond": "275783928",
+              "utilizationPercent": 0
+            }
+          },
+          {
+            "id": "worker:84cf3e0b370d3f508414aff6487fc5f6edf413d769b32e8d6bf4c8c383b81239",
+            "kind": "signed-worker-claim",
+            "at": "2026-10-13T02:13:39.000Z",
+            "url": "/api/gpu-proof/84cf3e0b370d3f508414aff6487fc5f6edf413d769b32e8d6bf4c8c383b81239",
+            "data": {
+              "workerId": "232fc8e9dcb67c7a87be53c6fb2e9072",
+              "sequence": 2,
+              "build": "sha256:17e6a74ec89099ef934493871b380ae52fac22a67611b667849f132ab8b4021b",
+              "state": "computing",
+              "device": "nvidia-gpu",
+              "candidatesChecked": "0",
+              "candidatesPerSecond": null,
+              "utilizationPercent": 0
+            }
+          },
+          {
+            "id": "worker:f88cc0ee4965057bcdfaefda8f7b9aa12a64d09658cfa7d31917de2d05dc7eb0",
+            "kind": "signed-worker-claim",
+            "at": "2026-10-13T02:13:39.000Z",
+            "url": "/api/gpu-proof/f88cc0ee4965057bcdfaefda8f7b9aa12a64d09658cfa7d31917de2d05dc7eb0",
+            "data": {
+              "workerId": "232fc8e9dcb67c7a87be53c6fb2e9072",
+              "sequence": 1,
+              "build": "sha256:17e6a74ec89099ef934493871b380ae52fac22a67611b667849f132ab8b4021b",
+              "state": "idle",
+              "device": "nvidia-gpu",
+              "candidatesChecked": "0",
+              "candidatesPerSecond": null,
+              "utilizationPercent": 0
+            }
+          },
+          {
+            "id": "controller:12",
+            "kind": "controller-event",
+            "at": "2026-10-13T02:26:27.274Z",
+            "url": null,
+            "data": {
+              "seq": 12,
+              "kind": "provider_404_observed",
+              "code": null
+            }
+          },
+          {
+            "id": "controller:11",
+            "kind": "controller-event",
+            "at": "2026-10-13T02:26:21.140Z",
+            "url": null,
+            "data": {
+              "seq": 11,
+              "kind": "delete_accepted",
+              "code": null
+            }
+          },
+          {
+            "id": "controller:10",
+            "kind": "controller-event",
+            "at": "2026-10-13T02:26:21.140Z",
+            "url": null,
+            "data": {
+              "seq": 10,
+              "kind": "delete_intent",
+              "code": null
+            }
+          },
+          {
+            "id": "controller:9",
+            "kind": "controller-event",
+            "at": "2026-10-13T02:26:14.517Z",
+            "url": null,
+            "data": {
+              "seq": 9,
+              "kind": "stop_accepted",
+              "code": null
+            }
+          },
+          {
+            "id": "controller:8",
+            "kind": "controller-event",
+            "at": "2026-10-13T02:26:14.517Z",
+            "url": null,
+            "data": {
+              "seq": 8,
+              "kind": "stop_intent",
+              "code": null
+            }
+          },
+          {
+            "id": "controller:7",
+            "kind": "controller-event",
+            "at": "2026-10-13T02:12:30.238Z",
+            "url": null,
+            "data": {
+              "seq": 7,
+              "kind": "registered",
+              "code": null
+            }
+          }
+        ]
+      },
+      "advice": {
+        "summary": {
+          "text": "At the 2026-10-13 06:19:54 UTC snapshot, the provider's 06:19:34 check returned 404, recording rental absence. Billing remains unreconciled. The 13 captured worker reports are expired. Configuration identifies a fixed synthetic known-answer test, not puzzle #71 key search; worker claims do not establish verified hardware or unique search coverage.",
+          "sourceIds": [
+            "provider",
+            "registration",
+            "context",
+            "workload"
+          ]
+        },
+        "updates": [
+          {
+            "text": "2026-10-13 UTC: stop accepted at 02:26:14, delete accepted at 02:26:21, and provider 404 observed at 02:26:27. These acceptance events are not final billing; reconciliation remains incomplete.",
+            "sourceIds": [
+              "controller:9",
+              "controller:11",
+              "controller:12",
+              "registration"
+            ]
+          },
+          {
+            "text": "At 02:20:20 UTC, the latest signed worker claim reported error with a cumulative counter of 2,097,152; speed and utilization were unreported, and no cause was given. This was a different enrollment from the 02:14 reports; counters reset between enrollments and are not additive.",
+            "sourceIds": [
+              "worker:061439fb19d3dfdb0bc644ff30e89dbc3c43712a7f8fb0c7f63f2469b89d42fd",
+              "worker:8a35e800a95e4705d3038549d390378aa8edd6a85f78be935d863812713bb5cc"
+            ]
+          },
+          {
+            "text": "At 02:14:06–02:14:07 UTC, the earlier worker claimed idle, a cumulative counter of 34,361,835,520 and 1,367,062,971 candidates/s; claimed utilization changed from 97% to 0%. These synthetic-test counters are not verified unique keys searched.",
+            "sourceIds": [
+              "worker:64c79bb4b97fafbd185828503b91951d95740b8c1c7cbd593a67c66fa4b5aa51",
+              "worker:8a35e800a95e4705d3038549d390378aa8edd6a85f78be935d863812713bb5cc",
+              "workload"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  {
+    "schema": "bithash.gpu-activity-record.v1",
+    "digest": "125fad67a755893269da277eacec45c452d146bf4fccf80e427a732d70abdf25",
+    "report": {
+      "schema": "bithash.gpu-activity-report.v1",
+      "podId": "90et1ky0nsxu7n",
+      "generatedAt": "2026-10-13T06:20:41.480Z",
+      "model": "gpt-6.1-sol",
+      "responseId": "resp_0131c4fd7692f6bc016acdcd8dce5c87d19836d5a4b5231456",
+      "readOnly": true,
+      "executionEnabled": false,
+      "evidence": {
+        "schema": "bithash.gpu-activity-evidence.v1",
+        "podId": "90et1ky0nsxu7n",
+        "observedAt": "2026-10-13T06:19:54.730Z",
+        "fingerprint": "575590f8297f00562c74edbdcd1431ab143e5747077608c9556773ad3672b3e3",
+        "sources": [
+          {
+            "id": "provider",
+            "kind": "provider-observation",
+            "at": "2026-10-13T06:19:34.667Z",
+            "url": null,
+            "data": {
+              "status": "DELETED",
+              "gpuModel": null,
+              "gpuCount": null,
+              "hourlyUsd": null,
+              "evidence": "provider-get-404"
+            }
+          },
+          {
+            "id": "registration",
+            "kind": "controller-registration",
+            "at": "2026-10-12T23:40:58.666Z",
+            "url": null,
+            "data": {
+              "label": "bithash-shutdown-live-20261012",
+              "startedAt": "2026-10-12T23:40:58.666Z",
+              "deadline": "2026-10-12T23:46:58.666Z",
+              "maxSpendMicrousd": "100000",
+              "hourlyCeilingMicrousd": "510000",
+              "phase": "absence_observed",
+              "billingReconciled": false
+            }
+          },
+          {
+            "id": "workload",
+            "kind": "source-configuration",
+            "at": null,
+            "url": null,
+            "data": {
+              "workload": null,
+              "provenance": null,
+              "rangeAssignment": null,
+              "hardwareVerified": false,
+              "coverageVerified": false
+            }
+          },
+          {
+            "id": "context",
+            "kind": "reporting-context",
+            "at": null,
+            "url": null,
+            "data": {
+              "freshness": "never-seen",
+              "reportsInWindow": 0,
+              "olderReportsExist": false,
+              "controllerHistoryTruncated": false
+            }
+          },
+          {
+            "id": "controller:6",
+            "kind": "controller-event",
+            "at": "2026-10-12T23:46:12.521Z",
+            "url": null,
+            "data": {
+              "seq": 6,
+              "kind": "provider_404_observed",
+              "code": null
+            }
+          },
+          {
+            "id": "controller:5",
+            "kind": "controller-event",
+            "at": "2026-10-12T23:46:06.225Z",
+            "url": null,
+            "data": {
+              "seq": 5,
+              "kind": "delete_accepted",
+              "code": null
+            }
+          },
+          {
+            "id": "controller:4",
+            "kind": "controller-event",
+            "at": "2026-10-12T23:46:06.225Z",
+            "url": null,
+            "data": {
+              "seq": 4,
+              "kind": "delete_intent",
+              "code": null
+            }
+          },
+          {
+            "id": "controller:3",
+            "kind": "controller-event",
+            "at": "2026-10-12T23:45:59.688Z",
+            "url": null,
+            "data": {
+              "seq": 3,
+              "kind": "stop_accepted",
+              "code": null
+            }
+          },
+          {
+            "id": "controller:2",
+            "kind": "controller-event",
+            "at": "2026-10-12T23:45:59.688Z",
+            "url": null,
+            "data": {
+              "seq": 2,
+              "kind": "stop_intent",
+              "code": null
+            }
+          },
+          {
+            "id": "controller:1",
+            "kind": "controller-event",
+            "at": "2026-10-12T23:41:14.598Z",
+            "url": null,
+            "data": {
+              "seq": 1,
+              "kind": "registered",
+              "code": null
+            }
+          }
+        ]
+      },
+      "advice": {
+        "summary": {
+          "text": "At the 2026-10-13 06:19:54 UTC snapshot, the provider's 06:19:34 check returned 404, recording rental absence. Billing remains unreconciled. No worker reports were captured or previously seen; speed is unreported, not zero. Workload and range assignment are unspecified, with no verified hardware or search coverage.",
+          "sourceIds": [
+            "provider",
+            "registration",
+            "context",
+            "workload"
+          ]
+        },
+        "updates": [
+          {
+            "text": "2026-10-12 23:46:12 UTC: the controller recorded provider 404, establishing observed rental absence.",
+            "sourceIds": [
+              "controller:6"
+            ]
+          },
+          {
+            "text": "2026-10-12 UTC: stop accepted at 23:45:59 and delete accepted at 23:46:06. Acceptance does not establish final billing; reconciliation remains incomplete.",
+            "sourceIds": [
+              "controller:3",
+              "controller:5",
+              "registration"
+            ]
+          },
+          {
+            "text": "2026-10-12 23:41:14 UTC: the controller recorded registration. No worker telemetry was seen in the supplied evidence.",
+            "sourceIds": [
+              "controller:1",
+              "context"
+            ]
+          }
+        ]
+      }
+    }
+  }
+]

@@ -11,6 +11,16 @@ import {runWorker,validateResult,executeCase} from './core.mjs';
 import {sha,bundleFiles,verifyBundle,claimLease,validateConfig} from './runtime.mjs';
 import {GpuTelemetry,signTelemetry,telemetryDomain} from '../../local/gpu-telemetry.js';
 const vectors=JSON.parse(readFileSync(new URL('../comparison/vectors.json',import.meta.url))).profiles;
+test('five-minute synthetic mode repeats complete cases, retains monotonic counts and stops at target',async()=>{
+ let elapsed=0;const modes=[];
+ const s=setup({monotonic:()=>elapsed,scan:async v=>{modes.push(v.mode);elapsed+=26000;return result(v);}});
+ s.config.durationSeconds=390;s.config.sustainSeconds=300;s.config.expiresAt=Date.now()+600000;
+ const r=await runWorker(s.config,s.deps);
+ assert.equal(r.status,'passed');assert.equal(modes.length,12);assert.equal(elapsed,312000);
+ assert.equal(modes[0],'validate');assert(modes.slice(1).every(m=>'benchmark'));
+ assert.equal(r.candidatesChecked,String(2097152n+11n*34359738368n));assert.equal(r.puzzle71Candidates,'0');
+ assert(s.reports.every((m,i)=>i===0||BigInt(m.candidatesChecked)>=BigInt(s.reports[i-1].candidatesChecked)));
+});
 const result=v=>({schema:'bithash.gpu-benchmark-case.v1',profile:v.id,mode:v.mode,start:v.start,end:v.end,
  attempted:v.count,expectedMatches:v.targets.filter(t=>t.expectedMatch).length,matches:v.targets.filter(t=>t.expectedMatch).length,
  correct:true,initializationSeconds:1,scanSeconds:2,candidatesPerSecond:Number(v.count)/2});

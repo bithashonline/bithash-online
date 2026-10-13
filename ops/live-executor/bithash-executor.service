@@ -1,0 +1,25 @@
+[Unit]
+Description=BitHash approved single-GPU executor
+After=network-online.target bithash-shutdown.service bithash-collector.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+UMask=0077
+RuntimeDirectory=bithash-executor
+RuntimeDirectoryMode=0700
+StateDirectory=bithash-executor
+StateDirectoryMode=0700
+LoadCredential=runpod-key:/etc/bithash-shutdown/runpod-key
+ExecStart=/usr/bin/node --experimental-sqlite /opt/bithash-executor/ops/live-executor/server.mjs
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=20
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=full
+LimitCORE=0
+
+[Install]
+WantedBy=multi-user.target

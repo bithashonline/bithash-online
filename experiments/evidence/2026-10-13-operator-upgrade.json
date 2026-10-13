@@ -1,0 +1,50 @@
+{
+  "schema": "bithash.operator-upgrade-validation.v1",
+  "date": "2026-10-13",
+  "mode": "build-and-read-only-capacity-check",
+  "tests": {
+    "planning_retry_archive": 28,
+    "existing_approval_stream_worker": 25,
+    "hosted_dashboard": 52,
+    "linux_executor": 18
+  },
+  "liveCapacity": {
+    "observedAt": "2026-10-13T09:24:18.168Z",
+    "gpu": "rtx-a5000",
+    "row": {
+      "gpu": "rtx-a5000",
+      "id": "NVIDIA RTX A5000",
+      "hourlyPerGpuMicrousd": "270000",
+      "availability": "NONE"
+    },
+    "quoteDigest": "d364199f6f87e01d59b21089266a0281161d2fb10361889fee0c8c6428fcb069",
+    "outcome": "held_no_capacity",
+    "modelInvoked": false
+  },
+  "gpuRentalsCreated": 0,
+  "realArchiveUploadVerified": false,
+  "puzzle71Candidates": "0",
+  "limitations": [
+    "New real model selection has fixture validation; current capacity check held before inference.",
+    "No new live GPU archive upload; requires fresh owner-approved rental.",
+    "Billing reconciliation and production puzzle-range workers remain pending."
+  ],
+  "sourceSha256": {
+    "local/operator-live.js": "abb3721b42a94fe43db6b4e86c51f9c1877bc461764812569d44a2ee6cfbd7b1",
+    "local/operator-live.test.js": "ee248245da86b117b658189d99bc6e89bbbde4258394c5e09ec9abb6bc792db4",
+    "local/chatgpt-operator-server.js": "1ac496b6e708eb706101d17d6964bc2aad7f966ced2a408f177bc6e5f5fb7693",
+    "local/gpu-activity-reporter.js": "edebf8425bfb6dc87a6986f4de79854a32700ae6a44485f6992afa925b02d182",
+    "local/gpu-activity.test.js": "ff6226a317f768807d0de55a9266bbbcaff041fef219f8bfe2061c527e206e43",
+    "ops/live-executor/executor.mjs": "a9602cce07ec736d128e79666030d85d5832391a057752baccc50bc2f290dbb5",
+    "ops/live-executor/executor.test.mjs": "7082996309adefc5bfdd015888c6452645af799cbb4e13efcd8c8145db6dcdc4",
+    "ops/live-executor/planning.mjs": "31ee6ca2b1a26353eaafbbebcbffa5de22c66d312ceba35f8903f7e8d89db960",
+    "ops/live-executor/worker-archive.mjs": "a4b1122caeb9af34747c73d3fa1c49a898ddcf6c48748a224e29c03063d76be5",
+    "ops/live-executor/server.mjs": "f5b356a8c0016e9b9bc868623641764d607bada56a95b71e33f4e7613e48b9b7",
+    "ops/live-executor/bootstrap.py": "c7b771a2e4e9b213e75c2f237eaa442219e16f1f722a2c9437f49f674249db01"
+  },
+  "site": {
+    "version": 24,
+    "sourceCommit": "9d87480f037fa975e5d3094c92a9b0f0df6d2e85",
+    "passwordGatePreserved": true
+  }
+}

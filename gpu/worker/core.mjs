@@ -72,7 +72,11 @@ export async function runWorker(config, deps) {
   },deps.intervalMs??10000);
   try {
     await tick('idle');
-    for(const mode of ['validate','benchmark']) {
+    // Repeats are synthetic work, never unique puzzle coverage. Finish the last
+    // case; the independent hard runtime and lease deadline still apply.
+    let caseIndex=0;
+    while(caseIndex<2 || (config.sustainSeconds && monotonic()-started<config.sustainSeconds*1000)) {
+      const mode=caseIndex===0?'validate':'benchmark';
       if(controller.signal.aborted) throw Error('run_stopped');
       const vector=deps.vectors.find(v=>v.id==='small'&&v.mode===mode);
       if(!vector || remaining()<=0) throw Error('run_stopped');
@@ -87,6 +91,7 @@ export async function runWorker(config, deps) {
       results.push(result);active=false;
       await deps.saveResults(results);
       await tick('idle');
+      caseIndex++;
     }
     if(controller.signal.aborted || failed) throw Error('run_stopped');
   } catch {failed=true;}

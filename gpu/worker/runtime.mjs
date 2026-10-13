@@ -7,6 +7,10 @@ export const bundleFiles=['bithash-benchmark','vectors.json','lib/libcudart.so.1
   'worker.mjs','core.mjs','runtime.mjs','README.md','gpu-telemetry.js','collector-client.js','package.json'].sort();
 export function validateConfig(c,now=Date.now()){
  const fields=['origin','caFile','keyFile','lease','expiresAt','build','gpu','durationSeconds','stateDir'];
+ if(c && Object.hasOwn(c,'sustainSeconds')) {
+  fields.push('sustainSeconds');
+  if(c.sustainSeconds!==300 || c.durationSeconds<390)throw Error('invalid_sustained_runtime');
+ }
  if(!c||Object.keys(c).sort().join()!==fields.sort().join()||typeof c.lease!=='string'||!/^[a-f0-9]{32}$/.test(c.lease)||
    !Object.hasOwn(models,c.gpu)||!Number.isInteger(c.durationSeconds)||c.durationSeconds<1||c.durationSeconds>900||
    !Number.isSafeInteger(c.expiresAt)||c.expiresAt<=now||c.expiresAt-now>86400000||
