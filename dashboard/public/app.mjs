@@ -1,8 +1,10 @@
 import {mountApprovals} from './approvals.mjs';
+import {fleetView,mountFleet} from './fleet.mjs';
 import {initial,fund,advance,fault,available} from './engine.mjs';
 import {validateSnapshot,workerCards} from './workers.mjs';
 let backendReceivedAt=0,backendConnected=false;
 let operatorReport=null;
+let rentalSnapshot=null,rentalReports=null,rentalConnected=false;
 let state=initial(),sim=false,selected=null,backend=null;
 const $=id=>document.getElementById(id),money=n=>'$'+(n/1e6).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:4}),esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const real=[
@@ -30,7 +32,16 @@ function render(){
  }
  const rows=sim?state.events.slice(0,30).map(e=>({id:e.id+' / T+'+e.minute+'m',title:e.kind,detail:e.detail,status:'SIMULATED'})):[...(backend?[{id:'LOCAL / API',title:'Read-only controller connected',detail:`Observed ${backend.observedAt}. Fixture database: ${backend.fixtures.status}. Local fixture jobs: ${backend.fixtures.jobs??'unknown'}; checkpoints: ${backend.fixtures.checkpoints??'unknown'}. These are not live GPU rentals.`,status:'LOCAL BACKEND'}]:[]),...real];
  $('ledger').innerHTML=rows.length?rows.map(r=>`<div class="row"><span class="ref">${esc(r.id)}</span><div><b>${esc(r.title)}</b><p>${esc(r.detail)} ${r.link?`<a href="${r.link}" target="_blank" rel="noopener">Inspect record ↗</a>`:''}</p></div><span class="badge">${esc(r.status)}</span></div>`).join(''):'<div class="row"><p>No simulated events yet. Add test fees to begin.</p></div>';
+ if(!sim)renderFleet();
 }
+function renderFleet(){
+ const view=fleetView(rentalSnapshot,rentalReports,Date.now(),rentalConnected);
+ $('count').textContent=view.heading;$('rigs').innerHTML=view.html;
+ const metric=$('metrics').children[2];metric.querySelector('label').textContent='Running GPUs';metric.querySelector('strong').textContent=view.count;metric.querySelector('small').textContent=view.hint;
+ $('notice').innerHTML='<strong>CURRENT EVIDENCE</strong> / Provider rental observations and signed worker reports. Registered BitHash Pods only. Historical reports are retained after deletion.';
+}
+mountFleet((s,r,c)=>{rentalSnapshot=s;rentalReports=r;rentalConnected=c;if(!sim)renderFleet();});
+setInterval(()=>{if(!sim)renderFleet();},1000);
 function demo(){sim=true;if(!state.fees){fund(state,25000000);advance(state);}render()}
 $('actual').onclick=()=>{sim=false;render()};$('simulation').onclick=demo;$('add').onclick=()=>{fund(state,10000000);render()};$('tick').onclick=()=>{advance(state);render()};$('reset').onclick=()=>{state=initial();render()};
 $('rigs').onclick=e=>{const b=e.target.closest('[data-detail]');if(b)showRig(b.dataset.detail);if(e.target.closest('#empty-demo'))demo()};

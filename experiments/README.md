@@ -1,5 +1,7 @@
 # Experiments
 
+Latest UI integration: [live rental status and saved-report fleet tests](2026-10-13-fleet-panel.md).
+
 Newest: [hosted RTX 4090 acceptance, interruption and automatic shutdown](2026-10-13-hosted-gpu-acceptance.md).
 
 Latest: [public update](2026-10-12-public-update.md), [live GPU shutdown](2026-10-12-live-shutdown.md), [hosted reporting](2026-10-12-remote-progress.md), [Google approvals](2026-10-12-google-owner.md), [mock executor](2026-10-12-automatic-mock-executor.md).
