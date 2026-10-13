@@ -1,5 +1,7 @@
 import{test}from'node:test';import assert from'node:assert/strict';import{validProgress,remoteCards}from'./public/remote-progress.mjs';
 const row={id:'a'.repeat(32),kind:'transport-test',freshness:'fresh',proof:'/api/gpu-proof/'+'b'.repeat(64),lastReceivedAt:'2026-10-12T00:00:00Z',reported:{state:'idle',candidatesPerSecond:null,candidatesChecked:null,utilizationPercent:null}};
-const s={schema:'bithash.remote-progress.v1',source:'hosted-collector',observedAt:row.lastReceivedAt,items:[row]};
+const s={schema:'bithash.remote-progress.v1',source:'hosted-collector',observedAt:row.lastReceivedAt,history:{records:1,capacity:100000},items:[row]};
 test('proof URLs cannot become arbitrary links and transport tests never claim GPU work',()=>{assert(validProgress(s));assert(!validProgress({...s,items:[{...row,proof:'https://evil.test'}]}));const html=remoteCards(s);assert(html.includes('TRANSPORT TEST · NO GPU'));assert(html.includes(row.proof));assert(html.includes('coverage unverified'));assert(html.includes('Not reported'));});
 test('disconnection and elapsed snapshots cannot show fresh reports',()=>{assert(remoteCards(s,false).includes('UNAVAILABLE'));assert(remoteCards(s,true,15000).includes('UNAVAILABLE'));assert(remoteCards({...s,observedAt:'2026-10-12T00:00:40Z'}).includes('STALE'));});
+
+test('malformed history cannot crash dashboard rendering',()=>{assert(!validProgress({...s,history:null}));assert(!validProgress({...s,history:{records:-1,capacity:100000}}));assert(remoteCards({...s,history:null}).includes('Waiting for the collector'));});

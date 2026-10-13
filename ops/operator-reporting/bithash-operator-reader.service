@@ -1,0 +1,15 @@
+[Unit]
+Description=BitHash cached operator report reader
+After=network.target
+[Service]
+ExecStart=/usr/bin/node /opt/bithash-operator/operator-reader.mjs
+User=nobody
+Group=nogroup
+Restart=on-failure
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+[Install]
+WantedBy=multi-user.target

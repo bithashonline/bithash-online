@@ -15,8 +15,8 @@ button,nav,.metric label,.rig-meta h3{font-size:14px}.eyebrow,.tag,.private,.met
 .running .rotor{display:block;animation:rotor-turn .8s steps(12,end) infinite}
 .rotor-top{left:25%;top:26%;background-position:32.05% 33.77%}
 .rotor-bottom{left:27.5%;top:53.8%;background-position:35.26% 69.87%;animation-direction:reverse!important}
-.overseer-avatar{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:190px;background:radial-gradient(#292929 1px,transparent 1px);background-size:12px 12px;border:1px solid #292929;margin:0 0 20px;padding:10px}
-.overseer-avatar img{width:155px;height:155px;object-fit:contain;image-rendering:pixelated;filter:grayscale(1) brightness(.8)}
+.overseer-avatar{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:240px;background:radial-gradient(ellipse at 50% 55%,#e99b1212,transparent 68%),radial-gradient(#292929 1px,transparent 1px);background-size:auto,12px 12px;border:1px solid #393126;margin:0 0 20px;padding:10px;overflow:hidden}
+.overseer-avatar img{width:210px;height:210px;max-width:100%;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(0 8px 16px #0009)}
 .overseer-avatar span{font:11px var(--mono);color:#888;letter-spacing:1px;margin:5px 0 10px}
 @keyframes rotor-turn{to{transform:rotate(360deg)}}
 @keyframes powered-glow{50%{opacity:.35}}

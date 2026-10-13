@@ -1,0 +1,100 @@
+{
+  "schema": "bithash.operator-report.v1",
+  "mode": "model-review",
+  "authMode": "chatgpt-plan",
+  "modelConnected": true,
+  "model": "gpt-6.1-sol",
+  "readOnly": true,
+  "executionEnabled": false,
+  "generatedAt": "2026-10-13T03:37:18.672Z",
+  "evidence": {
+    "schema": "bithash.operator-evidence.v1",
+    "observedAt": "2026-10-13T03:37:01.388Z",
+    "facts": [
+      {
+        "id": "source",
+        "kind": "source",
+        "mode": "registered-fleet-observations",
+        "freshness": "fresh",
+        "scope": "registered-bithash-pods"
+      },
+      {
+        "id": "funding",
+        "kind": "funding",
+        "availableBudget": null,
+        "actualSpend": null,
+        "treasuryConnected": false,
+        "spending": "owner-approved-runs"
+      },
+      {
+        "id": "rental:17jsao96984h9q",
+        "kind": "provider-observation",
+        "status": "DELETED",
+        "observedAt": "2026-10-13T03:36:45.751Z",
+        "proof": "https://bithash.online/api/fleet-status",
+        "proofType": "current-observation-not-immutable-receipt"
+      },
+      {
+        "id": "rental:90et1ky0nsxu7n",
+        "kind": "provider-observation",
+        "status": "DELETED",
+        "observedAt": "2026-10-13T03:36:45.761Z",
+        "proof": "https://bithash.online/api/fleet-status",
+        "proofType": "current-observation-not-immutable-receipt"
+      },
+      {
+        "id": "worker:7cff48c3db07600d1555c42654ad4b75",
+        "kind": "authenticated-worker-claim",
+        "state": "error",
+        "freshness": "historical",
+        "reportedCandidates": "2097152",
+        "reportedCandidatesPerSecond": null,
+        "reportedUtilizationPercent": null,
+        "workload": "fixed-synthetic-known-answer",
+        "hardwareVerified": false,
+        "coverageVerified": false,
+        "proof": "https://bithash.online/api/gpu-proof/061439fb19d3dfdb0bc644ff30e89dbc3c43712a7f8fb0c7f63f2469b89d42fd"
+      },
+      {
+        "id": "worker:232fc8e9dcb67c7a87be53c6fb2e9072",
+        "kind": "authenticated-worker-claim",
+        "state": "idle",
+        "freshness": "historical",
+        "reportedCandidates": "34361835520",
+        "reportedCandidatesPerSecond": "1367062971",
+        "reportedUtilizationPercent": 0,
+        "workload": "fixed-synthetic-known-answer",
+        "hardwareVerified": false,
+        "coverageVerified": false,
+        "proof": "https://bithash.online/api/gpu-proof/8a35e800a95e4705d3038549d390378aa8edd6a85f78be935d863812713bb5cc"
+      }
+    ],
+    "digest": "42ccd410c9358069c200920f4063e1555f008cc81418a19f15308b2077dc0650"
+  },
+  "advice": {
+    "summary": "Fresh observations cover registered BitHash pods only; both registered rentals are reported DELETED. These are current provider observations, not immutable receipts. Historical authenticated worker claims report error and idle states for fixed synthetic known-answer workloads; they do not establish current computation, physical execution, verified hardware or verified coverage. Reported candidate counts and throughput are claims, not proof of GPU execution. Available budget and actual spend are unknown, treasury is disconnected, and runs require owner approval. Fees and billing are not supplied. All proposals below require human review and are not executed.",
+    "proposals": [
+      {
+        "action": "inspect_worker",
+        "evidence": "worker:7cff48c3db07600d1555c42654ad4b75",
+        "reason": "Human review of this historical error claim may clarify the reported failure. Its 2,097,152 reported candidates do not establish physical execution; hardware and coverage are unverified."
+      },
+      {
+        "action": "inspect_worker",
+        "evidence": "worker:232fc8e9dcb67c7a87be53c6fb2e9072",
+        "reason": "Human review should distinguish historical idle state and 0% reported utilization from reported throughput of 1,367,062,971 candidates/s. Neither establishes current computation or verified hardware."
+      },
+      {
+        "action": "review_capacity",
+        "evidence": "source",
+        "reason": "Human capacity review should remain limited to registered BitHash pods. This fresh source does not establish capacity outside that scope or the presence of live GPUs."
+      },
+      {
+        "action": "review_funding",
+        "evidence": "funding",
+        "reason": "Human review should establish budget and billing before considering owner-approved runs. Available budget and actual spend are unknown, treasury is disconnected, and affordability cannot be inferred."
+      }
+    ]
+  },
+  "warning": "AI interpretation; proposals require owner review. No actions executed."
+}

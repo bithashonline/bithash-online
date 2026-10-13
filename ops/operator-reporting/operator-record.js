@@ -1,0 +1,11 @@
+import {createHash} from 'node:crypto';
+import {validateAdvice} from './operator.js';
+const reportKeys=['schema','mode','authMode','modelConnected','model','readOnly','executionEnabled','generatedAt','evidence','advice','warning'];
+const factKeys=new Set(['id','kind','mode','freshness','scope','availableBudget','actualSpend','treasuryConnected','spending','status','observedAt','proof','proofType','state','reportedCandidates','reportedCandidatesPerSecond','reportedUtilizationPercent','workload','hardwareVerified','coverageVerified']);
+export function operatorRecord(report){
+ if(!report||Object.keys(report).sort().join()!==reportKeys.sort().join()||report.schema!=='bithash.operator-report.v1'||report.mode!=='model-review'||report.authMode!=='chatgpt-plan'||report.modelConnected!==true||report.readOnly!==true||report.executionEnabled!==false||!/^gpt-[a-zA-Z0-9._-]{1,60}$/.test(report.model)||!Number.isFinite(Date.parse(report.generatedAt))||Date.parse(report.generatedAt)>Date.now()+5000||typeof report.warning!=='string'||report.warning.length>300)throw Error('invalid_report');
+ const e=report.evidence;if(!e||Object.keys(e).sort().join()!=='digest,facts,observedAt,schema'||e.schema!=='bithash.operator-evidence.v1'||!Number.isFinite(Date.parse(e.observedAt))||!Array.isArray(e.facts)||e.facts.length>202)throw Error('invalid_evidence');
+ const ids=new Set();for(const f of e.facts){if(!f||Object.keys(f).some(k=>!factKeys.has(k))||typeof f.id!=='string'||! /^(source|funding|rental:[a-z0-9]{10,32}|worker:[a-f0-9]{32})$/.test(f.id)||ids.has(f.id))throw Error('invalid_fact');ids.add(f.id);for(const v of Object.values(f))if(v!==null&&!['string','number','boolean'].includes(typeof v)||typeof v==='string'&&v.length>300)throw Error('invalid_fact');if(f.proof&&!/^https:\/\/bithash\.online\/api\/(fleet-status|gpu-proof\/[a-f0-9]{64})$/.test(f.proof))throw Error('invalid_proof');}
+ const bare={schema:e.schema,observedAt:e.observedAt,facts:e.facts};if(createHash('sha256').update(JSON.stringify(bare)).digest('hex')!==e.digest)throw Error('evidence_digest_mismatch');validateAdvice(report.advice,e);
+ const digest=createHash('sha256').update(JSON.stringify(report)).digest('hex');return {schema:'bithash.operator-record.v1',digest,report};
+}

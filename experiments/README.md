@@ -1,5 +1,7 @@
 # Experiments
 
+Latest operator release: [source and validation](2026-10-13-operator-public-release.md), [hosted integration](2026-10-12-hosted-operator.md), [accepted report](evidence/2026-10-12-chatgpt-operator-report.json).
+
 Latest UI integration: [live rental status and saved-report fleet tests](2026-10-13-fleet-panel.md).
 
 Newest: [hosted RTX 4090 acceptance, interruption and automatic shutdown](2026-10-13-hosted-gpu-acceptance.md).

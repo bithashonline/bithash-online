@@ -1,0 +1,4 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import {readFileSync} from 'node:fs';import {operatorRecord} from './operator-record.js';
+const sample=()=>JSON.parse(readFileSync(new URL('../experiments/evidence/2026-10-12-chatgpt-operator-report.json',import.meta.url),'utf8'));
+test('real cached report serializes deterministically with no account record',()=>{const r=sample();assert.equal(operatorRecord(r).digest,operatorRecord(JSON.parse(JSON.stringify(r))).digest);assert.ok(!JSON.stringify(operatorRecord(r)).includes('access_token'));});
+test('unexpected credential fields, changed evidence and external proof URLs reject publication',()=>{for(const mutate of [r=>r.access_token='test-only',r=>r.evidence.facts[0].secret='test-only',r=>r.evidence.facts[0].freshness='tampered',r=>r.evidence.facts[0].proof='https://example.com/token',r=>r.executionEnabled=true]){const r=sample();mutate(r);assert.throws(()=>operatorRecord(r));}});
