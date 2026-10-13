@@ -1,0 +1,26 @@
+{
+  "schema": "bithash.supervised-worker-package.v1",
+  "workload": "fixed-synthetic-known-answer",
+  "files": {
+    "BITCRACK-LICENSE.MIT": "d1ca4c0aaddbafcbd85036ba73b8f298a17a7da31520ff4b21c28fa419f36fc0",
+    "CUDA-LICENSE": "e2c71babfd18a8e69542dd7e9ca018f9caa438094001a58e6bc4d8c999bf0d07",
+    "README.md": "3c6923ae4c400d04042424edd7cd0e98378825a7f8e8d63319ad65399ffcbf2d",
+    "bithash-benchmark": "50cc815754e9bde88315d92c3e1741ab0028821b6be4a0c67626024ad81ed485",
+    "collector-client.js": "e0ada5d0f8ddbd7029f042e87d7e1b05a7611fe92e810cf7d37b1be46a6c29c0",
+    "core.mjs": "84c3b3b157d4c53e2e38712b5437f933abc074bf8deb5506abae5abe68c91946",
+    "gpu-telemetry.js": "650c60a49a0a3eee3f5c6669a3d0641142368a9a1b315bcddd82192886db1e2f",
+    "lib/libcudart.so.12": "8774224f5b11a73b15d074a3fcce7327322c5c4cfdfd924d6a826779eec968fe",
+    "package.json": "639b0efea3eeedfff1e65604c2c6aa65cdb850638c9b5448fa5624f6bd1e5556",
+    "runtime.mjs": "852974a6a57faa3380f4299b72a924aec9e64feb7e8290ff009c92b899e5f6ca",
+    "vectors.json": "0ed4d72e0f5d8ad3f4efe218c1013f567e20f3591051e45ca530a34d6439ee7c",
+    "worker.mjs": "126b7fdba933adfc72d68d9eab7b6bd452b95fb06887b847d63c1c639cd175c9"
+  },
+  "originalArchiveSha256": "dfe1255f3809c20bac939b91656f45d719bde0d982a7ef6cb7ffbbd071c96e17",
+  "upstreamCommit": "6bf8059ef075eb1622298395866b0bd02375e1d9",
+  "cudaTargets": [
+    "sm_86",
+    "sm_89",
+    "compute_89 PTX"
+  ],
+  "puzzle71Enabled": false
+}

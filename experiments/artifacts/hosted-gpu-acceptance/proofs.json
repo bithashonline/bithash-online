@@ -1,0 +1,474 @@
+{
+  "snapshot": {
+    "schema": "bithash.remote-progress.v1",
+    "observedAt": "2026-10-13T02:21:19.349Z",
+    "source": "hosted-collector",
+    "history": {
+      "records": 14,
+      "capacity": 100000
+    },
+    "items": [
+      {
+        "id": "7cff48c3db07600d1555c42654ad4b75",
+        "kind": "gpu",
+        "providerPodId": "17jsao96984h9q",
+        "build": "sha256:17e6a74ec89099ef934493871b380ae52fac22a67611b667849f132ab8b4021b",
+        "expiresAt": "2026-10-13T02:25:10.074Z",
+        "freshness": "stale",
+        "lastReceivedAt": "2026-10-13T02:20:20.000Z",
+        "reported": {
+          "schema": "bithash.gpu-telemetry.v1",
+          "lease": "7cff48c3db07600d1555c42654ad4b75",
+          "sequence": 5,
+          "state": "error",
+          "device": "nvidia-gpu",
+          "utilizationPercent": null,
+          "candidatesPerSecond": null,
+          "candidatesChecked": "2097152"
+        },
+        "proof": "/api/gpu-proof/061439fb19d3dfdb0bc644ff30e89dbc3c43712a7f8fb0c7f63f2469b89d42fd",
+        "evidence": "authenticated-worker-claim",
+        "hardwareVerified": false,
+        "coverageVerified": false
+      },
+      {
+        "id": "232fc8e9dcb67c7a87be53c6fb2e9072",
+        "kind": "gpu",
+        "providerPodId": "17jsao96984h9q",
+        "build": "sha256:17e6a74ec89099ef934493871b380ae52fac22a67611b667849f132ab8b4021b",
+        "expiresAt": "2026-10-13T02:25:10.074Z",
+        "freshness": "stale",
+        "lastReceivedAt": "2026-10-13T02:14:07.000Z",
+        "reported": {
+          "schema": "bithash.gpu-telemetry.v1",
+          "lease": "232fc8e9dcb67c7a87be53c6fb2e9072",
+          "sequence": 8,
+          "state": "idle",
+          "device": "nvidia-gpu",
+          "utilizationPercent": 0,
+          "candidatesPerSecond": "1367062971",
+          "candidatesChecked": "34361835520"
+        },
+        "proof": "/api/gpu-proof/8a35e800a95e4705d3038549d390378aa8edd6a85f78be935d863812713bb5cc",
+        "evidence": "authenticated-worker-claim",
+        "hardwareVerified": false,
+        "coverageVerified": false
+      },
+      {
+        "id": "c70a14a046688a266ebd4ec64f0a3798",
+        "kind": "transport-test",
+        "providerPodId": null,
+        "build": "sha256:4eeced9b84703491c1978d051cccfb012ae79a5b5ccc4730ca9ca39e3e4392f3",
+        "expiresAt": "2026-10-13T00:24:15.874Z",
+        "freshness": "revoked",
+        "lastReceivedAt": "2026-10-12T23:54:50.000Z",
+        "reported": {
+          "schema": "bithash.gpu-telemetry.v1",
+          "lease": "c70a14a046688a266ebd4ec64f0a3798",
+          "sequence": 1,
+          "state": "idle",
+          "device": "cpu-fixture",
+          "utilizationPercent": null,
+          "candidatesPerSecond": null,
+          "candidatesChecked": null
+        },
+        "proof": "/api/gpu-proof/2669592bb835b5c834d1f1f1741a9de48ce3a3af46c585cdd4e23cc438f3dbdd",
+        "evidence": "authenticated-worker-claim",
+        "hardwareVerified": false,
+        "coverageVerified": false
+      }
+    ]
+  },
+  "proofs": [
+    {
+      "schema": "bithash.gpu-proof.v1",
+      "digest": "f88cc0ee4965057bcdfaefda8f7b9aa12a64d09658cfa7d31917de2d05dc7eb0",
+      "receivedAt": "2026-10-13T02:13:39.000Z",
+      "domain": "bithash.gpu-telemetry.v1\n",
+      "enrollment": {
+        "id": "232fc8e9dcb67c7a87be53c6fb2e9072",
+        "publicKey": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEA1rBvOolaVJZPkTjn3bMy4e122c8mT01cCY3If6gI6Lg=\n-----END PUBLIC KEY-----\n",
+        "build": "sha256:17e6a74ec89099ef934493871b380ae52fac22a67611b667849f132ab8b4021b",
+        "providerPodId": "17jsao96984h9q",
+        "kind": "gpu",
+        "expiresAt": 1791858310074
+      },
+      "envelope": {
+        "payload": {
+          "schema": "bithash.gpu-telemetry.v1",
+          "lease": "232fc8e9dcb67c7a87be53c6fb2e9072",
+          "sequence": 1,
+          "state": "idle",
+          "device": "nvidia-gpu",
+          "utilizationPercent": 0,
+          "candidatesPerSecond": null,
+          "candidatesChecked": "0"
+        },
+        "signature": "96q+Q+pGUZenKe7lu830XmmETX91YDelteYO9ph2I3sCSlJSiVHjA8YNDYnh0xQJuZ5dns1AaQQ6gBC8XH+uBQ=="
+      },
+      "evidence": "authenticated-worker-claim",
+      "hardwareVerified": false,
+      "coverageVerified": false
+    },
+    {
+      "schema": "bithash.gpu-proof.v1",
+      "digest": "84cf3e0b370d3f508414aff6487fc5f6edf413d769b32e8d6bf4c8c383b81239",
+      "receivedAt": "2026-10-13T02:13:39.000Z",
+      "domain": "bithash.gpu-telemetry.v1\n",
+      "enrollment": {
+        "id": "232fc8e9dcb67c7a87be53c6fb2e9072",
+        "publicKey": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEA1rBvOolaVJZPkTjn3bMy4e122c8mT01cCY3If6gI6Lg=\n-----END PUBLIC KEY-----\n",
+        "build": "sha256:17e6a74ec89099ef934493871b380ae52fac22a67611b667849f132ab8b4021b",
+        "providerPodId": "17jsao96984h9q",
+        "kind": "gpu",
+        "expiresAt": 1791858310074
+      },
+      "envelope": {
+        "payload": {
+          "schema": "bithash.gpu-telemetry.v1",
+          "lease": "232fc8e9dcb67c7a87be53c6fb2e9072",
+          "sequence": 2,
+          "state": "computing",
+          "device": "nvidia-gpu",
+          "utilizationPercent": 0,
+          "candidatesPerSecond": null,
+          "candidatesChecked": "0"
+        },
+        "signature": "/UnDIUUBmTPeV0wmFGUjZbmPJJRLKJcqLjfoOMWrcWifgrLmlUeYsMBLK1ePfvs1fskoXKkwqvzNO+oL1JqYBg=="
+      },
+      "evidence": "authenticated-worker-claim",
+      "hardwareVerified": false,
+      "coverageVerified": false
+    },
+    {
+      "schema": "bithash.gpu-proof.v1",
+      "digest": "8bcae366b18d844e2074c24a68e1fecc69aa508d67ff3cefa6c307908851fdd2",
+      "receivedAt": "2026-10-13T02:13:40.000Z",
+      "domain": "bithash.gpu-telemetry.v1\n",
+      "enrollment": {
+        "id": "232fc8e9dcb67c7a87be53c6fb2e9072",
+        "publicKey": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEA1rBvOolaVJZPkTjn3bMy4e122c8mT01cCY3If6gI6Lg=\n-----END PUBLIC KEY-----\n",
+        "build": "sha256:17e6a74ec89099ef934493871b380ae52fac22a67611b667849f132ab8b4021b",
+        "providerPodId": "17jsao96984h9q",
+        "kind": "gpu",
+        "expiresAt": 1791858310074
+      },
+      "envelope": {
+        "payload": {
+          "schema": "bithash.gpu-telemetry.v1",
+          "lease": "232fc8e9dcb67c7a87be53c6fb2e9072",
+          "sequence": 3,
+          "state": "idle",
+          "device": "nvidia-gpu",
+          "utilizationPercent": 0,
+          "candidatesPerSecond": "275783928",
+          "candidatesChecked": "2097152"
+        },
+        "signature": "sKxvCp67pIfNBo3XXqxTtJCLDwZ3ZY0KzsOqX3jVC288Ddvto2sz8QEhG1m85/1SNoAZtXP/FtrQAXnJhPQNDg=="
+      },
+      "evidence": "authenticated-worker-claim",
+      "hardwareVerified": false,
+      "coverageVerified": false
+    },
+    {
+      "schema": "bithash.gpu-proof.v1",
+      "digest": "d406e2e3e8ba3c90b15d8ed5ada559542832735f2996f542672de0ed680b10c2",
+      "receivedAt": "2026-10-13T02:13:40.000Z",
+      "domain": "bithash.gpu-telemetry.v1\n",
+      "enrollment": {
+        "id": "232fc8e9dcb67c7a87be53c6fb2e9072",
+        "publicKey": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEA1rBvOolaVJZPkTjn3bMy4e122c8mT01cCY3If6gI6Lg=\n-----END PUBLIC KEY-----\n",
+        "build": "sha256:17e6a74ec89099ef934493871b380ae52fac22a67611b667849f132ab8b4021b",
+        "providerPodId": "17jsao96984h9q",
+        "kind": "gpu",
+        "expiresAt": 1791858310074
+      },
+      "envelope": {
+        "payload": {
+          "schema": "bithash.gpu-telemetry.v1",
+          "lease": "232fc8e9dcb67c7a87be53c6fb2e9072",
+          "sequence": 4,
+          "state": "computing",
+          "device": "nvidia-gpu",
+          "utilizationPercent": 0,
+          "candidatesPerSecond": null,
+          "candidatesChecked": "2097152"
+        },
+        "signature": "E2HO4V0KnAA1eCYT3zZlJogvuiwPLb9U1CprRQa0W2htNNwiICQhN+cay1Y10cfT1iHvEw7s+YxahpMqC720Bw=="
+      },
+      "evidence": "authenticated-worker-claim",
+      "hardwareVerified": false,
+      "coverageVerified": false
+    },
+    {
+      "schema": "bithash.gpu-proof.v1",
+      "digest": "9d7f0f6b2a3fafbd2320fbdb3aef937e45f59ac19c0d8c6867ba9643ac28d236",
+      "receivedAt": "2026-10-13T02:13:49.000Z",
+      "domain": "bithash.gpu-telemetry.v1\n",
+      "enrollment": {
+        "id": "232fc8e9dcb67c7a87be53c6fb2e9072",
+        "publicKey": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEA1rBvOolaVJZPkTjn3bMy4e122c8mT01cCY3If6gI6Lg=\n-----END PUBLIC KEY-----\n",
+        "build": "sha256:17e6a74ec89099ef934493871b380ae52fac22a67611b667849f132ab8b4021b",
+        "providerPodId": "17jsao96984h9q",
+        "kind": "gpu",
+        "expiresAt": 1791858310074
+      },
+      "envelope": {
+        "payload": {
+          "schema": "bithash.gpu-telemetry.v1",
+          "lease": "232fc8e9dcb67c7a87be53c6fb2e9072",
+          "sequence": 5,
+          "state": "computing",
+          "device": "nvidia-gpu",
+          "utilizationPercent": 97,
+          "candidatesPerSecond": null,
+          "candidatesChecked": "2097152"
+        },
+        "signature": "42TG7KLwphmOfYVuGrbGaN2N4wWaZVsrl47sSfbzJdA65EdXaFOE1gjMpqMHdOVxvwUX8YQ8jvM3MXEhm3p+BA=="
+      },
+      "evidence": "authenticated-worker-claim",
+      "hardwareVerified": false,
+      "coverageVerified": false
+    },
+    {
+      "schema": "bithash.gpu-proof.v1",
+      "digest": "7eb2e25029fbe282c27c5ecbbaaa15329990f9af0059d03a1d41982a41c50f7b",
+      "receivedAt": "2026-10-13T02:13:59.000Z",
+      "domain": "bithash.gpu-telemetry.v1\n",
+      "enrollment": {
+        "id": "232fc8e9dcb67c7a87be53c6fb2e9072",
+        "publicKey": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEA1rBvOolaVJZPkTjn3bMy4e122c8mT01cCY3If6gI6Lg=\n-----END PUBLIC KEY-----\n",
+        "build": "sha256:17e6a74ec89099ef934493871b380ae52fac22a67611b667849f132ab8b4021b",
+        "providerPodId": "17jsao96984h9q",
+        "kind": "gpu",
+        "expiresAt": 1791858310074
+      },
+      "envelope": {
+        "payload": {
+          "schema": "bithash.gpu-telemetry.v1",
+          "lease": "232fc8e9dcb67c7a87be53c6fb2e9072",
+          "sequence": 6,
+          "state": "computing",
+          "device": "nvidia-gpu",
+          "utilizationPercent": 97,
+          "candidatesPerSecond": null,
+          "candidatesChecked": "2097152"
+        },
+        "signature": "+XF600DzwLNmIYcxi25My+O+6bGbCSSq7CAq3GjM41hnHEFDsC+Wzc43znbKSWTDm/NCZwCnu0llUFwzG77RAw=="
+      },
+      "evidence": "authenticated-worker-claim",
+      "hardwareVerified": false,
+      "coverageVerified": false
+    },
+    {
+      "schema": "bithash.gpu-proof.v1",
+      "digest": "64c79bb4b97fafbd185828503b91951d95740b8c1c7cbd593a67c66fa4b5aa51",
+      "receivedAt": "2026-10-13T02:14:06.000Z",
+      "domain": "bithash.gpu-telemetry.v1\n",
+      "enrollment": {
+        "id": "232fc8e9dcb67c7a87be53c6fb2e9072",
+        "publicKey": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEA1rBvOolaVJZPkTjn3bMy4e122c8mT01cCY3If6gI6Lg=\n-----END PUBLIC KEY-----\n",
+        "build": "sha256:17e6a74ec89099ef934493871b380ae52fac22a67611b667849f132ab8b4021b",
+        "providerPodId": "17jsao96984h9q",
+        "kind": "gpu",
+        "expiresAt": 1791858310074
+      },
+      "envelope": {
+        "payload": {
+          "schema": "bithash.gpu-telemetry.v1",
+          "lease": "232fc8e9dcb67c7a87be53c6fb2e9072",
+          "sequence": 7,
+          "state": "idle",
+          "device": "nvidia-gpu",
+          "utilizationPercent": 97,
+          "candidatesPerSecond": "1367062971",
+          "candidatesChecked": "34361835520"
+        },
+        "signature": "+j2jMyQZPwpkJMX6GKBMv81kjtYrYXMBOuIgIZrD6GW7gvESLj9f8W0xwfe+JZmIZZXtBQhKVkTxkf3BpAjSBA=="
+      },
+      "evidence": "authenticated-worker-claim",
+      "hardwareVerified": false,
+      "coverageVerified": false
+    },
+    {
+      "schema": "bithash.gpu-proof.v1",
+      "digest": "8a35e800a95e4705d3038549d390378aa8edd6a85f78be935d863812713bb5cc",
+      "receivedAt": "2026-10-13T02:14:07.000Z",
+      "domain": "bithash.gpu-telemetry.v1\n",
+      "enrollment": {
+        "id": "232fc8e9dcb67c7a87be53c6fb2e9072",
+        "publicKey": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEA1rBvOolaVJZPkTjn3bMy4e122c8mT01cCY3If6gI6Lg=\n-----END PUBLIC KEY-----\n",
+        "build": "sha256:17e6a74ec89099ef934493871b380ae52fac22a67611b667849f132ab8b4021b",
+        "providerPodId": "17jsao96984h9q",
+        "kind": "gpu",
+        "expiresAt": 1791858310074
+      },
+      "envelope": {
+        "payload": {
+          "schema": "bithash.gpu-telemetry.v1",
+          "lease": "232fc8e9dcb67c7a87be53c6fb2e9072",
+          "sequence": 8,
+          "state": "idle",
+          "device": "nvidia-gpu",
+          "utilizationPercent": 0,
+          "candidatesPerSecond": "1367062971",
+          "candidatesChecked": "34361835520"
+        },
+        "signature": "kDclQHOcK+15c/qL4KcnW3dwybqE8onf5XKDfUuKBcpqH4ysNCkgagiVUvti2UjoKfembyiJgYnsm8DVmw3kDQ=="
+      },
+      "evidence": "authenticated-worker-claim",
+      "hardwareVerified": false,
+      "coverageVerified": false
+    },
+    {
+      "schema": "bithash.gpu-proof.v1",
+      "digest": "493b9ff66727a6f77f732258ab1b93b5e7c3e08ab34fd2dd3ed4bfb43594b122",
+      "receivedAt": "2026-10-13T02:20:12.000Z",
+      "domain": "bithash.gpu-telemetry.v1\n",
+      "enrollment": {
+        "id": "7cff48c3db07600d1555c42654ad4b75",
+        "publicKey": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAgFrRK/qKlpWKEk5ma1huVJnMW7w7ry7fTFDqmlGeYAI=\n-----END PUBLIC KEY-----\n",
+        "build": "sha256:17e6a74ec89099ef934493871b380ae52fac22a67611b667849f132ab8b4021b",
+        "providerPodId": "17jsao96984h9q",
+        "kind": "gpu",
+        "expiresAt": 1791858310074
+      },
+      "envelope": {
+        "payload": {
+          "schema": "bithash.gpu-telemetry.v1",
+          "lease": "7cff48c3db07600d1555c42654ad4b75",
+          "sequence": 1,
+          "state": "idle",
+          "device": "nvidia-gpu",
+          "utilizationPercent": 0,
+          "candidatesPerSecond": null,
+          "candidatesChecked": "0"
+        },
+        "signature": "o0jdiahcvreTeAgZhzNj30WQqeGi8UoVKTS9y6yShbqmoCygFtCp2vBfLhncyFLqlcmnFpJvZTXQKInAX87DAA=="
+      },
+      "evidence": "authenticated-worker-claim",
+      "hardwareVerified": false,
+      "coverageVerified": false
+    },
+    {
+      "schema": "bithash.gpu-proof.v1",
+      "digest": "d96374a0e6f2011b799905c8ff1c4d36cf6bf09a47c0c7d9cec88bba78eac7ca",
+      "receivedAt": "2026-10-13T02:20:12.000Z",
+      "domain": "bithash.gpu-telemetry.v1\n",
+      "enrollment": {
+        "id": "7cff48c3db07600d1555c42654ad4b75",
+        "publicKey": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAgFrRK/qKlpWKEk5ma1huVJnMW7w7ry7fTFDqmlGeYAI=\n-----END PUBLIC KEY-----\n",
+        "build": "sha256:17e6a74ec89099ef934493871b380ae52fac22a67611b667849f132ab8b4021b",
+        "providerPodId": "17jsao96984h9q",
+        "kind": "gpu",
+        "expiresAt": 1791858310074
+      },
+      "envelope": {
+        "payload": {
+          "schema": "bithash.gpu-telemetry.v1",
+          "lease": "7cff48c3db07600d1555c42654ad4b75",
+          "sequence": 2,
+          "state": "computing",
+          "device": "nvidia-gpu",
+          "utilizationPercent": 0,
+          "candidatesPerSecond": null,
+          "candidatesChecked": "0"
+        },
+        "signature": "UlUG0xzdynuHtWl5uDUSz6c/n4VPRs/f0yugW0UsNR0/DwctANLpLXaJnUzkrwcXRbs/Xj4rX23jDy4lCPfhCg=="
+      },
+      "evidence": "authenticated-worker-claim",
+      "hardwareVerified": false,
+      "coverageVerified": false
+    },
+    {
+      "schema": "bithash.gpu-proof.v1",
+      "digest": "d620b33111f6ac4b74ac184bac4389a15bdb573945d2408cc60a74806a8c373f",
+      "receivedAt": "2026-10-13T02:20:13.000Z",
+      "domain": "bithash.gpu-telemetry.v1\n",
+      "enrollment": {
+        "id": "7cff48c3db07600d1555c42654ad4b75",
+        "publicKey": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAgFrRK/qKlpWKEk5ma1huVJnMW7w7ry7fTFDqmlGeYAI=\n-----END PUBLIC KEY-----\n",
+        "build": "sha256:17e6a74ec89099ef934493871b380ae52fac22a67611b667849f132ab8b4021b",
+        "providerPodId": "17jsao96984h9q",
+        "kind": "gpu",
+        "expiresAt": 1791858310074
+      },
+      "envelope": {
+        "payload": {
+          "schema": "bithash.gpu-telemetry.v1",
+          "lease": "7cff48c3db07600d1555c42654ad4b75",
+          "sequence": 3,
+          "state": "idle",
+          "device": "nvidia-gpu",
+          "utilizationPercent": 0,
+          "candidatesPerSecond": "300193143",
+          "candidatesChecked": "2097152"
+        },
+        "signature": "UaXm+q7mCP6m/2syDs6NfoXw9EiyWAm3K9iIpWLREDGeIzlRBwHT0V9ZoaY9CI4weR8T6YJTV71LplFCNrvPBg=="
+      },
+      "evidence": "authenticated-worker-claim",
+      "hardwareVerified": false,
+      "coverageVerified": false
+    },
+    {
+      "schema": "bithash.gpu-proof.v1",
+      "digest": "32f8ade4677bbc3b4c30c5b872416e18c0d94978318e343be24a041705fa80d1",
+      "receivedAt": "2026-10-13T02:20:13.000Z",
+      "domain": "bithash.gpu-telemetry.v1\n",
+      "enrollment": {
+        "id": "7cff48c3db07600d1555c42654ad4b75",
+        "publicKey": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAgFrRK/qKlpWKEk5ma1huVJnMW7w7ry7fTFDqmlGeYAI=\n-----END PUBLIC KEY-----\n",
+        "build": "sha256:17e6a74ec89099ef934493871b380ae52fac22a67611b667849f132ab8b4021b",
+        "providerPodId": "17jsao96984h9q",
+        "kind": "gpu",
+        "expiresAt": 1791858310074
+      },
+      "envelope": {
+        "payload": {
+          "schema": "bithash.gpu-telemetry.v1",
+          "lease": "7cff48c3db07600d1555c42654ad4b75",
+          "sequence": 4,
+          "state": "computing",
+          "device": "nvidia-gpu",
+          "utilizationPercent": 0,
+          "candidatesPerSecond": null,
+          "candidatesChecked": "2097152"
+        },
+        "signature": "AEz39sRe+W6VEYw8uJcIj3bdaZEEDl5IRcW/Xxlm1OupuQDv3Sco0j+wiQ8hwOBnjxcSRlhXIjwufI+0HyqnCw=="
+      },
+      "evidence": "authenticated-worker-claim",
+      "hardwareVerified": false,
+      "coverageVerified": false
+    },
+    {
+      "schema": "bithash.gpu-proof.v1",
+      "digest": "061439fb19d3dfdb0bc644ff30e89dbc3c43712a7f8fb0c7f63f2469b89d42fd",
+      "receivedAt": "2026-10-13T02:20:20.000Z",
+      "domain": "bithash.gpu-telemetry.v1\n",
+      "enrollment": {
+        "id": "7cff48c3db07600d1555c42654ad4b75",
+        "publicKey": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAgFrRK/qKlpWKEk5ma1huVJnMW7w7ry7fTFDqmlGeYAI=\n-----END PUBLIC KEY-----\n",
+        "build": "sha256:17e6a74ec89099ef934493871b380ae52fac22a67611b667849f132ab8b4021b",
+        "providerPodId": "17jsao96984h9q",
+        "kind": "gpu",
+        "expiresAt": 1791858310074
+      },
+      "envelope": {
+        "payload": {
+          "schema": "bithash.gpu-telemetry.v1",
+          "lease": "7cff48c3db07600d1555c42654ad4b75",
+          "sequence": 5,
+          "state": "error",
+          "device": "nvidia-gpu",
+          "utilizationPercent": null,
+          "candidatesPerSecond": null,
+          "candidatesChecked": "2097152"
+        },
+        "signature": "2Ihrl6Fa4B98PRofutfeujR4WECIvWJibxrWMKk3CTKyvVlJHBduIx/9/KUxDhvJY5GQZgQ0JroC/vcW+7XaDw=="
+      },
+      "evidence": "authenticated-worker-claim",
+      "hardwareVerified": false,
+      "coverageVerified": false
+    }
+  ]
+}
