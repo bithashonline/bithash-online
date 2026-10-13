@@ -8,13 +8,13 @@ Public source and evidence for a community-funded attempt at the deliberately pu
 | Independent shutdown | Real RTX 3090 deadline shutdown, deletion/absence and crash recovery passed; final invoice pending | [live test](experiments/2026-10-12-live-shutdown.md) |
 | Hosted reporting | TLS, signed transport, durable history and dashboard proof links passed with a non-GPU test enrollment | [report](experiments/2026-10-12-remote-progress.md), [signed proof](experiments/2026-10-12-remote-telemetry-proof.json) |
 | Google approvals | Local sign-in and exact proposal approval implemented and browser-tested | [report](experiments/2026-10-12-google-owner.md) |
-| Automatic executor | Approved mock proposals execute and settle in local simulation | [report](experiments/2026-10-12-automatic-mock-executor.md) |
+| Automatic executor | Two owner-approved real synthetic rentals completed and were automatically deleted; one GPU maximum | [upgrade and limits](experiments/2026-10-13-operator-upgrade.md), [retained executor records](https://bithash.online/api/executor/status) |
 | Dashboard | Local approvals plus hosted fleet, telemetry and cached AI assessment; graphite/amber operator redesign | [local setup](dashboard/README.md), [hosted build](dashboard/HOSTED.md) |
-| ChatGPT-plan operator | Owner-triggered read-only inference accepted; cached report sync and online/offline display verified | [setup](local/CHATGPT-OPERATOR.md), [integration evidence](experiments/2026-10-12-hosted-operator.md) |
+| ChatGPT-plan Operator | Per-GPU activity reports and cached sync; bounded A5000 proposals with separate Google approval; new live option selection awaits capacity | [upgrade and validation](experiments/2026-10-13-operator-upgrade.md) |
 | GPU reporting acceptance | Real RTX 4090 synthetic run, interruption reports and independent deadline deletion observed | [acceptance](experiments/2026-10-13-hosted-gpu-acceptance.md) |
 | Rental status | Read-only registered-Pod inventory joined to signed worker reports | [fleet integration](experiments/2026-10-13-fleet-panel.md) |
 
-The AI explains evidence and suggests reviews; it cannot execute spending. Autonomous treasury transfers, provider top-ups and approval-to-real-provider dispatch are not connected. No #71 search coverage is claimed. Continuous report archival/retention and restricted SSH publishing remain pending. One control host is not high availability.
+The Operator explains observed GPU activity and can draft a bounded A5000 benchmark proposal. Google owner approval separately authorizes the real executor; the AI does not approve spending. The current live capacity check held because A5000 availability was NONE. Signed benchmark-result archival is implemented and fixture-tested but has not yet been exercised on a newly rented worker. No #71 search coverage is claimed. Autonomous treasury transfers, provider top-ups, production range workers, broader fleet concurrency, long-term retention/backups and restricted SSH capabilities remain pending. One control host is not high availability.
 
 ## Reproduce
 Use Node 22.16+ with experimental SQLite:
