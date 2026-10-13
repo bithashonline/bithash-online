@@ -134,7 +134,7 @@
     "dashboard/public/engine.mjs": "f9b6936992920ab921b7e06157366ace5f79e666a394ba596e60cd03098885eb",
     "dashboard/public/fleet.mjs": "e4b155b1f990933aadf957f26d292b51113f850c82f9db0ed3353adc4a5a155c",
     "dashboard/public/gpu-activity.mjs": "f050d9db587fd6136c5d1c39811e4706dd6c538241fe356c804d06a4815c395d",
-    "dashboard/public/gpu-detail.css": "26e1901ea95f5f6a68d45d4a16610f1b72d4443f97fedbdff2ec7d992f5a6303",
+    "dashboard/public/gpu-detail.css": "7cbdae26a5580ab75482d8110e471d16356572f8157edf87b56579707f97dc55",
     "dashboard/public/gpu-detail.mjs": "47289a7f5503353966f8cbb592771a130a4c3173c7945b44151ef082b0a19eb7",
     "dashboard/public/index.html": "990d5fedb2ce76436c40204e0f0fa16fb038caa67655a2170b5c7191654caca2",
     "dashboard/public/live-runs.mjs": "15b3c8825076daaa3fca931d4444edbffb639451d8533c92ee0b7b41dfeb07d8",
@@ -151,5 +151,6 @@
     "dashboard/worker/gateway.mjs": "a129a226e9a6f2c67b2c8d8d3574d6fc8fedc8e1a4f99e57907c8c243446a7a9",
     "dashboard/worker/telemetry.mjs": "250ded6b771542c8cd5e6bae4dcc345d0133bc99a2b355729f868ad09238e3cf"
   },
-  "hostConfiguration": "YOUR_COLLECTOR_HOST placeholders are deliberate; secrets remain external."
+  "hostConfiguration": "YOUR_COLLECTOR_HOST placeholders are deliberate; secrets remain external.",
+  "hashBasis": "Exact Git blob bytes in public commit 27747e1dbd5dee7dce176d4aef44a745c0684bbc, independent of Windows checkout line endings."
 }
