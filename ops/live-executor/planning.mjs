@@ -1,6 +1,8 @@
 import {hash} from './executor.mjs';
+import {bounds} from '../../local/own-range-protocol.js';
 export const GPU_PREFERENCE=Object.freeze(['rtx-a5000','rtx-4090','rtx-5090']);
-export function liveOptions(quote,limits,now=Date.now()){
+export function liveOptions(quote,limits,now=Date.now(),rangeMission=null){
+ if(rangeMission){if(Object.keys(rangeMission).sort().join()!=='chunkSize,end,jobId,recoveryKeyId,solverSha256,start,targetId'||rangeMission.targetId!=='puzzle-71'||!/^range-[a-f0-9]{24}$/.test(rangeMission.jobId)||! /^[a-f0-9]{64}$/.test(rangeMission.solverSha256)||! /^[a-f0-9]{64}$/.test(rangeMission.recoveryKeyId))throw Error('invalid_range_terms');bounds('puzzle-71',rangeMission.start,rangeMission.end);}
  if(!limits||Object.keys(limits).sort().join()!=='capMicrousd,maxDurationSeconds'||!Number.isInteger(limits.maxDurationSeconds)||limits.maxDurationSeconds<300||limits.maxDurationSeconds>900||typeof limits.capMicrousd!=='string'||!/^\d{1,7}$/.test(limits.capMicrousd)||BigInt(limits.capMicrousd)<10000n||BigInt(limits.capMicrousd)>1000000n)throw Error('invalid_live_limits');
  const r=quote?.record,age=now-Date.parse(r?.observedAt);
  if(!r||quote.sha256!==hash(r)||!Number.isFinite(age)||age< -5000||age>60000||r.filters?.count!==1||r.filters?.cloud!=='SECURE'||r.filters?.minCudaVersion!=='12.8'||!Array.isArray(r.rows))throw Error('invalid_live_quote');
@@ -14,8 +16,8 @@ export function liveOptions(quote,limits,now=Date.now()){
  return [...new Set([300,limits.maxDurationSeconds])].flatMap(durationSeconds=>{
   const estimated=(ceiling*BigInt(durationSeconds)+3599n)/3600n;
   if(estimated>BigInt(limits.capMicrousd))return [];
-  const input={gpu:row.gpu,durationSeconds,capMicrousd:limits.capMicrousd};
-  return [{id:'option-'+hash(input).slice(0,16),input,estimatedMaximumMicrousd:String(estimated),workload:'fixed-synthetic-known-answer',count:1,puzzle71Candidates:'0'}];
+  const input={gpu:row.gpu,durationSeconds,capMicrousd:limits.capMicrousd,...(rangeMission?{jobId:rangeMission.jobId}:{})};
+  return [{id:'option-'+hash(input).slice(0,16),input,estimatedMaximumMicrousd:String(estimated),workload:rangeMission?'fixed-public-puzzle-range':'fixed-synthetic-known-answer',count:1,puzzle71Candidates:rangeMission?String(BigInt(rangeMission.end)-BigInt(rangeMission.start)):'0'}];
  });
 }
 export function validateLiveChoice(choice){

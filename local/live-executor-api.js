@@ -1,7 +1,8 @@
 import {spawn} from 'node:child_process';
-export function executorConnection({keyFile,knownHostsFile}){
+export function executorConnection({keyFile,knownHostsFile,sshTarget}){
+ if(!/^[a-z][a-z0-9-]{0,31}@[-.a-zA-Z0-9]{1,253}$/.test(sshTarget??''))throw Error('invalid_executor_connection');
  return async(action,input={})=>new Promise((resolve,reject)=>{
-  const child=spawn('ssh',['-o','BatchMode=yes','-o','StrictHostKeyChecking=yes','-o','ConnectTimeout=8','-o','UserKnownHostsFile='+knownHostsFile,'-i',keyFile,'root@YOUR_COLLECTOR_HOST','node /opt/bithash-executor/ops/live-executor/control.mjs'],{windowsHide:true,stdio:['pipe','pipe','pipe']});let data='',finished=false;
+  const child=spawn('ssh',['-o','BatchMode=yes','-o','StrictHostKeyChecking=yes','-o','ConnectTimeout=8','-o','UserKnownHostsFile='+knownHostsFile,'-i',keyFile,sshTarget,'node /opt/bithash-executor/ops/live-executor/control.mjs'],{windowsHide:true,stdio:['pipe','pipe','pipe']});let data='',finished=false;
   const finish=(err,value)=>{if(finished)return;finished=true;clearTimeout(timer);err?reject(err):resolve(value)};
   const timer=setTimeout(()=>{child.kill();finish(Error('executor_outcome_unknown'));},25000);
   child.on('error',()=>finish(Error('executor_unavailable')));child.stdout.on('data',x=>{data+=x;if(data.length>1000000){child.kill();finish(Error('response_too_large'));}});child.stderr.resume();child.stdin.on('error',()=>{});
@@ -13,7 +14,7 @@ export async function handleLiveExecutor(req,res,{auth,call,origin='http://127.0
  const send=(status,v)=>{res.writeHead(status,{'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});res.end(JSON.stringify(v));return true;};
  try{
   if(req.method==='GET'&&path==='/api/live-runs')return send(200,await call('status'));
-  if(req.method!=='POST'||!['/api/live-runs/propose','/api/live-runs/approve','/api/live-runs/cancel'].includes(path))return send(405,{error:'method_not_allowed'});
+  if(req.method!=='POST'||!['/api/live-runs/propose','/api/live-runs/propose-range','/api/live-runs/approve','/api/live-runs/cancel'].includes(path))return send(405,{error:'method_not_allowed'});
   if(req.headers.origin!==origin||req.headers['content-type']!=='application/json')return send(403,{error:'origin_rejected'});
   auth.authorize(req);let body='';for await(const x of req){body+=x;if(Buffer.byteLength(body)>4096)return send(413,{error:'body_too_large'});}
   return send(200,await call(path.split('/').at(-1),JSON.parse(body)));

@@ -20,10 +20,16 @@ const real=[
  {id:'GPU / 00',title:'Runpod Secure Cloud selected',detail:'RTX A5000 is the agreed default for new proposals. Earlier RTX 4090 integration tests passed; live rentals require owner approval. Production Puzzle #71 search is not connected.',status:'NOT CONNECTED'},
  {id:'SOL / —',title:'Treasury and fee routing',detail:'Creator fees accumulate in treasury. Each compute run needs owner approval of GPU count, runtime and budget. Wallet and provider funding are not connected.',status:'NOT CONNECTED'}
 ];
+function renderWorkerEvidence(){
+ const root=$('worker-cards');
+ const open=new Set([...root.querySelectorAll('details[data-range-details][open]')].map(d=>d.dataset.rangeDetails));
+ root.innerHTML=workerCards(backend,backendReceivedAt,Date.now(),backendConnected);
+ for(const d of root.querySelectorAll('details[data-range-details]'))d.open=open.has(d.dataset.rangeDetails);
+}
 function render(){
  $('worker-evidence').hidden=sim;
  $('worker-status').textContent=backendConnected?'LOCAL API CONNECTED':'API UNAVAILABLE';
- $('worker-cards').innerHTML=workerCards(backend,backendReceivedAt,Date.now(),backendConnected);
+ renderWorkerEvidence();
  $('actual').classList.toggle('active',!sim);$('simulation').classList.toggle('active',sim);$('actual').setAttribute('aria-pressed',String(!sim));$('simulation').setAttribute('aria-pressed',String(sim));$('controls').hidden=!sim;
  $('notice').innerHTML=sim?'<strong>SIMULATION MODE</strong> / Synthetic funds, instances and worker reports. No blockchain, provider or AI requests are sent.':'<strong>CURRENT EVIDENCE</strong> / GPU test reports are connected below. No token launched or treasury connected. Rental status is not yet synchronized. <a href="#gpu-progress">View GPU reports ↗</a>';
  const values=sim?[[money(state.fees),'Test fees received','Synthetic USD; no SOL conversion'],[money(state.compute),'Legacy 80% simulation',money(state.other)+' remains unassigned'],[String(state.rigs.filter(r=>r.status==='running').length),'Running test rigs',state.rigs.length+' total simulated instances'],[money(state.spent),'Simulated spend',money(available(state))+' unreserved compute']]:[['—','Creator fees received','Treasury not connected'],['Approval','Compute spending','Owner approves each bounded run'],['—','Rental status','Not synchronized · see GPU reports'],['68','Local backend tests','GPU runs recorded separately']];
@@ -65,7 +71,7 @@ async function pollBackend(){
  render();
 }
 pollBackend();const pollTimer=setInterval(pollBackend,5000);
-const freshnessTimer=setInterval(()=>{if(!sim){$('worker-cards').innerHTML=workerCards(backend,backendReceivedAt,Date.now(),backendConnected)}},1000);
+const freshnessTimer=setInterval(()=>{if(!sim)renderWorkerEvidence();},1000);
 window.addEventListener('pagehide',()=>{clearInterval(pollTimer);clearInterval(freshnessTimer)},{once:true});
 if(document.modelContext?.registerTool){const life=new AbortController();const tool={name:'add_bithash_test_fees',description:'Switch to simulation and add synthetic USD test fees. Reserves simulated rigs only; makes no payments.',inputSchema:{type:'object',properties:{dollars:{type:'integer',minimum:1,maximum:1000}},required:['dollars'],additionalProperties:false},annotations:{readOnlyHint:false},execute(input){if(!input||Object.keys(input).length!==1||!Number.isInteger(input.dollars)||input.dollars<1||input.dollars>1000)throw Error('Expected dollars integer 1–1000');fund(state,input.dollars*1000000);sim=true;render();return {simulation:true,fees:state.fees,rigs:state.rigs.length}}};try{Promise.resolve(document.modelContext.registerTool(tool,{signal:life.signal})).catch(()=>{});}catch{}window.addEventListener('pagehide',()=>life.abort(),{once:true});}
 

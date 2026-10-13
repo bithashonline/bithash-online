@@ -1,0 +1,22 @@
+{
+  "schema": "bithash.owned-range-worker-package.v1",
+  "workload": "fixed-public-puzzle-range",
+  "files": {
+    "gpu/range/live-worker.mjs": "3b0ed7a3fece116859eda9403ed2e9d5077bc28b856e0ff8f7986fa7f422909b",
+    "gpu/worker/core.mjs": "6aac048b75619174c9ec14e1257b46f3eb609a3d59f4ce15f3b8d6dd2fb9701d",
+    "local/collector-client.js": "e0ada5d0f8ddbd7029f042e87d7e1b05a7611fe92e810cf7d37b1be46a6c29c0",
+    "local/gpu-telemetry.js": "650c60a49a0a3eee3f5c6669a3d0641142368a9a1b315bcddd82192886db1e2f",
+    "local/own-range-backend.js": "e5567670aaa80f02c52a2e0300cf42bdb3bc6ccf8d3ff709617f5cb562d1056d",
+    "local/own-range-client.js": "551820d3e228ab2e970bbc84937fa3b4cf2359e98dc2bb1f2c4faa0e43d093d6",
+    "local/own-range-protocol.js": "614d3c9e951363c790d99831127f1083ebb31c09930b1c27b131fc6fe3783fd9",
+    "local/own-range-runtime.js": "3504ec8bde983e79d7772d082067b0bf71413ec1f34a2cf1e60ffa22e5c2d6fe",
+    "local/solver.js": "d1fb38463d53cd5ebe7105dda03071aac7b0f3270840b0f71e9faa39a231b895",
+    "native/BitCrack-LICENSE.MIT": "d1ca4c0aaddbafcbd85036ba73b8f298a17a7da31520ff4b21c28fa419f36fc0",
+    "native/CUDA-LICENSE.txt": "e2c71babfd18a8e69542dd7e9ca018f9caa438094001a58e6bc4d8c999bf0d07",
+    "native/bithash-range": "2fa95f416407975c757497c9d4cc6c4e235211da8a5fa7ac44f20b4383d5e555",
+    "native/lib/libcudart.so.12": "8774224f5b11a73b15d074a3fcce7327322c5c4cfdfd924d6a826779eec968fe",
+    "package.json": "639b0efea3eeedfff1e65604c2c6aa65cdb850638c9b5448fa5624f6bd1e5556"
+  },
+  "upstreamCommit": "6bf8059ef075eb1622298395866b0bd02375e1d9",
+  "nativeGpuValidated": false
+}

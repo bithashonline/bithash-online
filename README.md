@@ -1,7 +1,17 @@
 # BitHash
 Public source and evidence for a community-funded attempt at the deliberately public Bitcoin puzzle #71. This release contains working prototypes and bounded tests; it does not establish a production search fleet or a solved puzzle.
 
-## Current release — October 13, 2026
+## Owned range connection — October 13, 2026
+
+The range-aware executor and owned ledger are deployed. Exact signed chunks advance durable checkpoints; enrollment retries and receipt replay do not add duplicate credit. The first 1,048,576-candidate #71 job is reserved, with zero searched coverage. New native solver checksum: `2fa95f416407975c757497c9d4cc6c4e235211da8a5fa7ac44f20b4383d5e555`. GPU qualification of this binary is still pending fresh exact Google owner approval. The previous successful live benchmark used a different interface and does not qualify it.
+
+212 backend/executor tests and57 hosted dashboard tests passed, including range-aware AI tickets and archive checks;24 executor tests passed on the deployed Linux host. HTTPS artifact integrity and unauthenticated task rejection were read back. These overlap, so do not total them as independent checks. Owner recovery private material stays on the desktop; workers receive only its public key and their scoped lease. Signatures do not prove exhaustive GPU search.
+
+[Range executor contract and limits](ops/live-executor/RANGE.md) · [Owned ledger](local/OWN-RANGE-SOLVER.md) · [Native source/build](gpu/range/README.md) · [Runtime manifest](gpu/range/runtime-manifest.json).
+
+The deployment retains private pre-change state/source/configuration backups. Restricted SSH, off-host retention, treasury funding and multi-GPU operation remain future work. Earlier implementation snapshots below are historical.
+
+## Earlier release snapshot — October 13, 2026
 | Component | Observed status | Evidence |
 | --- | --- | --- |
 | GPU benchmarks | Real synthetic CUDA fixtures; A5000 led the recorded cost comparison | [comparison](experiments/2026-10-12-gpu-comparison.md) |

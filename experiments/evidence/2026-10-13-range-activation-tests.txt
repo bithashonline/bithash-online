@@ -1,0 +1,1340 @@
+TAP version 13
+# (node:21344) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: signed approval has independently verifiable evidence and linked historical records
+ok 1 - signed approval has independently verifiable evidence and linked historical records
+  ---
+  duration_ms: 11.9269
+  type: 'test'
+  ...
+# (node:26380) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: public projection excludes identity, credentials, raw context and report fields
+ok 2 - public projection excludes identity, credentials, raw context and report fields
+  ---
+  duration_ms: 1.2999
+  type: 'test'
+  ...
+# Subtest: snapshot binds every event to a stable sanitized proof and retains exact terms
+ok 3 - snapshot binds every event to a stable sanitized proof and retains exact terms
+  ---
+  duration_ms: 7.0388
+  type: 'test'
+  ...
+# (node:25056) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: public masked rows remain observations, never guessed intervals or global range proofs
+ok 4 - public masked rows remain observations, never guessed intervals or global range proofs
+  ---
+  duration_ms: 2.16
+  type: 'test'
+  ...
+# Subtest: live-reader contract is fixed read-only public GET without cookies, redirects, assignment or registration
+ok 5 - live-reader contract is fixed read-only public GET without cookies, redirects, assignment or registration
+  ---
+  duration_ms: 114.0483
+  type: 'test'
+  ...
+# Subtest: cooldown and cached source observations survive restart and fence concurrent readers
+ok 6 - cooldown and cached source observations survive restart and fence concurrent readers
+  ---
+  duration_ms: 137.247
+  type: 'test'
+  ...
+# Subtest: network failure preserves prior imports, uses safe error codes and cannot fake source freshness
+ok 7 - network failure preserves prior imports, uses safe error codes and cannot fake source freshness
+  ---
+  duration_ms: 120.2992
+  type: 'test'
+  ...
+# Subtest: wrong schemas, non-HTML responses, oversized streams and masked prefix exports are rejected
+ok 8 - wrong schemas, non-HTML responses, oversized streams and masked prefix exports are rejected
+  ---
+  duration_ms: 141.9676
+  type: 'test'
+  ...
+# Subtest: exact authorized reports influence priority; expiry/retraction restore eligibility and \#71 cannot dispatch
+ok 9 - exact authorized reports influence priority; expiry/retraction restore eligibility and \#71 cannot dispatch
+  ---
+  duration_ms: 143.7665
+  type: 'test'
+  ...
+# Subtest: masked live report cannot shift the scheduler, including when every possible digit would imply different bounds
+ok 10 - masked live report cannot shift the scheduler, including when every possible digit would imply different bounds
+  ---
+  duration_ms: 133.9149
+  type: 'test'
+  ...
+# Subtest: dashboard exposes source coverage limitations separately from our work, without worker/IP metadata
+ok 11 - dashboard exposes source coverage limitations separately from our work, without worker/IP metadata
+  ---
+  duration_ms: 128.7955
+  type: 'test'
+  ...
+# Subtest: registration uses fresh PKCE, nonce and stable host; returning account reuses client
+ok 12 - registration uses fresh PKCE, nonce and stable host; returning account reuses client
+  ---
+  duration_ms: 2.58
+  type: 'test'
+  ...
+# Subtest: callback rejects missing/expired/mismatched state, declined permission and changed client
+ok 13 - callback rejects missing/expired/mismatched state, declined permission and changed client
+  ---
+  duration_ms: 0.7705
+  type: 'test'
+  ...
+# Subtest: real JWT verification rejects wrong signature, nonce, audience, issuer and account
+ok 14 - real JWT verification rejects wrong signature, nonce, audience, issuer and account
+  ---
+  duration_ms: 441.7082
+  type: 'test'
+  ...
+# Subtest: identity alone does not enable inference; refreshed credentials retain explicit scopes
+ok 15 - identity alone does not enable inference; refreshed credentials retain explicit scopes
+  ---
+  duration_ms: 0.3396
+  type: 'test'
+  ...
+# Subtest: fleet evidence preserves historical reports and proof without secrets or live-work inflation
+ok 16 - fleet evidence preserves historical reports and proof without secrets or live-work inflation
+  ---
+  duration_ms: 1.0972
+  type: 'test'
+  ...
+# Subtest: missing content-type still requires a valid completed SSE event
+ok 17 - missing content-type still requires a valid completed SSE event
+  ---
+  duration_ms: 2.4705
+  type: 'test'
+  ...
+# Subtest: completed item events support empty terminal output without accepting partial deltas
+ok 18 - completed item events support empty terminal output without accepting partial deltas
+  ---
+  duration_ms: 1.5424
+  type: 'test'
+  ...
+# Subtest: partial text, terminal limits and interrupted streams never produce a report
+ok 19 - partial text, terminal limits and interrupted streams never produce a report
+  ---
+  duration_ms: 1.3393
+  type: 'test'
+  ...
+# Subtest: plan inference uses stream and array input, no unsupported output cap, no tools, no execution
+ok 20 - plan inference uses stream and array input, no unsupported output cap, no tools, no execution
+  ---
+  duration_ms: 1.3002
+  type: 'test'
+  ...
+# Subtest: model cannot invent executable actions or missing fact references; no retries or paid fallback
+ok 21 - model cannot invent executable actions or missing fact references; no retries or paid fallback
+  ---
+  duration_ms: 1.1671
+  type: 'test'
+  ...
+# (node:31388) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: compressed secp256k1 vectors and all three solved ranges
+ok 22 - compressed secp256k1 vectors and all three solved ranges
+  ---
+  duration_ms: 12.871
+  type: 'test'
+  ...
+# Subtest: exact integers and conservative billing rounding
+ok 23 - exact integers and conservative billing rounding
+  ---
+  duration_ms: 0.2836
+  type: 'test'
+  ...
+# Subtest: fee fixture replay deduplicates; conflicts roll back
+ok 24 - fee fixture replay deduplicates; conflicts roll back
+  ---
+  duration_ms: 120.6373
+  type: 'test'
+  ...
+# Subtest: overlap, replay conflict and exhausted budget cannot mutate reserves
+ok 25 - overlap, replay conflict and exhausted budget cannot mutate reserves
+  ---
+  duration_ms: 154.9579
+  type: 'test'
+  ...
+# Subtest: adjacent partitions accepted without double coverage
+ok 26 - adjacent partitions accepted without double coverage
+  ---
+  duration_ms: 199.8491
+  type: 'test'
+  ...
+# Subtest: accepted create timeout survives restart; reconciliation creates no second job
+ok 27 - accepted create timeout survives restart; reconciliation creates no second job
+  ---
+  duration_ms: 174.266
+  type: 'test'
+  ...
+# Subtest: ambiguous absent provider remains reserved and paused
+ok 28 - ambiguous absent provider remains reserved and paused
+  ---
+  duration_ms: 138.1346
+  type: 'test'
+  ...
+# Subtest: restart checkpoint, fenced expired lease and duplicate reports
+ok 29 - restart checkpoint, fenced expired lease and duplicate reports
+  ---
+  duration_ms: 170.3593
+  type: 'test'
+  ...
+# Subtest: process exits during transaction; SQLite rolls back and work safely repeats
+ok 30 - process exits during transaction; SQLite rolls back and work safely repeats
+  ---
+  duration_ms: 202.6711
+  type: 'test'
+  ...
+# Subtest: stopped job retains reservation; invoice replay exact and excess rejected
+ok 31 - stopped job retains reservation; invoice replay exact and excess rejected
+  ---
+  duration_ms: 148.222
+  type: 'test'
+  ...
+# Subtest: paid adapter disabled even when it claims simulation
+ok 32 - paid adapter disabled even when it claims simulation
+  ---
+  duration_ms: 102.9449
+  type: 'test'
+  ...
+# (node:2328) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: overlapping source claims are unioned, separate from our actual checkpoints
+ok 33 - overlapping source claims are unioned, separate from our actual checkpoints
+  ---
+  duration_ms: 160.5817
+  type: 'test'
+  ...
+# Subtest: exact \#71 arithmetic, scattered intervals, boundaries, and no executable \#71 path
+ok 34 - exact \#71 arithmetic, scattered intervals, boundaries, and no executable \#71 path
+  ---
+  duration_ms: 95.0784
+  type: 'test'
+  ...
+# Subtest: prefer fresh unreported gaps, then fall back without permanently excluding any key
+ok 35 - prefer fresh unreported gaps, then fall back without permanently excluding any key
+  ---
+  duration_ms: 125.9168
+  type: 'test'
+  ...
+# Subtest: expiry, withdrawal, replacement, and replay cannot silently reactivate stale claims
+ok 36 - expiry, withdrawal, replacement, and replay cannot silently reactivate stale claims
+  ---
+  duration_ms: 125.4276
+  type: 'test'
+  ...
+# Subtest: reject invalid or aggregate-only imports atomically and preserve previous snapshot
+ok 37 - reject invalid or aggregate-only imports atomically and preserve previous snapshot
+  ---
+  duration_ms: 121.7379
+  type: 'test'
+  ...
+# Subtest: empty replacement retracts source claims; other source still counts
+ok 38 - empty replacement retracts source claims; other source still counts
+  ---
+  duration_ms: 125.437
+  type: 'test'
+  ...
+# Subtest: scheduled choices survive restart; replay stable after source changes; budget failure rolls back
+ok 39 - scheduled choices survive restart; replay stable after source changes; budget failure rolls back
+  ---
+  duration_ms: 147.0078
+  type: 'test'
+  ...
+# Subtest: two concurrent controller processes allocate disjoint ranges under one database lock
+ok 40 - two concurrent controller processes allocate disjoint ranges under one database lock
+  ---
+  duration_ms: 176.8525
+  type: 'test'
+  ...
+# Subtest: dashboard exposes aggregate evidence without source URLs, import IDs or invented live rigs
+ok 41 - dashboard exposes aggregate evidence without source URLs, import IDs or invented live rigs
+  ---
+  duration_ms: 114.9464
+  type: 'test'
+  ...
+# Subtest: all tiny external coverage patterns eventually allocate each candidate exactly once
+ok 42 - all tiny external coverage patterns eventually allocate each candidate exactly once
+  ---
+  duration_ms: 685.0589
+  type: 'test'
+  ...
+# (node:30416) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: dashboard never represents local fixture jobs as live GPU rentals
+ok 43 - dashboard never represents local fixture jobs as live GPU rentals
+  ---
+  duration_ms: 114.0992
+  type: 'test'
+  ...
+# Subtest: missing or malformed database degrades without exposing paths or creating a database
+ok 44 - missing or malformed database degrades without exposing paths or creating a database
+  ---
+  duration_ms: 0.3045
+  type: 'test'
+  ...
+# Subtest: API rejects mutation and does not accept database selection from query
+ok 45 - API rejects mutation and does not accept database selection from query
+  ---
+  duration_ms: 0.4263
+  type: 'test'
+  ...
+# Subtest: enrollment rejects wrong email, signature failure and bad claims without persistence
+ok 46 - enrollment rejects wrong email, signature failure and bad claims without persistence
+  ---
+  duration_ms: 1.902
+  type: 'test'
+  ...
+# Subtest: persisted identity survives restart and cannot be rebound by same email
+ok 47 - persisted identity survives restart and cannot be rebound by same email
+  ---
+  duration_ms: 16.4582
+  type: 'test'
+  ...
+# Subtest: storage failure creates no session or in-memory owner
+ok 48 - storage failure creates no session or in-memory owner
+  ---
+  duration_ms: 0.2872
+  type: 'test'
+  ...
+# (node:20748) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: Google claims must match owner, audience, issuer, verification and expiry
+ok 49 - Google claims must match owner, audience, issuer, verification and expiry
+  ---
+  duration_ms: 1.6339
+  type: 'test'
+  ...
+# Subtest: session requires secret cookie plus CSRF and expires
+ok 50 - session requires secret cookie plus CSRF and expires
+  ---
+  duration_ms: 0.6562
+  type: 'test'
+  ...
+# Subtest: authenticated approval binds exact terms and stores no identity tokens
+ok 51 - authenticated approval binds exact terms and stores no identity tokens
+  ---
+  duration_ms: 7.3646
+  type: 'test'
+  ...
+# Subtest: login refuses cross-site requests before token verification
+ok 52 - login refuses cross-site requests before token verification
+  ---
+  duration_ms: 0.5279
+  type: 'test'
+  ...
+# Subtest: temporary watch mode expires, preserves daily cap and never exceeds one request per minute
+ok 53 - temporary watch mode expires, preserves daily cap and never exceeds one request per minute
+  ---
+  duration_ms: 3.8507
+  type: 'test'
+  ...
+# Subtest: real saved logs preserve claims, unknowns and counter resets without exporting extra fields
+ok 54 - real saved logs preserve claims, unknowns and counter resets without exporting extra fields
+  ---
+  duration_ms: 2.7161
+  type: 'test'
+  ...
+# Subtest: one plan request writes each rental once, with restricted citation IDs and no paid fallback/tools
+ok 55 - one plan request writes each rental once, with restricted citation IDs and no paid fallback/tools
+  ---
+  duration_ms: 5.7493
+  type: 'test'
+  ...
+# Subtest: unsupported cross-rental citations and duplicate/missing model outputs never publish
+ok 56 - unsupported cross-rental citations and duplicate/missing model outputs never publish
+  ---
+  duration_ms: 2.4874
+  type: 'test'
+  ...
+# Subtest: changed-source batching, cooldown and rolling request limit survive restart; unchanged logs cost no inference
+ok 57 - changed-source batching, cooldown and rolling request limit survive restart; unchanged logs cost no inference
+  ---
+  duration_ms: 16.3792
+  type: 'test'
+  ...
+# operator_status: gpu_activity_activity_model_http_503
+# operator_status: gpu_activity_activity_model_http_503
+# operator_status: gpu_activity_activity_model_http_503
+# operator_status: gpu_activity_activity_model_http_503
+# Subtest: temporary model failures retry at 1/2/4 minutes, survive restart and stop at the daily quota
+ok 58 - temporary model failures retry at 1/2/4 minutes, survive restart and stop at the daily quota
+  ---
+  duration_ms: 12.0196
+  type: 'test'
+  ...
+# operator_status: gpu_activity_activity_model_http_401
+# operator_status: gpu_activity_publish_unavailable
+# Subtest: authorization failures are not rapidly retried; publication outage does not block new reports
+ok 59 - authorization failures are not rapidly retried; publication outage does not block new reports
+  ---
+  duration_ms: 13.862
+  type: 'test'
+  ...
+# (node:15548) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: signed proof independently verifies, survives service reconstruction and cannot refresh on replay
+ok 60 - signed proof independently verifies, survives service reconstruction and cannot refresh on replay
+  ---
+  duration_ms: 7.8814
+  type: 'test'
+  ...
+# Subtest: tampering, unknown lease, expired lease, revocation and counters moving backwards reject
+ok 61 - tampering, unknown lease, expired lease, revocation and counters moving backwards reject
+  ---
+  duration_ms: 3.2651
+  type: 'test'
+  ...
+# Subtest: transport tests cannot claim GPU devices and arbitrary secret-bearing fields reject
+ok 62 - transport tests cannot claim GPU devices and arbitrary secret-bearing fields reject
+  ---
+  duration_ms: 1.0544
+  type: 'test'
+  ...
+# Subtest: an unavailable sample cannot reset a previously reported counter
+ok 63 - an unavailable sample cannot reset a previously reported counter
+  ---
+  duration_ms: 3.1348
+  type: 'test'
+  ...
+# Subtest: GPU validation corpus covers every subrange of all solved fixtures, including excluded solutions
+ok 64 - GPU validation corpus covers every subrange of all solved fixtures, including excluded solutions
+  ---
+  duration_ms: 51.6287
+  type: 'test'
+  ...
+# Subtest: GPU validation rejects overshoot, false matches, CPU backend and candidate-bearing output
+ok 65 - GPU validation rejects overshoot, false matches, CPU backend and candidate-bearing output
+  ---
+  duration_ms: 8.0133
+  type: 'test'
+  ...
+# Subtest: live approval requires owner session and same-origin JSON; public reads cannot dispatch
+ok 66 - live approval requires owner session and same-origin JSON; public reads cannot dispatch
+  ---
+  duration_ms: 4.3135
+  type: 'test'
+  ...
+# Subtest: oversized owner request cannot reach remote executor
+ok 67 - oversized owner request cannot reach remote executor
+  ---
+  duration_ms: 0.6102
+  type: 'test'
+  ...
+# (node:26560) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: no execution before approval; timer deadline settles once and evidence reconciles
+ok 68 - no execution before approval; timer deadline settles once and evidence reconciles
+  ---
+  duration_ms: 5.9427
+  type: 'test'
+  ...
+# Subtest: restart and competing connections neither reset deadline nor duplicate dispatch/settlement
+ok 69 - restart and competing connections neither reset deadline nor duplicate dispatch/settlement
+  ---
+  duration_ms: 132.6589
+  type: 'test'
+  ...
+# Subtest: expired approvals release budget; real providers and other destinations untouched
+ok 70 - expired approvals release budget; real providers and other destinations untouched
+  ---
+  duration_ms: 2.5658
+  type: 'test'
+  ...
+# Subtest: early stop bills elapsed time; clock rollback and altered terms fail closed
+ok 71 - early stop bills elapsed time; clock rollback and altered terms fail closed
+  ---
+  duration_ms: 2.7693
+  type: 'test'
+  ...
+# Subtest: AI selects a bounded option; no executable parameters or wallet enters the request
+ok 72 - AI selects a bounded option; no executable parameters or wallet enters the request
+  ---
+  duration_ms: 8.3617
+  type: 'test'
+  ...
+# Subtest: invented choices, extra commands, no funds and stale evidence cannot create a mission
+ok 73 - invented choices, extra commands, no funds and stale evidence cannot create a mission
+  ---
+  duration_ms: 4.133
+  type: 'test'
+  ...
+# (node:26452) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: range model choices retain the fixed mission and use separate resumable drafting state
+ok 74 - range model choices retain the fixed mission and use separate resumable drafting state
+  ---
+  duration_ms: 14.1489
+  type: 'test'
+  ...
+# Subtest: real planner accepts only bounded quoted options, no model-supplied commands or replacements
+ok 75 - real planner accepts only bounded quoted options, no model-supplied commands or replacements
+  ---
+  duration_ms: 1.8133
+  type: 'test'
+  ...
+# Subtest: no availability holds before inference; quote tampering and excess limits fail
+ok 76 - no availability holds before inference; quote tampering and excess limits fail
+  ---
+  duration_ms: 0.8567
+  type: 'test'
+  ...
+# Subtest: lost proposal response resumes the saved choice without another quote/model request or approval
+ok 77 - lost proposal response resumes the saved choice without another quote/model request or approval
+  ---
+  duration_ms: 4.9513
+  type: 'test'
+  ...
+# Subtest: fallback order, availability validation and spending ceiling are deterministic
+ok 78 - fallback order, availability validation and spending ceiling are deterministic
+  ---
+  duration_ms: 0.4917
+  type: 'test'
+  ...
+# (node:7020) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: Google owner imports a server-held draft, then separately approves exact mission terms
+ok 79 - Google owner imports a server-held draft, then separately approves exact mission terms
+  ---
+  duration_ms: 12.04
+  type: 'test'
+  ...
+# (node:30588) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: five workers get disjoint exact ranges; approval binds plan, dollars remain synthetic
+ok 80 - five workers get disjoint exact ranges; approval binds plan, dollars remain synthetic
+  ---
+  duration_ms: 184.7645
+  type: 'test'
+  ...
+# Subtest: restart retains mission/checkpoint; stale epoch and worker reassignment rejected
+ok 81 - restart retains mission/checkpoint; stale epoch and worker reassignment rejected
+  ---
+  duration_ms: 183.2263
+  type: 'test'
+  ...
+# Subtest: deadline stops unfinished assignments and settles synthetic quote without claiming coverage
+ok 82 - deadline stops unfinished assignments and settles synthetic quote without claiming coverage
+  ---
+  duration_ms: 143.1847
+  type: 'test'
+  ...
+# Subtest: budget, malformed input, stale review, changed replay and arbitrary targets fail closed
+ok 83 - budget, malformed input, stale review, changed replay and arbitrary targets fail closed
+  ---
+  duration_ms: 107.3946
+  type: 'test'
+  ...
+# Subtest: concurrent database handles reserve non-overlapping plans and refuse double budget approval
+ok 84 - concurrent database handles reserve non-overlapping plans and refuse double budget approval
+  ---
+  duration_ms: 123.3768
+  type: 'test'
+  ...
+# Subtest: plan tampering cannot dispatch and failed range plan leaves no partial allocation
+ok 85 - plan tampering cannot dispatch and failed range plan leaves no partial allocation
+  ---
+  duration_ms: 130.7749
+  type: 'test'
+  ...
+# (node:28668) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: operator proposal preserves quote and source snapshot without approving or spending
+ok 86 - operator proposal preserves quote and source snapshot without approving or spending
+  ---
+  duration_ms: 3.9961
+  type: 'test'
+  ...
+# Subtest: bad bounds, injected prices and stale evidence cannot produce proposals
+ok 87 - bad bounds, injected prices and stale evidence cannot produce proposals
+  ---
+  duration_ms: 0.7981
+  type: 'test'
+  ...
+# Subtest: proposal API enforces owner and CSRF before snapshot generation
+ok 88 - proposal API enforces owner and CSRF before snapshot generation
+  ---
+  duration_ms: 4.4316
+  type: 'test'
+  ...
+# Subtest: real cached report serializes deterministically with no account record
+ok 89 - real cached report serializes deterministically with no account record
+  ---
+  duration_ms: 2.7176
+  type: 'test'
+  ...
+# Subtest: unexpected credential fields, changed evidence and external proof URLs reject publication
+ok 90 - unexpected credential fields, changed evidence and external proof URLs reject publication
+  ---
+  duration_ms: 3.7882
+  type: 'test'
+  ...
+# Subtest: local operator flags stale workers and unknown funding without inventing GPUs or budget
+ok 91 - local operator flags stale workers and unknown funding without inventing GPUs or budget
+  ---
+  duration_ms: 2.3355
+  type: 'test'
+  ...
+# Subtest: evidence excludes injected extra fields and raw metric labels
+ok 92 - evidence excludes injected extra fields and raw metric labels
+  ---
+  duration_ms: 0.2396
+  type: 'test'
+  ...
+# Subtest: model request has no tools, persists no provider key, and returns review-only advice
+ok 93 - model request has no tools, persists no provider key, and returns review-only advice
+  ---
+  duration_ms: 0.722
+  type: 'test'
+  ...
+# Subtest: unsupported actions and invented evidence references are rejected
+ok 94 - unsupported actions and invented evidence references are rejected
+  ---
+  duration_ms: 0.8468
+  type: 'test'
+  ...
+# Subtest: missing credentials and stale snapshots never call network
+ok 95 - missing credentials and stale snapshots never call network
+  ---
+  duration_ms: 0.51
+  type: 'test'
+  ...
+# Subtest: refusal, incomplete output and network errors fail closed without raw error leakage
+ok 96 - refusal, incomplete output and network errors fail closed without raw error leakage
+  ---
+  duration_ms: 0.7327
+  type: 'test'
+  ...
+# (node:26796) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: own-only withdraws external influence without deleting history or existing own jobs/budgets
+ok 97 - own-only withdraws external influence without deleting history or existing own jobs/budgets
+  ---
+  duration_ms: 133.1571
+  type: 'test'
+  ...
+# Subtest: persisted own-only policy prevents both online readers from making network requests
+ok 98 - persisted own-only policy prevents both online readers from making network requests
+  ---
+  duration_ms: 102.2219
+  type: 'test'
+  ...
+# Subtest: another controller disabling a feed during collection fences its later import
+ok 99 - another controller disabling a feed during collection fences its later import
+  ---
+  duration_ms: 157.3602
+  type: 'test'
+  ...
+# (node:27860) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: fixed 71-bit target/probe identity and arbitrary subranges retain BigInt precision
+ok 100 - fixed 71-bit target/probe identity and arbitrary subranges retain BigInt precision
+  ---
+  duration_ms: 2.6867
+  type: 'test'
+  ...
+# Subtest: separate controllers reserve disjoint ranges and own coverage uses actual puzzle jobs only
+ok 101 - separate controllers reserve disjoint ranges and own coverage uses actual puzzle jobs only
+  ---
+  duration_ms: 147.1465
+  type: 'test'
+  ...
+# Subtest: only exact assigned signed receipts advance the cursor; replay cannot add credit
+ok 102 - only exact assigned signed receipts advance the cursor; replay cannot add credit
+  ---
+  duration_ms: 169.3911
+  type: 'test'
+  ...
+# Subtest: expired and replaced leases cannot commit late work; resumed job begins at last accepted cursor
+ok 103 - expired and replaced leases cannot commit late work; resumed job begins at last accepted cursor
+  ---
+  duration_ms: 162.7354
+  type: 'test'
+  ...
+# Subtest: production enrollment refuses old benchmark approvals and unverified owner flags
+ok 104 - production enrollment refuses old benchmark approvals and unverified owner flags
+  ---
+  duration_ms: 135.0404
+  type: 'test'
+  ...
+# Subtest: native failures cannot silently fall back to CPU or accept incomplete work
+ok 105 - native failures cannot silently fall back to CPU or accept incomplete work
+  ---
+  duration_ms: 140.9176
+  type: 'test'
+  ...
+# Subtest: real loopback transport and separate CPU worker process complete a known 71-bit probe without puzzle credit
+ok 106 - real loopback transport and separate CPU worker process complete a known 71-bit probe without puzzle credit
+  ---
+  duration_ms: 294.7097
+  type: 'test'
+  ...
+# Subtest: actual process crash after computation restores pending receipt and dead lock; no chunk scanned twice
+ok 107 - actual process crash after computation restores pending receipt and dead lock; no chunk scanned twice
+  ---
+  duration_ms: 358.7718
+  type: 'test'
+  ...
+# Subtest: response loss after commit resends the same signed receipt instead of recomputing
+ok 108 - response loss after commit resends the same signed receipt instead of recomputing
+  ---
+  duration_ms: 137.9765
+  type: 'test'
+  ...
+# Subtest: HTTP rejects missing credentials, arbitrary routes and compressed bodies
+ok 109 - HTTP rejects missing credentials, arbitrary routes and compressed bodies
+  ---
+  duration_ms: 113.4982
+  type: 'test'
+  ...
+# Subtest: private candidate reports pause the target, preserve encrypted evidence and never credit or expose the chunk
+ok 110 - private candidate reports pause the target, preserve encrypted evidence and never credit or expose the chunk
+  ---
+  duration_ms: 787.4984
+  type: 'test'
+  ...
+# Subtest: approval bridge requires the exact range mission, hash and Google owner record
+ok 111 - approval bridge requires the exact range mission, hash and Google owner record
+  ---
+  duration_ms: 94.007
+  type: 'test'
+  ...
+# Subtest: live worker lock prevents concurrent execution and clock rollback cannot extend a range lease
+ok 112 - live worker lock prevents concurrent execution and clock rollback cannot extend a range lease
+  ---
+  duration_ms: 109.1376
+  type: 'test'
+  ...
+# (node:20740) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: strict versioned policies reject unset production terms and invalid categories
+ok 113 - strict versioned policies reject unset production terms and invalid categories
+  ---
+  duration_ms: 1.6495
+  type: 'test'
+  ...
+# Subtest: 1-unit, zero shares, deterministic tie and huge amounts conserve exactly
+ok 114 - 1-unit, zero shares, deterministic tie and huge amounts conserve exactly
+  ---
+  duration_ms: 68.178
+  type: 'test'
+  ...
+# Subtest: immutable identity, assets and policy versions survive restart
+ok 115 - immutable identity, assets and policy versions survive restart
+  ---
+  duration_ms: 152.6489
+  type: 'test'
+  ...
+# Subtest: shared custody keeps two reward books isolated and compute sums without double counting
+ok 116 - shared custody keeps two reward books isolated and compute sums without double counting
+  ---
+  duration_ms: 166.1537
+  type: 'test'
+  ...
+# Subtest: different assets never combine in a compute pool or reward balance
+ok 117 - different assets never combine in a compute pool or reward balance
+  ---
+  duration_ms: 164.1595
+  type: 'test'
+  ...
+# Subtest: wrong coin/mint/asset/target, zero and live receipts create no funds
+ok 118 - wrong coin/mint/asset/target, zero and live receipts create no funds
+  ---
+  duration_ms: 166.9256
+  type: 'test'
+  ...
+# Subtest: replays deduplicate through restart and conflicting attribution is rejected
+ok 119 - replays deduplicate through restart and conflicting attribution is rejected
+  ---
+  duration_ms: 155.0932
+  type: 'test'
+  ...
+# Subtest: new policy and target do not recalculate past receipt or duplicate shared balances
+ok 120 - new policy and target do not recalculate past receipt or duplicate shared balances
+  ---
+  duration_ms: 143.729
+  type: 'test'
+  ...
+# Subtest: actual process exit between postings rolls back entire allocation then retry credits once
+ok 121 - actual process exit between postings rolls back entire allocation then retry credits once
+  ---
+  duration_ms: 188.9349
+  type: 'test'
+  ...
+# (node:22120) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: scheduler executes exact solved ranges and atomically archives validated results
+ok 122 - scheduler executes exact solved ranges and atomically archives validated results
+  ---
+  duration_ms: 310.8068
+  type: 'test'
+  ...
+# Subtest: separate scheduler jobs do not overlap and retain external preference without crediting it
+ok 123 - separate scheduler jobs do not overlap and retain external preference without crediting it
+  ---
+  duration_ms: 459.9976
+  type: 'test'
+  ...
+# Subtest: malformed, overshooting and false known-answer results never advance progress or leak diagnostics
+ok 124 - malformed, overshooting and false known-answer results never advance progress or leak diagnostics
+  ---
+  duration_ms: 339.9548
+  type: 'test'
+  ...
+# Subtest: durable inflight claim blocks a second controller connection from executing a duplicate chunk
+ok 125 - durable inflight claim blocks a second controller connection from executing a duplicate chunk
+  ---
+  duration_ms: 186.1662
+  type: 'test'
+  ...
+# Subtest: lease expiry and fencing reject late results even when a new worker has resumed
+ok 126 - lease expiry and fencing reject late results even when a new worker has resumed
+  ---
+  duration_ms: 242.6078
+  type: 'test'
+  ...
+# Subtest: cursor changing during execution invalidates the archive and cannot credit a result twice
+ok 127 - cursor changing during execution invalidates the archive and cannot credit a result twice
+  ---
+  duration_ms: 177.9882
+  type: 'test'
+  ...
+# Subtest: forced process crash after computation resumes only from the last committed cursor
+ok 128 - forced process crash after computation resumes only from the last committed cursor
+  ---
+  duration_ms: 400.8361
+  type: 'test'
+  ...
+# Subtest: aborted computation is recorded, and never commits a late valid result
+ok 129 - aborted computation is recorded, and never commits a late valid result
+  ---
+  duration_ms: 156.9283
+  type: 'test'
+  ...
+# Subtest: CUDA adapter accepts only exact known answers and keeps CPU/CUDA evidence distinct
+ok 130 - CUDA adapter accepts only exact known answers and keeps CPU/CUDA evidence distinct
+  ---
+  duration_ms: 5.7068
+  type: 'test'
+  ...
+# Subtest: dashboard retains exact completed ranges and failures with no secrets or live GPU claims
+ok 131 - dashboard retains exact completed ranges and failures with no secrets or live GPU claims
+  ---
+  duration_ms: 169.7763
+  type: 'test'
+  ...
+# Subtest: result proof has a reproducible digest, hides private job IDs, rejects mutation and altered archives
+ok 132 - result proof has a reproducible digest, hides private job IDs, rejects mutation and altered archives
+  ---
+  duration_ms: 168.4749
+  type: 'test'
+  ...
+# Subtest: WAL-safe backup restores the committed cursor and history without overwriting or auto-running
+ok 133 - WAL-safe backup restores the committed cursor and history without overwriting or auto-running
+  ---
+  duration_ms: 167.1124
+  type: 'test'
+  ...
+# Subtest: CUDA unavailability fails without falling back to CPU or claiming a GPU result
+ok 134 - CUDA unavailability fails without falling back to CPU or claiming a GPU result
+  ---
+  duration_ms: 75.6728
+  type: 'test'
+  ...
+# (node:12140) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: saved real native fee transfer reconciles exactly without mint inference
+ok 135 - saved real native fee transfer reconciles exactly without mint inference
+  ---
+  duration_ms: 1.7281
+  type: 'test'
+  ...
+# Subtest: missing, failed and wrong-signature receipts fail closed
+ok 136 - missing, failed and wrong-signature receipts fail closed
+  ---
+  duration_ms: 1.2601
+  type: 'test'
+  ...
+# Subtest: ordinary deposits and wrong program, route or instruction cannot count as fees
+ok 137 - ordinary deposits and wrong program, route or instruction cannot count as fees
+  ---
+  duration_ms: 1.1806
+  type: 'test'
+  ...
+# Subtest: imprecise amounts, missing evidence, duplicate instruction groups and balance mismatch reject
+ok 138 - imprecise amounts, missing evidence, duplicate instruction groups and balance mismatch reject
+  ---
+  duration_ms: 0.8953
+  type: 'test'
+  ...
+# Subtest: durable import is idempotent after reopen; conflicts leave balance unchanged
+ok 139 - durable import is idempotent after reopen; conflicts leave balance unchanged
+  ---
+  duration_ms: 91.375
+  type: 'test'
+  ...
+# Subtest: live reader requests finalized commitment and independently checks signature status
+ok 140 - live reader requests finalized commitment and independently checks signature status
+  ---
+  duration_ms: 1.6853
+  type: 'test'
+  ...
+# Subtest: null RPC result, pending/failed status, wrong slot, errors and timeout fail closed
+ok 141 - null RPC result, pending/failed status, wrong slot, errors and timeout fail closed
+  ---
+  duration_ms: 1.3286
+  type: 'test'
+  ...
+# (node:29924) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: Runpod preview is pinned, fixed hardware, private ports and no arbitrary secret fields
+ok 142 - Runpod preview is pinned, fixed hardware, private ports and no arbitrary secret fields
+  ---
+  duration_ms: 140.4869
+  type: 'test'
+  ...
+# Subtest: accepted timeout recovers same instance after process restart without another rental
+ok 143 - accepted timeout recovers same instance after process restart without another rental
+  ---
+  duration_ms: 190.0033
+  type: 'test'
+  ...
+# Subtest: unknown absent rental cannot be retried or release funds
+ok 144 - unknown absent rental cannot be retried or release funds
+  ---
+  duration_ms: 138.7781
+  type: 'test'
+  ...
+# Subtest: immutable intent rejects changes and mismatching provider evidence
+ok 145 - immutable intent rejects changes and mismatching provider evidence
+  ---
+  duration_ms: 162.9199
+  type: 'test'
+  ...
+# Subtest: termination fences worker and reserves liability until invoice; retries are idempotent
+ok 146 - termination fences worker and reserves liability until invoice; retries are idempotent
+  ---
+  duration_ms: 165.0451
+  type: 'test'
+  ...
+# Subtest: provider evidence excludes unknown fields and marks old observations stale
+ok 147 - provider evidence excludes unknown fields and marks old observations stale
+  ---
+  duration_ms: 1.6815
+  type: 'test'
+  ...
+# Subtest: staging binds rate/request but never authorizes a rental
+ok 148 - staging binds rate/request but never authorizes a rental
+  ---
+  duration_ms: 1.0492
+  type: 'test'
+  ...
+# Subtest: read API pins origin, count parameter, redirect rejection; sanitizes failures
+ok 149 - read API pins origin, count parameter, redirect rejection; sanitizes failures
+  ---
+  duration_ms: 1.4211
+  type: 'test'
+  ...
+# Subtest: wallet address conversion preserves 32-byte public key and rejects malformed input
+ok 150 - wallet address conversion preserves 32-byte public key and rejects malformed input
+  ---
+  duration_ms: 2.0976
+  type: 'test'
+  ...
+# Subtest: proof reader requests finalized mainnet and checks exact transfer, failure and ambiguity
+ok 151 - proof reader requests finalized mainnet and checks exact transfer, failure and ambiguity
+  ---
+  duration_ms: 2.1054
+  type: 'test'
+  ...
+# (node:22804) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: exact owner approval reserves full cap once; quote changes and unsigned execution fail
+ok 152 - exact owner approval reserves full cap once; quote changes and unsigned execution fail
+  ---
+  duration_ms: 105.8714
+  type: 'test'
+  ...
+# Subtest: two database connections cannot overcommit shared funds
+ok 153 - two database connections cannot overcommit shared funds
+  ---
+  duration_ms: 135.4043
+  type: 'test'
+  ...
+# Subtest: dispatch intent survives restart; deadline retains funds until synthetic settlement
+ok 154 - dispatch intent survives restart; deadline retains funds until synthetic settlement
+  ---
+  duration_ms: 161.7728
+  type: 'test'
+  ...
+# Subtest: expired approval fails and undispatched cancellation releases reservation
+ok 155 - expired approval fails and undispatched cancellation releases reservation
+  ---
+  duration_ms: 125.8915
+  type: 'test'
+  ...
+# Subtest: live execution is disabled even with valid approval
+ok 156 - live execution is disabled even with valid approval
+  ---
+  duration_ms: 94.9536
+  type: 'test'
+  ...
+# Subtest: funding replay, clock rollback, wrong owner and cross-ledger approval fail safely
+ok 157 - funding replay, clock rollback, wrong owner and cross-ledger approval fail safely
+  ---
+  duration_ms: 93.9856
+  type: 'test'
+  ...
+# Subtest: integer rounding, cap and input bounds are enforced
+ok 158 - integer rounding, cap and input bounds are enforced
+  ---
+  duration_ms: 89.087
+  type: 'test'
+  ...
+# (node:21280) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: fixed target and bounded public profile list deduplicate registrations and reject unsafe schemas
+ok 159 - fixed target and bounded public profile list deduplicate registrations and reject unsafe schemas
+  ---
+  duration_ms: 1.3124
+  type: 'test'
+  ...
+# Subtest: inclusive endpoints and partial retries normalize precisely; masks and invalid chunks reject
+ok 160 - inclusive endpoints and partial retries normalize precisely; masks and invalid chunks reject
+  ---
+  duration_ms: 1.06
+  type: 'test'
+  ...
+# Subtest: read-only unauthenticated routes import deduplicated real endpoints and change preview priority only
+ok 161 - read-only unauthenticated routes import deduplicated real endpoints and change preview priority only
+  ---
+  duration_ms: 141.8581
+  type: 'test'
+  ...
+# Subtest: all profiles must validate before import; failure retains prior snapshot and redacts transport errors
+ok 162 - all profiles must validate before import; failure retains prior snapshot and redacts transport errors
+  ---
+  duration_ms: 156.8391
+  type: 'test'
+  ...
+# Subtest: cooldown fences concurrent readers and survives restart; expiry and withdrawal restore eligibility
+ok 163 - cooldown fences concurrent readers and survives restart; expiry and withdrawal restore eligibility
+  ---
+  duration_ms: 186.2847
+  type: 'test'
+  ...
+# Subtest: oversized or wrong content types fail closed and cannot register a fresh map
+ok 164 - oversized or wrong content types fail closed and cannot register a fresh map
+  ---
+  duration_ms: 161.3727
+  type: 'test'
+  ...
+# Subtest: corroborated fixture evidence yields exact balance but never enables searching
+ok 165 - corroborated fixture evidence yields exact balance but never enables searching
+  ---
+  duration_ms: 1.3209
+  type: 'test'
+  ...
+# Subtest: stale, future, duplicate, missing, disagreeing or wrong-address evidence pauses
+ok 166 - stale, future, duplicate, missing, disagreeing or wrong-address evidence pauses
+  ---
+  duration_ms: 0.7849
+  type: 'test'
+  ...
+# Subtest: confirmed spend, pending spend, funding movement and empty balance pause
+ok 167 - confirmed spend, pending spend, funding movement and empty balance pause
+  ---
+  duration_ms: 0.206
+  type: 'test'
+  ...
+# Subtest: read-only fetch uses fixed endpoints and treats HTTP/schema failures as unavailable
+ok 168 - read-only fetch uses fixed endpoints and treats HTTP/schema failures as unavailable
+  ---
+  duration_ms: 0.9906
+  type: 'test'
+  ...
+# Subtest: test treasury uses finalized devnet and never treats SOL as provider credit
+ok 169 - test treasury uses finalized devnet and never treats SOL as provider credit
+  ---
+  duration_ms: 2.1566
+  type: 'test'
+  ...
+# Subtest: RPC failure, invalid address, overflow and malformed balance fail closed
+ok 170 - RPC failure, invalid address, overflow and malformed balance fail closed
+  ---
+  duration_ms: 0.8518
+  type: 'test'
+  ...
+# (node:26940) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: history retains signed activity across restart and excludes rejected and duplicate reports
+ok 171 - history retains signed activity across restart and excludes rejected and duplicate reports
+  ---
+  duration_ms: 233.1719
+  type: 'test'
+  ...
+# Subtest: activity survives restart without adding coverage; duplicate cannot make stale worker fresh
+ok 172 - activity survives restart without adding coverage; duplicate cannot make stale worker fresh
+  ---
+  duration_ms: 241.1687
+  type: 'test'
+  ...
+# Subtest: bad signature, conflicting sequence, old sequence, unknown fields and clock rollback reject
+ok 173 - bad signature, conflicting sequence, old sequence, unknown fields and clock rollback reject
+  ---
+  duration_ms: 186.7018
+  type: 'test'
+  ...
+# Subtest: expired, replaced and stopped leases reject activity; old epoch not displayed as current
+ok 174 - expired, replaced and stopped leases reject activity; old epoch not displayed as current
+  ---
+  duration_ms: 166.6767
+  type: 'test'
+  ...
+# Subtest: future received time is unknown; stopped job is inactive and GPU claims never verify hardware
+ok 175 - future received time is unknown; stopped job is inactive and GPU claims never verify hardware
+  ---
+  duration_ms: 165.1655
+  type: 'test'
+  ...
+# Subtest: HTTP activity accepts signed report and status exposes only sanitized claims
+ok 176 - HTTP activity accepts signed report and status exposes only sanitized claims
+  ---
+  duration_ms: 228.9479
+  type: 'test'
+  ...
+# (node:28988) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: signed receipts survive restart, duplicates add no coverage, and later contiguous work advances
+ok 177 - signed receipts survive restart, duplicates add no coverage, and later contiguous work advances
+  ---
+  duration_ms: 209.391
+  type: 'test'
+  ...
+# Subtest: wrong key, altered signed result, wrong build/provider, unknown fields and wrong outcome are rejected
+ok 178 - wrong key, altered signed result, wrong build/provider, unknown fields and wrong outcome are rejected
+  ---
+  duration_ms: 172.7064
+  type: 'test'
+  ...
+# Subtest: expired, replaced and terminated leases cannot submit new work
+ok 179 - expired, replaced and terminated leases cannot submit new work
+  ---
+  duration_ms: 181.3987
+  type: 'test'
+  ...
+# Subtest: gaps, conflicting retries and enrollment replacement cannot change accepted work
+ok 180 - gaps, conflicting retries and enrollment replacement cannot change accepted work
+  ---
+  duration_ms: 155.7884
+  type: 'test'
+  ...
+# Subtest: database failure rolls back receipt and checkpoint together and permits retry
+ok 181 - database failure rolls back receipt and checkpoint together and permits retry
+  ---
+  duration_ms: 165.1801
+  type: 'test'
+  ...
+# Subtest: HTTP accepts an actual subprocess result, rejects bad/oversize requests, and publishes sanitized status
+ok 182 - HTTP accepts an actual subprocess result, rejects bad/oversize requests, and publishes sanitized status
+  ---
+  duration_ms: 274.8998
+  type: 'test'
+  ...
+# (node:30764) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: fixed subprocess executes every solved fixture and returns no candidate fields
+ok 183 - fixed subprocess executes every solved fixture and returns no candidate fields
+  ---
+  duration_ms: 218.0859
+  type: 'test'
+  ...
+# Subtest: protocol excludes arbitrary targets, ranges, commands and secret-bearing extra fields
+ok 184 - protocol excludes arbitrary targets, ranges, commands and secret-bearing extra fields
+  ---
+  duration_ms: 0.4954
+  type: 'test'
+  ...
+# Subtest: worker failures do not echo submitted data
+ok 185 - worker failures do not echo submitted data
+  ---
+  duration_ms: 51.1079
+  type: 'test'
+  ...
+# Subtest: subprocess checkpoint survives controller restart with exact nonduplicated coverage
+ok 186 - subprocess checkpoint survives controller restart with exact nonduplicated coverage
+  ---
+  duration_ms: 285.8585
+  type: 'test'
+  ...
+# Subtest: expired lease during worker execution cannot commit progress
+ok 187 - expired lease during worker execution cannot commit progress
+  ---
+  duration_ms: 251.6379
+  type: 'test'
+  ...
+# Subtest: two simultaneous workers cannot credit the same chunk twice
+ok 188 - two simultaneous workers cannot credit the same chunk twice
+  ---
+  duration_ms: 178.7807
+  type: 'test'
+  ...
+# (node:14616) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: sustained workload is approval-bound and rejects insufficient rental headroom
+ok 189 - sustained workload is approval-bound and rejects insufficient rental headroom
+  ---
+  duration_ms: 170.4306
+  type: 'test'
+  ...
+# Subtest: only explicit digest-bound approval creates; completion deletes without simulated funds
+ok 190 - only explicit digest-bound approval creates; completion deletes without simulated funds
+  ---
+  duration_ms: 229.8439
+  type: 'test'
+  ...
+# Subtest: lost create response reconciles exact token and never duplicates after restart
+ok 191 - lost create response reconciles exact token and never duplicates after restart
+  ---
+  duration_ms: 155.8458
+  type: 'test'
+  ...
+# Subtest: empty ambiguous create remains reserved across restart; no re-POST
+ok 192 - empty ambiguous create remains reserved across restart; no re-POST
+  ---
+  duration_ms: 149.0514
+  type: 'test'
+  ...
+# Subtest: same-name foreign pod is never adopted or shut down
+ok 193 - same-name foreign pod is never adopted or shut down
+  ---
+  duration_ms: 122.8516
+  type: 'test'
+  ...
+# Subtest: expiry, existing resources, cap, changed artifact and price fail before create
+ok 194 - expiry, existing resources, cap, changed artifact and price fail before create
+  ---
+  duration_ms: 195.082
+  type: 'test'
+  ...
+# Subtest: lost registration is retried after restart without a second rental
+ok 195 - lost registration is retried after restart without a second rental
+  ---
+  duration_ms: 134.9473
+  type: 'test'
+  ...
+# Subtest: enrollment cannot change public key or cross-bind a pod; expired bootstrap rejected
+ok 196 - enrollment cannot change public key or cross-bind a pod; expired bootstrap rejected
+  ---
+  duration_ms: 124.7308
+  type: 'test'
+  ...
+# Subtest: bootstrap timeout latches targeted shutdown and public proof excludes capability
+ok 197 - bootstrap timeout latches targeted shutdown and public proof excludes capability
+  ---
+  duration_ms: 88.9579
+  type: 'test'
+  ...
+# Subtest: provider inventory follows pagination even when a page is empty; invalid cursor fails
+ok 198 - provider inventory follows pagination even when a page is empty; invalid cursor fails
+  ---
+  duration_ms: 0.6207
+  type: 'test'
+  ...
+# Subtest: duplicate approvals, cancellation and a provider balance rejection cannot produce retries
+ok 199 - duplicate approvals, cancellation and a provider balance rejection cannot produce retries
+  ---
+  duration_ms: 171.4623
+  type: 'test'
+  ...
+# Subtest: price increase beyond approved ceiling rejects before creation
+ok 200 - price increase beyond approved ceiling rejects before creation
+  ---
+  duration_ms: 70.9066
+  type: 'test'
+  ...
+# Subtest: unsigned or cross-pod completion cannot stop an enrolled run
+ok 201 - unsigned or cross-pod completion cannot stop an enrolled run
+  ---
+  duration_ms: 65.9149
+  type: 'test'
+  ...
+# Subtest: AI draft is unapproved, A5000-preferred, digest-bound, and reconciles duplicate submissions after restart
+ok 202 - AI draft is unapproved, A5000-preferred, digest-bound, and reconciles duplicate submissions after restart
+  ---
+  duration_ms: 78.7826
+  type: 'test'
+  ...
+# Subtest: unavailable, unaffordable, expired and forged AI options never create rentals or fallback proposals
+ok 203 - unavailable, unaffordable, expired and forged AI options never create rentals or fallback proposals
+  ---
+  duration_ms: 68.0221
+  type: 'test'
+  ...
+# Subtest: concurrent AI submission creates one proposal even across asynchronous catalog reads
+ok 204 - concurrent AI submission creates one proposal even across asynchronous catalog reads
+  ---
+  duration_ms: 72.0501
+  type: 'test'
+  ...
+# Subtest: signed full benchmark results persist after restart/deletion; tampering and secrets rejected
+ok 205 - signed full benchmark results persist after restart/deletion; tampering and secrets rejected
+  ---
+  duration_ms: 132.8001
+  type: 'test'
+  ...
+# Subtest: model hold is retained and cannot be replaced by a racing spending choice
+ok 206 - model hold is retained and cannot be replaced by a racing spending choice
+  ---
+  duration_ms: 67.7687
+  type: 'test'
+  ...
+# Subtest: 4090 fallback is approval-bound; losing capacity after approval never substitutes hardware
+ok 207 - 4090 fallback is approval-bound; losing capacity after approval never substitutes hardware
+  ---
+  duration_ms: 109.5551
+  type: 'test'
+  ...
+# (node:23212) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: AI planning binds its saved ticket and model choice to the same range without approving or renting
+ok 208 - AI planning binds its saved ticket and model choice to the same range without approving or renting
+  ---
+  duration_ms: 605.6234
+  type: 'test'
+  ...
+# Subtest: range proposal binds exact mission, recipient and artifacts; approval precedes create
+ok 209 - range proposal binds exact mission, recipient and artifacts; approval precedes create
+  ---
+  duration_ms: 442.5398
+  type: 'test'
+  ...
+# Subtest: enrollment retry and service restart preserve the same scoped capability and epoch without exposing secrets
+ok 210 - enrollment retry and service restart preserve the same scoped capability and epoch without exposing secrets
+  ---
+  duration_ms: 474.7987
+  type: 'test'
+  ...
+# Subtest: only ledger-completed chunks and three correct qualification cases permit a passed range archive/completion
+ok 211 - only ledger-completed chunks and three correct qualification cases permit a passed range archive/completion
+  ---
+  duration_ms: 610.7581
+  type: 'test'
+  ...
+# Subtest: range mission cannot substitute job, recovery key or solver, and expired work is fenced
+ok 212 - range mission cannot substitute job, recovery key or solver, and expired work is fenced
+  ---
+  duration_ms: 272.2097
+  type: 'test'
+  ...
+1..212
+# tests 212
+# suites 0
+# pass 212
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3212.8562
