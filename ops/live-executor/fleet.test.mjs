@@ -71,7 +71,7 @@ test('fleet AI quote and lost submission recovery bind one choice and exactly tw
 });
 test('excess count, inadequate total cap and expired fleet terms never rent',async t=>{
  const f=setup(t);await assert.rejects(()=>f.x.fleets.propose({...input,count:3}),/invalid_fleet_terms/);await assert.rejects(()=>f.x.fleets.propose({...input,capMicrousd:'20000'}),/cap_too_small/);
- const p=await draft(f);f.advance(600001);assert.throws(()=>f.x.fleets.approve(p.id,p.digest),/proposal_expired/);await f.x.tick();assert.equal(f.x.fleets.view(p.id).state,'expired');assert.equal(f.posts,0);
+ const p=await draft(f);f.advance(3600001);assert.throws(()=>f.x.fleets.approve(p.id,p.digest),/proposal_expired/);await f.x.tick();assert.equal(f.x.fleets.view(p.id).state,'expired');assert.equal(f.posts,0);
 });
 
 test('a second-Pod price change drains the first and never allocates another budget slice',async t=>{
@@ -81,4 +81,11 @@ test('worker signing identities cannot submit a sibling range receipt',async t=>
  const f=setup(t),p=await start(f),a=await worker(f,p.members[0].id),b=await worker(f,p.members[1].id),c=b.cfg.range,ledger=f.x.ranges.ledger,request=ledger.next(c.jobId,c.epoch,c.capability,c.chunkSize,f.x.clock());
  const result={schema:'bithash.native-range.v1',targetId:request.targetId,start:request.start,end:request.end,attempted:'4',status:'completed',matched:false,elapsedNanoseconds:'1'},envelope=signRangeReceipt({schema:'bithash.own-range-receipt.v1',request,backend:'bitcrack-cuda-exact-range',result,sealedCandidate:null},a.pair.privateKey);
  assert.throws(()=>ledger.accept(c.jobId,c.epoch,c.capability,envelope,f.x.clock()));assert.equal(f.x.ranges.summary().puzzle71CheckpointedCandidates,'0');f.advance(210001);await f.x.tick();assert.equal(new Set(f.stops).size,2);assert.equal(f.posts,2);
+});
+
+test('one-hour owner review window does not extend the five-minute common rental deadline',async t=>{
+ const f=setup(t),p=await draft(f),created=f.x.clock();assert.equal(p.terms.expiresAt-created,3600000);assert(p.terms.members.every(m=>m.terms.expiresAt===p.terms.expiresAt));f.advance(45*60*1000);f.x.fleets.approve(p.id,p.digest);await f.x.tick();await f.x.tick();assert.equal(f.posts,2);const runs=f.x.fleets.runs(p.id);assert(runs.every(r=>r.started===created+45*60*1000&&r.deadline-r.started===300000));assert(runs.every(r=>JSON.parse(r.terms).capMicrousd==='150000'));f.advance(210001);await f.x.tick();assert.equal(new Set(f.stops).size,2);
+});
+test('late owner approval still rechecks provider price before spending',async t=>{
+ const f=setup(t),p=await draft(f);f.advance(45*60*1000);f.x.fleets.approve(p.id,p.digest);const catalog=f.provider.catalog;f.provider.catalog=async()=>{const q=await catalog();q.record.rows.find(r=>r.gpu==='rtx-4090').hourlyPerGpuMicrousd='999999';q.sha256=hash(q.record);return q;};await f.x.tick();await f.x.tick();assert.equal(f.posts,0);assert.equal(f.x.fleets.view(p.id).state,'failed');assert.deepEqual(f.stops,[]);
 });

@@ -1,0 +1,2 @@
+Fleet proposals allow one hour for owner review; exact Google approval is still mandatory. Shared rental duration and per-Pod/aggregate operational caps are unchanged. Tests cover approval after 45 minutes, a five-minute rental deadline starting at dispatch, normal shutdown headroom, one-hour expiry rejection and changed-price rejection before any create.
+All 45 executor tests passed with mocked provider and signed fixtures. No real GPU rental executed for this update.
