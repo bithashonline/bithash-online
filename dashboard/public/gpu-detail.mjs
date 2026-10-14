@@ -40,7 +40,7 @@ export function mountGpuDetails(){
    entries=cursor||quiet?[...new Map([...entries,...value.entries].map(e=>[e.cursor,e])).values()].sort((a,b)=>b.cursor-a.cursor):value.entries;
    if(quiet)value.olderCursor=data.olderCursor;data=value;
    try{const ai=await fetch('/api/gpu-activity/'+target,{cache:'no-store',signal:AbortSignal.timeout(6000)});if(!ai.ok)throw Error();const checked=await verifyActivity(await ai.json(),target);if(g!==generation||id!==target)return;activity=checked;activityConnected=true;}catch{activityConnected=false;}
-   try{const r=await fetch('/api/executor/status',{cache:'no-store',signal:AbortSignal.timeout(6000)});if(!r.ok)throw Error();const feed=await r.json();if(feed.schema!=='bithash.live-executor.v1'||!Array.isArray(feed.runs))throw Error();if(g!==generation||id!==target)return;execution=feed.runs.find(r=>r.podId===target)??null;}catch{execution=null;}
+   try{const r=await fetch(document.body.dataset.console==='owner'?'/api/live-runs':'/api/executor/status',{cache:'no-store',signal:AbortSignal.timeout(6000)});if(!r.ok)throw Error();const feed=await r.json();if(feed.schema!=='bithash.live-executor.v1'||!Array.isArray(feed.runs))throw Error();if(g!==generation||id!==target)return;execution=feed.runs.find(r=>r.podId===target)??null;}catch{execution=null;}
    if(g!==generation||id!==target)return;draw();
   }catch{if(g!==generation||id!==target)return;if(quiet&&data){data={...data,rental:null};draw();body.insertAdjacentHTML('afterbegin','<p class="panel-copy" role="status">Connection unavailable. Showing saved worker and controller records.</p>');}else body.innerHTML='<div class="panel-empty"><h3>Machine file unavailable</h3><p>Saved records could not be loaded. Try Refresh.</p></div>';
   }finally{if(g===generation)busy=false;}
@@ -48,7 +48,7 @@ export function mountGpuDetails(){
  const route=()=>{const m=/^#gpu\/([a-z0-9]{10,32})$/.exec(location.hash);if(m){if(id!==m[1]){id=m[1];data=null;entries=[];activity=null;activityConnected=false;execution=null;read();}if(!dialog.open)dialog.showModal();}else if(dialog.open){dialog.close();}};
  document.addEventListener('click',e=>{const a=e.target.closest('a.open-gpu');if(a){if(!location.hash.startsWith('#gpu/'))previous=location.hash||'#fleet';if(a.hash===location.hash)route();}});
  dialog.addEventListener('click',e=>{if(e.target.closest('[data-close-gpu]'))dialog.close();if(e.target.closest('[data-refresh-gpu]'))read();const b=e.target.closest('[data-load-older]');if(b&&data?.olderCursor){b.disabled=true;read(data.olderCursor);}});
- dialog.addEventListener('close',()=>{generation++;id=null;if(location.hash.startsWith('#gpu/')){history.replaceState(null,'',previous);}});
+ dialog.addEventListener('close',()=>{generation++;id=null;if(location.hash.startsWith('#gpu/')){history.replaceState(null,'',previous);window.dispatchEvent(new Event('hashchange'));}});
  window.addEventListener('hashchange',route);route();
  const timer=setInterval(()=>{if(dialog.open&&data&&!busy)read(undefined,true);},10000);window.addEventListener('pagehide',()=>clearInterval(timer),{once:true});
 }

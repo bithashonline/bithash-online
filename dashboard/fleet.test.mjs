@@ -6,7 +6,7 @@ const pod={id,status:'DELETED',observedAt:time,gpuModel:null,gpuCount:null,hourl
 const snapshot=p=>({schema:'bithash.fleet-status.v1',scope:'registered-bithash-pods',source:'runpod-read-only',observedAt:time,items:[p]});
 const running={...pod,status:'RUNNING',gpuModel:'NVIDIA GeForce RTX 4090',gpuCount:1,hourlyUsd:'0.89',evidence:'provider-get'};
 test('saved real reports cannot revive a deleted rental; latest matching report is linked',()=>{
- const v=fleetView(snapshot(pod),saved.snapshot,now);assert.equal(v.count,'0');assert(v.html.includes('DELETED · TEST HISTORY'));assert(v.html.includes('2,097,152'));assert(v.html.includes('061439fb19d3dfdb0bc644ff30e89dbc3c43712a7f8fb0c7f63f2469b89d42fd'));assert(!v.html.includes('rig-active.png'));
+ const v=fleetView(snapshot(pod),saved.snapshot,now);assert.equal(v.count,'0');assert(v.html.includes('DELETED · SESSION RECORD'));assert(v.html.includes('2,097,152'));assert(v.html.includes('061439fb19d3dfdb0bc644ff30e89dbc3c43712a7f8fb0c7f63f2469b89d42fd'));assert(!v.html.includes('rig-active.png'));
 });
 test('provider running with historical worker reports is counted but never animated as computing',()=>{
  const v=fleetView(snapshot(running),saved.snapshot,now);assert.equal(v.count,'1');assert(!v.html.includes('rig-active.png'));assert(v.html.includes('historical / inactive'));
@@ -31,3 +31,5 @@ test('hostile provider labels are escaped and arbitrary report links cannot be r
  const v=fleetView(snapshot({...running,gpuModel:'<script>bad</script>'}),{items:[{kind:'gpu',providerPodId:id,reported:{state:'<img>'},lastReceivedAt:time,proof:'https://evil.invalid'}]},now);
  assert(!v.html.includes('<script>'));assert(!v.html.includes('href="https://evil'));assert(v.html.includes('&lt;script&gt;'));
 });
+
+test('fresh deleted history is collapsed without hiding unknown rental states',()=>{const idle=fleetView(snapshot(pod),saved.snapshot,now);assert(idle.html.includes('<summary>Deleted rentals (1)'));assert(!idle.html.includes('rental-history\" open'));assert(idle.html.includes('No active rentals.'));const unknown=fleetView(snapshot({...pod,status:'UNKNOWN',evidence:'provider-unavailable'}),saved.snapshot,now);assert(!unknown.html.includes('rental-history'));assert(!unknown.html.includes('No active rentals.'));});

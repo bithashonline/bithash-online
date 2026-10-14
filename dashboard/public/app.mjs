@@ -81,3 +81,6 @@ mountGpuDetails();
 async function pollAI(){try{const r=await fetch('/api/operator',{cache:'no-store',signal:AbortSignal.timeout(7000)});if(!r.ok)throw Error();aiSnapshot=await r.json();aiConnected=true;}catch{aiConnected=false;}renderOperator($('operator'),aiSnapshot,aiConnected,sim);}
 pollAI();const aiTimer=setInterval(pollAI,10000);window.addEventListener('pagehide',()=>clearInterval(aiTimer),{once:true});
 
+
+import {mountNavigation} from './navigation.mjs';
+mountNavigation();
