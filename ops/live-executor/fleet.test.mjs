@@ -89,3 +89,8 @@ test('one-hour owner review window does not extend the five-minute common rental
 test('late owner approval still rechecks provider price before spending',async t=>{
  const f=setup(t),p=await draft(f);f.advance(45*60*1000);f.x.fleets.approve(p.id,p.digest);const catalog=f.provider.catalog;f.provider.catalog=async()=>{const q=await catalog();q.record.rows.find(r=>r.gpu==='rtx-4090').hourlyPerGpuMicrousd='999999';q.sha256=hash(q.record);return q;};await f.x.tick();await f.x.tick();assert.equal(f.posts,0);assert.equal(f.x.fleets.view(p.id).state,'failed');assert.deepEqual(f.stops,[]);
 });
+
+test('expired proposals receive no progress credit when a later fleet finishes the same assignments',async t=>{
+ const f=setup(t),old=await draft(f);f.advance(3600001);await f.x.tick();assert.equal(f.x.fleets.view(old.id).state,'expired');const p=await start(f),a=await worker(f,p.members[0].id),b=await worker(f,p.members[1].id);complete(f,a);complete(f,b);
+ assert.deepEqual(f.x.fleets.view(old.id).members.map(m=>m.completedCandidates),['0','0']);assert.deepEqual(f.x.fleets.view(p.id).members.map(m=>m.completedCandidates),['8','8']);assert.equal(f.x.ranges.summary().puzzle71CheckpointedCandidates,'16');f.restart();assert.deepEqual(f.x.fleets.view(old.id).members.map(m=>m.completedCandidates),['0','0']);assert.deepEqual(f.x.fleets.view(p.id).members.map(m=>m.completedCandidates),['8','8']);
+});

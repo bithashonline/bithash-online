@@ -50,7 +50,10 @@ export class RangeBridge {
    expiresAt,chunkSize:a.chunkSize,solverSha256:a.solverSha256,binaryPath:'/bithash-private/worker/native/bithash-range',recoveryPublicKey:a.recoveryPublicKey,validationOnly:false};
  }
  summary(){return ownRangeSummary(this.executor.db);}
- checked(run){const t=JSON.parse(run.terms),j=this.ledger.row(t.rangeMission.jobId);return j.state==='completed'?String(BigInt(j.next)-BigInt(t.rangeMission.resumeFrom??j.start)):'0';}
+ checked(run){if(!run.pod)return '0';const t=JSON.parse(run.terms),m=t.rangeMission,lower=BigInt(m.resumeFrom??m.start),upper=BigInt(m.end);
+  return String(this.executor.db.prepare('SELECT start,end,payload FROM own_range_receipts WHERE job=? AND private=0').all(m.jobId).reduce((count,row)=>{
+   const p=JSON.parse(row.payload),start=BigInt(row.start),end=BigInt(row.end);return p.request.providerPodId===run.pod&&p.request.solverSha256===m.solverSha256&&start>=lower&&end<=upper?count+end-start:count;
+  },0n));}
  validateArchive(p,t,r){
   if(!shape(p,'schema,id,podId,lease,build,result')||p.schema!=='bithash.worker-archive.v1'||p.id!==r.id||p.podId!==r.pod||p.lease!==r.lease||p.build!==t.build)throw Error('invalid_archive_identity');
   const v=p.result,q=v?.qualification,job=this.ledger.row(t.rangeMission.jobId);

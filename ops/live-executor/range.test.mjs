@@ -25,12 +25,12 @@ test('automatic allocation advances beyond completed work, survives restart and 
  f.restart();const again=await proposeNext(f);assert.deepEqual(again.terms.rangeMission,m);assert.equal(f.x.db.prepare('SELECT count(*) n FROM own_range_jobs').get().n,2);assert.equal(f.x.ranges.summary().puzzle71CheckpointedCandidates,'8');
 });
 test('expired partial work resumes at the signed checkpoint with a fresh epoch, and old receipts are fenced',async t=>{
- const f=setup(t),first=await start(f),accepted=chunk(f,first);f.finish(first);
+ const f=setup(t),first=await start(f),accepted=chunk(f,first);assert.equal(f.x.ranges.checked(first.r),'4');f.finish(first);
  await assert.rejects(()=>proposeNext(f),/range_job_unavailable/);f.advance(210001);f.restart();
  const p=await proposeNext(f);assert.equal(p.terms.rangeMission.jobId,f.range.jobId);assert.equal(p.terms.rangeMission.resumeFrom,String(LOWER+4n));assert.equal(p.terms.puzzle71Candidates,'4');
  const resumed=await start(f,p);assert.equal(resumed.cfg.range.epoch,2);
  assert.throws(()=>f.x.ranges.ledger.accept(first.cfg.range.jobId,first.cfg.range.epoch,first.cfg.range.capability,accepted.envelope,f.x.clock()),/lease_fenced/);
- const final=chunk(f,resumed);assert.equal(final.request.start,accepted.request.end);assert.equal(final.ack.completed,true);assert.equal(f.x.ranges.checked(resumed.r),'4');
+ const final=chunk(f,resumed);assert.equal(final.request.start,accepted.request.end);assert.equal(final.ack.completed,true);assert.equal(f.x.ranges.checked(resumed.r),'4');assert.equal(f.x.ranges.checked(first.r),'4');assert.equal(f.x.ranges.checked({terms:first.r.terms,pod:null}),'0');
  f.x.ranges.ledger.accept(resumed.cfg.range.jobId,resumed.cfg.range.epoch,resumed.cfg.range.capability,final.envelope,f.x.clock());assert.equal(f.x.ranges.summary().puzzle71CheckpointedCandidates,'8');
 });
 test('a pending sibling proposal cannot shadow an approved worker or later rent already completed work',async t=>{
