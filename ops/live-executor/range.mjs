@@ -15,10 +15,12 @@ export class RangeBridge {
   const job=this.ledger.reserve(config.jobId,'puzzle-71',String(BigInt(config.end)-BigInt(config.start)),config.solverSha256);
   if(job.start!==config.start||job.end!==config.end)throw Error('range_plan_conflict');
  }
- idle(){if(this.executor.db.prepare("SELECT id FROM live_runs WHERE state NOT IN ('proposed','expired','rejected','cancelled','deleted') LIMIT 1").get())throw Error('another_run_unresolved');}
+ idle(){if(this.executor.fleets?.locked())throw Error('fleet_in_progress');if(this.executor.db.prepare("SELECT id FROM live_runs WHERE state NOT IN ('proposed','expired','rejected','cancelled','deleted','fleet_pending','fleet_ready') LIMIT 1").get())throw Error('another_run_unresolved');}
  mission(jobId=null){const c=this.config;this.idle();
   const job=jobId===null?this.ledger.allocate('range-'+this.executor.random(12),'puzzle-71',String(BigInt(c.end)-BigInt(c.start)),c.solverSha256,this.executor.now()):this.ledger.row(jobId);
   this.runnable(job);return {jobId:job.id,targetId:job.target,start:job.start,end:job.end,solverSha256:job.solver,recoveryKeyId:this.recipient.keyId,chunkSize:c.chunkSize,resumeFrom:job.next};}
+ fleetMissions(){const c=this.config;this.idle();return this.ledger.allocateMany(2,()=>'range-'+this.executor.random(12),'puzzle-71',String(BigInt(c.end)-BigInt(c.start)),c.solverSha256,this.executor.now())
+  .map(job=>{this.runnable(job);return {jobId:job.id,targetId:job.target,start:job.start,end:job.end,solverSha256:job.solver,recoveryKeyId:this.recipient.keyId,chunkSize:c.chunkSize,resumeFrom:job.next};});}
  runnable(job){const c=this.config;
   if(job.target!=='puzzle-71'||job.solver!==c.solverSha256||this.executor.db.prepare("SELECT id FROM own_range_jobs WHERE target='puzzle-71' AND state='private-review' LIMIT 1").get())throw Error('range_job_unavailable');
   if(!['planned','leased'].includes(job.state)||job.state==='leased'&&job.expires>this.executor.clock()||job.next===job.end)throw Error('range_job_unavailable');

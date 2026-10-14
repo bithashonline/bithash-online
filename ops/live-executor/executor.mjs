@@ -4,6 +4,7 @@ import {GPU_IDS} from './provider.mjs';
 import {liveOptions,validateLiveChoice} from './planning.mjs';
 import {validateArchive} from './worker-archive.mjs';
 import {RangeBridge} from './range.mjs';
+import {Fleet} from './fleet.mjs';
 export const hash=x=>createHash('sha256').update(typeof x==='string'||Buffer.isBuffer(x)?x:JSON.stringify(x)).digest('hex');
 const exact=(o,keys)=>o&&Object.keys(o).sort().join()===keys.split(',').sort().join();
 const terminal=new Set(['expired','rejected','cancelled','deleted']);
@@ -18,6 +19,7 @@ export class Executor {
    CREATE TABLE IF NOT EXISTS live_plans(id TEXT PRIMARY KEY,ticket TEXT NOT NULL,choice TEXT,run_id TEXT);
    CREATE TABLE IF NOT EXISTS live_archives(id TEXT PRIMARY KEY,digest TEXT NOT NULL UNIQUE,envelope TEXT NOT NULL);`);
   this.ranges=config.range?new RangeBridge(this,config.range):null;
+  this.fleets=new Fleet(this);
  }
  close(){this.db.close();}
  tx(fn){this.db.exec('BEGIN IMMEDIATE');try{const v=fn();this.db.exec('COMMIT');return v;}catch(e){this.db.exec('ROLLBACK');throw e;}}
@@ -42,12 +44,14 @@ export class Executor {
   if(body.choice.optionId==='hold'){return this.tx(()=>{const old=this.db.prepare('SELECT * FROM live_plans WHERE id=?').get(saved.id);if(old.choice&&old.choice!==choice)throw Error('planning_choice_conflict');this.db.prepare('UPDATE live_plans SET choice=? WHERE id=?').run(choice,saved.id);return {state:'held',ticketId:saved.id,choice:body.choice};});}
   if(!option)throw Error('planning_choice_expired_or_invalid');
   const planner={schema:'bithash.live-proposal-planner.v1',ticketId:ticket.id,quoteDigest:ticket.quote.sha256,sourceQuote:ticket.quote.record,limits:ticket.limits,option,choice:body.choice,choiceDigest:hash(body.choice),approvalRequired:true};
+  if(ticket.fleetMissions)return this.fleets.propose(option.input,{planner,ticketId:ticket.id,choice,missions:ticket.fleetMissions});
   if(ticket.rangeMission){const mission=this.ranges.mission(ticket.rangeMission.jobId);if(hash(mission)!==hash(ticket.rangeMission)||option.input.jobId!==mission.jobId)throw Error('range_plan_conflict');return this.propose({gpu:option.input.gpu,durationSeconds:option.input.durationSeconds,capMicrousd:option.input.capMicrousd},{planner,ticketId:ticket.id,choice,rangeMission:mission});}
   return this.propose(option.input,{planner,ticketId:ticket.id,choice});
  }
  async proposeRange(input){if(!this.ranges)throw Error('range_deployment_unavailable');return this.ranges.propose(input);}
  artifacts(t){if(t.workload==='fixed-public-puzzle-range'){if(!this.ranges)throw Error('range_deployment_unavailable');return this.ranges.artifacts(t);}return this.config;}
  async propose(input,context=null){
+  if(this.fleets.locked())throw Error('fleet_in_progress');
   const sustained=input?.sustainSeconds===300;
   if(input && Object.hasOwn(input,'sustainSeconds')) {
    if(!sustained || !exact(input,'gpu,durationSeconds,capMicrousd,sustainSeconds') || input.durationSeconds<600)throw Error('invalid_sustained_terms');
@@ -71,14 +75,16 @@ export class Executor {
    if(context?.ticketId)this.db.prepare('UPDATE live_plans SET choice=?,run_id=? WHERE id=?').run(context.choice,id,context.ticketId);
   });return this.view(created);
  }
- approve(id,digest){return this.tx(()=>{const r=this.row(id),now=this.now();if(r.digest!==digest)throw Error('digest_mismatch');if(r.state!=='proposed'){if(r.state==='approved')return this.view(id);throw Error('not_approvable');}const terms=JSON.parse(r.terms);if(now>=terms.expiresAt)throw Error('proposal_expired');if(this.db.prepare("SELECT count(*) n FROM live_runs WHERE state NOT IN ('proposed','expired','rejected','cancelled','deleted')").get().n)throw Error('another_run_unresolved');if(terms.workload==='fixed-public-puzzle-range')this.ranges.assertRunnable(terms);this.set(id,'approved');this.event(id,'google_owner_approval',{digest,authentication:'local-owner-session-via-pinned-ssh'});return this.view(id);});}
- cancel(id,digest){return this.tx(()=>{const r=this.row(id);if(r.digest!==digest||!['proposed','approved'].includes(r.state))throw Error('cannot_cancel');this.set(id,'cancelled');return this.view(id);});}
- view(id){const r=this.row(id);return {id:r.id,digest:r.digest,terms:JSON.parse(r.terms),state:r.state,podId:r.pod,startedAt:r.started?new Date(r.started).toISOString():null,deadline:r.deadline?new Date(r.deadline).toISOString():null,error:r.error,billingFinalized:false,proofs:this.db.prepare('SELECT digest,record FROM live_events WHERE id=? ORDER BY seq').all(id).map(e=>({digest:e.digest,...JSON.parse(e.record),proofUrl:'/api/executor/proof/'+e.digest}))};}
- snapshot(){const saved=this.db.prepare('SELECT * FROM live_plans ORDER BY rowid DESC LIMIT 1').get(),ticket=saved?JSON.parse(saved.ticket):null;return {schema:'bithash.live-executor.v1',observedAt:new Date(this.clock()).toISOString(),mode:'real-provider',maximumConcurrentRentals:1,...(this.ranges?{ownRanges:this.ranges.summary()}:{}),latestPlanning:ticket?{id:ticket.id,observedAt:ticket.observedAt,quoteDigest:ticket.quote.sha256,quote:ticket.quote.record,limits:ticket.limits,choice:saved.choice?JSON.parse(saved.choice):null,state:saved.run_id?'proposed':saved.choice?'held_by_operator':!ticket.options.length?'held_no_capacity_or_budget':'awaiting_model_choice',runId:saved.run_id??null}:null,runs:this.db.prepare('SELECT id FROM live_runs ORDER BY rowid DESC LIMIT 100').all().map(r=>this.view(r.id))};}
+ approve(id,digest){return this.tx(()=>{if(this.fleets.member(id)||this.fleets.locked())throw Error('fleet_approval_required');const r=this.row(id),now=this.now();if(r.digest!==digest)throw Error('digest_mismatch');if(r.state!=='proposed'){if(r.state==='approved')return this.view(id);throw Error('not_approvable');}const terms=JSON.parse(r.terms);if(now>=terms.expiresAt)throw Error('proposal_expired');if(this.db.prepare("SELECT count(*) n FROM live_runs WHERE state NOT IN ('proposed','expired','rejected','cancelled','deleted')").get().n)throw Error('another_run_unresolved');if(terms.workload==='fixed-public-puzzle-range')this.ranges.assertRunnable(terms);this.set(id,'approved');this.event(id,'google_owner_approval',{digest,authentication:'local-owner-session-via-pinned-ssh'});return this.view(id);});}
+ cancel(id,digest){return this.tx(()=>{if(this.fleets.member(id))throw Error('fleet_approval_required');const r=this.row(id);if(r.digest!==digest||!['proposed','approved'].includes(r.state))throw Error('cannot_cancel');this.set(id,'cancelled');return this.view(id);});}
+ proofs(id){return this.db.prepare('SELECT digest,record FROM live_events WHERE id=? ORDER BY seq').all(id).map(e=>({digest:e.digest,...JSON.parse(e.record),proofUrl:'/api/executor/proof/'+e.digest}));}
+ view(id){if(id.startsWith('fleet-'))return this.fleets.view(id);const r=this.row(id);return {id:r.id,digest:r.digest,terms:JSON.parse(r.terms),state:r.state,podId:r.pod,startedAt:r.started?new Date(r.started).toISOString():null,deadline:r.deadline?new Date(r.deadline).toISOString():null,error:r.error,billingFinalized:false,proofs:this.proofs(id)};}
+ snapshot(){const saved=this.db.prepare('SELECT * FROM live_plans ORDER BY rowid DESC LIMIT 1').get(),ticket=saved?JSON.parse(saved.ticket):null;return {schema:'bithash.live-executor.v1',observedAt:new Date(this.clock()).toISOString(),mode:'real-provider',maximumConcurrentRentals:2,maximumConcurrentFleets:1,fleets:this.fleets.summary(),...(this.ranges?{ownRanges:this.ranges.summary()}:{}),latestPlanning:ticket?{id:ticket.id,observedAt:ticket.observedAt,quoteDigest:ticket.quote.sha256,quote:ticket.quote.record,limits:ticket.limits,choice:saved.choice?JSON.parse(saved.choice):null,state:saved.run_id?'proposed':saved.choice?'held_by_operator':!ticket.options.length?'held_no_capacity_or_budget':'awaiting_model_choice',runId:saved.run_id??null}:null,runs:this.db.prepare('SELECT id FROM live_runs ORDER BY rowid DESC LIMIT 100').all().map(r=>this.view(r.id))};}
  proof(digest){const r=this.db.prepare('SELECT record FROM live_events WHERE digest=?').get(digest);return r?{digest,record:JSON.parse(r.record)}:null;}
  request(r){const t=JSON.parse(r.terms),artifact=this.artifacts(t);if(t.image!==artifact.image||t.bootstrapSha256!==hash(artifact.bootstrap)||t.build!==artifact.build||t.archiveSha256!==artifact.archiveSha256)throw Error('deployment_changed_reapproval_required');return {name:'bithash-'+r.id,image:t.image,cloud:'SECURE',gpu:{id:GPU_IDS[t.gpu],count:1,minCudaVersion:'12.8'},disk:20,mounts:{},ports:[],startSsh:false,startJupyter:false,globalNetworking:false,entrypoint:['python3'],cmd:['-c',artifact.bootstrap],env:{BITHASH_RUN_ID:r.id,BITHASH_BOOTSTRAP_TOKEN:r.token}};}
  matches(p,r){const t=JSON.parse(r.terms);return p?.name==='bithash-'+r.id&&p.image===t.image&&p.gpu?.id===GPU_IDS[t.gpu]&&p.gpu.count===1&&p.cloud==='SECURE'&&p.disk===20&&p.env?.BITHASH_RUN_ID===r.id&&p.env?.BITHASH_BOOTSTRAP_TOKEN===r.token&&p.mounts&&Object.keys(p.mounts).length===0&&/^[a-z0-9]{10,32}$/.test(p.id);}
  async tick(){if(this.busy)return;this.busy=true;try{
+  await this.fleets.tick();
   const now=this.now();for(const {id} of this.db.prepare("SELECT id FROM live_runs WHERE state NOT IN ('expired','rejected','cancelled','deleted')").all()){
    let r=this.row(id),t=JSON.parse(r.terms);
    try{
@@ -119,7 +125,7 @@ export class Executor {
  }finally{this.busy=false;}}
  lease(r){const t=JSON.parse(r.terms);return {schema:'bithash.shutdown-lease.v1',podId:r.pod,expectedName:'bithash-'+r.id,startedAt:new Date(r.started).toISOString(),notAfter:new Date(r.deadline).toISOString(),maxSpendMicrousd:t.capMicrousd,hourlyCeilingMicrousd:t.hourlyCeilingMicrousd,shutdownHeadroomSeconds:90,deleteDisposablePod:true};}
  async adopt(r,p){if(!this.matches(p,r))throw Error('provider_identity_mismatch');this.tx(()=>{const current=this.row(r.id);if(current.pod&&current.pod!==p.id)throw Error('pod_conflict');this.db.prepare('UPDATE live_runs SET pod=? WHERE id=?').run(p.id,r.id);this.set(r.id,'registering');this.event(r.id,'provider_created',{provider:safePod(p)});});await this.guard.register(this.lease(this.row(r.id)));this.set(r.id,'bootstrapping');}
- authenticate(id,token){const r=this.row(id),now=this.now();if(typeof token!=='string'||token.length!==64||!timingSafeEqual(Buffer.from(token),Buffer.from(r.token))||!r.pod||!r.deadline||now>=r.deadline-90000||terminal.has(r.state)||r.state==='stopping')throw Error('worker_unauthorized');return r;}
+ authenticate(id,token){const r=this.row(id),now=this.now();if(typeof token!=='string'||token.length!==64||!timingSafeEqual(Buffer.from(token),Buffer.from(r.token))||!r.pod||!r.deadline||now>=r.deadline-90000||terminal.has(r.state)||r.state==='stopping')throw Error('worker_unauthorized');const fleetId=this.fleets.member(id);if(fleetId){const f=this.fleets.row(fleetId);this.fleets.bound(f,r);if(!['dispatching','running'].includes(f.state))throw Error('worker_unauthorized');}return r;}
  async enroll(body,token){
   if(!exact(body,'id,podId,publicKey')||typeof body.publicKey!=='string'||body.publicKey.length>200)throw Error('invalid_enrollment');
   const r=this.authenticate(body.id,token);if(body.podId!==r.pod||createPublicKey(body.publicKey).asymmetricKeyType!=='ed25519'||(r.public_key&&r.public_key!==body.publicKey))throw Error('enrollment_conflict');

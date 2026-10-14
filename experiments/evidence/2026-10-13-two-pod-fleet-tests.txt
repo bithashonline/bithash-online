@@ -1,0 +1,4 @@
+Backend and executor: 234/234 pass. Dashboard: 59/59 pass.
+Fleet regressions cover one aggregate approval, two separate one-GPU Pods, disjoint persistent assignments, equal budget slices, shared deadline, independent signing identities/checkpoints/archives/deletion, replay, price change, rejected/ambiguous/lost create responses, restart reconciliation without replacement POST, unrelated resource isolation, immutable approval/checkpoints, owner cancellation during asynchronous preflight, operator lost-submission recovery and public read-only approval controls.
+Tests use mocked providers and signed CPU fixtures. No new physical GPU rental or sustained benchmark performed for this milestone. Native solver, worker archive, pinned image and owner recovery recipient are unchanged.
+A real two-GPU acceptance requires fresh Google owner approval for exact fleet terms. Provider billing and independently verified exhaustive search are not established by these tests.

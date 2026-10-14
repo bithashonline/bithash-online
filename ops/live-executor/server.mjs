@@ -40,9 +40,12 @@ const ownerServer=http.createServer(async(req,res)=>{try{
  if(v.action==='status')result=executor.snapshot();
  else if(v.action==='quote-ai')result=await executor.planningQuote(v.input);
  else if(v.action==='quote-range-ai')result=await executor.planningRangeQuote(v.input);
+ else if(v.action==='quote-fleet-ai')result=await executor.fleets.quote(v.input);
  else if(v.action==='propose-ai')result=await executor.proposeAi(v.input);
  else if(v.action==='propose')result=await executor.propose(v.input);
  else if(v.action==='propose-range')result=await executor.proposeRange(v.input);
+ else if(v.action==='propose-fleet')result=await executor.fleets.propose(v.input);
+ else if(['approve-fleet','cancel-fleet'].includes(v.action)&&v.input&&Object.keys(v.input).sort().join()==='digest,id')result=executor.fleets[v.action==='approve-fleet'?'approve':'cancel'](v.input.id,v.input.digest);
  else if(['approve','cancel'].includes(v.action)&&v.input&&Object.keys(v.input).sort().join()==='digest,id')result=executor[v.action](v.input.id,v.input.digest);
  else throw Error();return send(res,200,result);
  }catch(e){return send(res,400,{error:/^[a-z_]{1,80}$/.test(e.message)?e.message:'command_rejected'});}});

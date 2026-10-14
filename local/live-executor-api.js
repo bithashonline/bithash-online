@@ -14,7 +14,7 @@ export async function handleLiveExecutor(req,res,{auth,call,origin='http://127.0
  const send=(status,v)=>{res.writeHead(status,{'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});res.end(JSON.stringify(v));return true;};
  try{
   if(req.method==='GET'&&path==='/api/live-runs')return send(200,await call('status'));
-  if(req.method!=='POST'||!['/api/live-runs/propose','/api/live-runs/propose-range','/api/live-runs/approve','/api/live-runs/cancel'].includes(path))return send(405,{error:'method_not_allowed'});
+  if(req.method!=='POST'||!['/api/live-runs/propose','/api/live-runs/propose-range','/api/live-runs/propose-fleet','/api/live-runs/approve-fleet','/api/live-runs/cancel-fleet','/api/live-runs/approve','/api/live-runs/cancel'].includes(path))return send(405,{error:'method_not_allowed'});
   if(req.headers.origin!==origin||req.headers['content-type']!=='application/json')return send(403,{error:'origin_rejected'});
   auth.authorize(req);let body='';for await(const x of req){body+=x;if(Buffer.byteLength(body)>4096)return send(413,{error:'body_too_large'});}
   return send(200,await call(path.split('/').at(-1),JSON.parse(body)));

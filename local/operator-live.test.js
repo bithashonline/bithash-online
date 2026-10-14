@@ -44,3 +44,13 @@ test('lost proposal response resumes the saved choice without another quote/mode
  assert.throws(()=>set([row('rtx-a5000','UNKNOWN'),row('rtx-4090','HIGH')]));
  assert.throws(()=>set([row('rtx-4090','HIGH'),row('rtx-4090','NONE')]));
  });
+
+test('two-GPU operator choice survives a lost submission without new ranges or another model call',async()=>{
+ const {fleetOptions}=await import('../ops/live-executor/fleet-terms.mjs'),dir=await mkdtemp(join(tmpdir(),'fleet-planner-')),t=ticket();
+ const start=1n<<70n;t.fleetMissions=[0,1].map(i=>({jobId:'range-'+String(i+1).repeat(24),targetId:'puzzle-71',start:String(start+BigInt(i*8)),end:String(start+BigInt((i+1)*8)),resumeFrom:String(start+BigInt(i*8)+4n),solverSha256:'a'.repeat(64),recoveryKeyId:'b'.repeat(64),chunkSize:'4'}));t.options=fleetOptions(t.quote,t.limits,Date.now(),t.fleetMissions);
+ let quotes=0,models=0,submits=0;
+ const call=async(action,input)=>{if(action==='quote-fleet-ai'){quotes++;assert.deepEqual(input,{count:2,limits});return t;}assert.equal(action,'propose-ai');if(++submits===1)throw Error('executor_outcome_unknown');return {state:'proposed',terms:{count:2}};};
+ const fetcher=async(url,o)=>{models++;assert(JSON.parse(o.body).instructions.includes('two separate one-GPU Pods'));return new Response('data: '+JSON.stringify({type:'response.completed',response:{id:'resp_fleet_fixture',status:'completed',output:[{type:'message',content:[{type:'output_text',text:JSON.stringify({optionId:t.options[0].id,reason:'Only approved two-Pod option.'})}]}]}})+'\n\n',{headers:{'content-type':'text/event-stream'}});};
+ const options={call,choose:(q,x)=>chooseLive(q,{...x,fetcher}),accessToken:'fixture',model:'gpt-6.1-sol',ownRange:true,fleetCount:2};
+ try{await assert.rejects(()=>draftLive(dir,limits,options),/executor_outcome_unknown/);const d=await draftLive(dir,limits,options);assert.equal(d.result.terms.count,2);assert.equal(quotes,1);assert.equal(models,1);assert.equal(submits,2);await assert.rejects(()=>draftLive(dir,limits,{...options,ownRange:false}),/invalid_fleet_terms/);}finally{await rm(dir,{recursive:true,force:true});}
+});

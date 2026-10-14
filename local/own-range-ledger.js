@@ -40,6 +40,19 @@ export class OwnRangeLedger {
    return this.reserveLocked(id,targetId,size,solverSha256);
   });
  }
+ allocateMany(count,makeId,targetId,size,solverSha256,now=Date.now()){
+  if(count!==2||typeof makeId!=='function')throw rangeFail('invalid_fleet_count');
+  return this.controller.transaction(()=>{
+   this.clock(now);const db=this.controller.db;
+   if(db.prepare("SELECT id FROM own_range_jobs WHERE target=? AND state='private-review'").get(targetId))throw rangeFail('target_paused');
+   const unfinished=db.prepare("SELECT * FROM own_range_jobs WHERE target=? AND solver=? AND state IN ('planned','leased')").all(targetId,solverSha256)
+    .sort((a,b)=>BigInt(a.start)<BigInt(b.start)?-1:1);
+   const jobs=unfinished.filter(r=>r.state==='planned'||r.expires<=now).slice(0,count);
+   if(!jobs.length&&unfinished.length)throw rangeFail('range_job_unavailable');
+   while(jobs.length<count){const job=this.reserveLocked(makeId(),targetId,size,solverSha256);if(jobs.some(r=>r.id===job.id))throw rangeFail('duplicate_fleet_job');jobs.push(job);}
+   return jobs;
+  });
+ }
  // Operator-only enrollment, never a public HTTP endpoint. A benchmark approval
  // cannot authorize puzzle search: purpose, target, job, range and binary bind.
  lease(id,{publicKey,providerPodId,expiresAt,approval,recoveryPublicKey=null,capability=null},now=Date.now()){
