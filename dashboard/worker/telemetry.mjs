@@ -18,7 +18,7 @@ export async function telemetry(request,env,fetcher=fetch){
   if(r.status===404&&(proof||operatorProof||approvalProof||gpuDetail||gpuActivity||gpuActivityProof||executorProof||executorLog))return reply({error:gpuDetail?'gpu_not_found':'proof_not_found'},404);
   if(!r.ok||!r.headers.get('content-type')?.includes('application/json'))throw Error();
   const reader=r.body.getReader();let chunks=[],size=0;
-  for(;;){const {done,value}=await reader.read();if(done)break;size+=value.byteLength;if(size>(executorLog?600000:262144)){await reader.cancel();throw Error();}chunks.push(value);}
+  for(;;){const {done,value}=await reader.read();if(done)break;size+=value.byteLength;if(size>(executorLog?600000:executor?1000000:262144)){await reader.cancel();throw Error();}chunks.push(value);}
   const bytes=new Uint8Array(size);let offset=0;for(const c of chunks){bytes.set(c,offset);offset+=c.length;}
   const data=JSON.parse(new TextDecoder().decode(bytes));
   if(executorLog){

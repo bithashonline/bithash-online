@@ -1,15 +1,9 @@
-# Local dashboard
-Source ships directly in public/ without a bundler. This release relocates the existing dist/ assets to public/ and updates static-server/test paths.
+# Dashboard and owner console
 
-Run `node --experimental-sqlite server.mjs` from this directory; open http://127.0.0.1:4173. Test with `node --test *.test.mjs`.
+Shared assets live in public/. The hosted Site uses public/index.html and public/app.mjs with read-only controls. Run node --experimental-sqlite server.mjs on loopback for the local console. When BITHASH_EXECUTOR_CONNECTION is configured, the server overlays the three owner/ entry files and retains shared assets from public/. This keeps Google sign-in and owner controls local.
 
-Optional environment variables:
-- BITHASH_BACKEND_MODULE: absolute path to ../local/dashboard-api.js.
-- BITHASH_CONTROLLER_DB: private fixture controller database.
-- BITHASH_APPROVAL_DB: private approval database.
-- BITHASH_GOOGLE_SETUP_FILE: private setup JSON; see ../local/GOOGLE-OWNER.md.
-- BITHASH_COLLECTOR_CONFIG: private JSON with HTTPS origin and caFile; see ../local/REMOTE-PROGRESS.md.
+Set BITHASH_BACKEND_MODULE to the absolute local/dashboard-api.js path, BITHASH_EXECUTOR_CONNECTION to private pinned SSH connection JSON (sshTarget, keyFile, knownHostsFile), BITHASH_GOOGLE_SETUP_FILE and BITHASH_APPROVAL_DB to private owner setup/storage, and BITHASH_COLLECTOR_CONFIG to existing HTTPS origin/CA configuration. Keep all configurations, keys and databases outside this repository. See local/GOOGLE-OWNER.md and PRODUCT.md. The fixed read-only owner evidence bridge retains its hosted read credential on the host and never forwards browser credentials.
 
-Install ../local dependencies first. Keep configuration and databases outside public/ and the repository. The server binds loopback only with a fixed origin. Public hosting needs separate HTTPS/origin/security configuration.
+Start the local ChatGPT Operator connection separately using local/chatgpt-operator-server.js and its existing private account directory. No model requests are made by page polling. Simulation is optional and clearly separated. Token treasury and automatic wallet funding are not connected.
 
-Browser simulation values, including the legacy 80% example, are fictional. Actual intended spending requires explicit owner approval per bounded run. Google sign-in does not sign treasury transactions. Collector proof cards are separate from simulation and CPU fixtures. No AI model is connected.
+Tests: node --test *.test.mjs from dashboard; Node 22 or newer with built-in SQLite is required for backend tests. The hosted worker must preserve its existing password gate, secrets and fixed authenticated read bridge. Do not publish private owner settings or backup archives.

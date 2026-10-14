@@ -34,3 +34,5 @@ test('fleet status uses the same fixed authenticated bridge and rejects stale sn
  assert.equal((await telemetry(req('/api/fleet-status?pod=other'),env,fetcher)).status,400);
  assert.equal((await telemetry(req('/api/fleet-status'),env,async()=>json({...value,observedAt:'2000-01-01T00:00:00Z'}))).status,503);
 });
+
+test('executor history fits the bounded 1 MB status bridge while excessive feeds fail closed',async()=>{const value={schema:'bithash.live-executor.v1',mode:'real-provider',observedAt:new Date().toISOString(),runs:[],history:'x'.repeat(300000)};assert.equal((await telemetry(req('/api/executor/status'),env,async()=>json(value))).status,200);assert.equal((await telemetry(req('/api/executor/status'),env,async()=>json({...value,history:'x'.repeat(1000000)}))).status,503);assert.equal((await telemetry(req('/api/executor/status',{method:'POST'}),env,async()=>json(value))).status,405);});
