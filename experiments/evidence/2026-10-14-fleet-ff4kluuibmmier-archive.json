@@ -1,0 +1,9 @@
+{
+  "digest": "a5e4f83b00af8877b744d4cf97a8997bad1df30454662990cb75294aa28c89df",
+  "envelope": {
+    "payload": "{\"schema\":\"bithash.worker-archive.v1\",\"id\":\"live-07b6769d66fc7efc8cb6faa9\",\"podId\":\"ff4kluuibmmier\",\"lease\":\"ce977ec200a9b837d2edd43729133762\",\"build\":\"sha256:c0c0509a7f2d005b879dad69d5cadb82aeb17d0ed6269e1802f6a7f9d4ca68ad\",\"result\":{\"schema\":\"bithash.owned-range-result.v1\",\"status\":\"completed\",\"jobId\":\"range-4f28f751cf84bb3aa353e9d3\",\"solverSha256\":\"2fa95f416407975c757497c9d4cc6c4e235211da8a5fa7ac44f20b4383d5e555\",\"qualification\":{\"schema\":\"bithash.range-gpu-qualification.v1\",\"solverSha256\":\"2fa95f416407975c757497c9d4cc6c4e235211da8a5fa7ac44f20b4383d5e555\",\"results\":[{\"schema\":\"bithash.native-range.v1\",\"targetId\":\"range-probe-71\",\"start\":\"1180591620717412352007\",\"end\":\"1180591620717412352008\",\"attempted\":\"1\",\"status\":\"completed\",\"matched\":true,\"elapsedNanoseconds\":\"498295942\"},{\"schema\":\"bithash.native-range.v1\",\"targetId\":\"range-probe-71\",\"start\":\"1180591620717412352006\",\"end\":\"1180591620717412352007\",\"attempted\":\"1\",\"status\":\"completed\",\"matched\":false,\"elapsedNanoseconds\":\"441568033\"},{\"schema\":\"bithash.native-range.v1\",\"targetId\":\"range-probe-71\",\"start\":\"1180591620717411303424\",\"end\":\"1180591620717412352008\",\"attempted\":\"1048584\",\"status\":\"completed\",\"matched\":true,\"elapsedNanoseconds\":\"450476725\"}],\"evidence\":\"known-answer-probes; not exhaustive-search attestation\"},\"hardwareChecked\":true,\"uniqueCoverageVerified\":false}}",
+    "signature": "bDElJjscWaOzaH0p3VYiWEjuUFMG5P6aRkRSCGFL8m1sD3QTAv/VWfeEtOGFIoUMnyW/MIFAgMqLSBiw3eTMCA=="
+  },
+  "evidence": "authenticated-worker-claim",
+  "coverageVerified": false
+}

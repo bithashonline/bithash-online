@@ -1,0 +1,178 @@
+{
+  "schema": "bithash.two-pod-fleet-acceptance.v1",
+  "observedAt": "2026-10-14T05:00:31.866Z",
+  "fleetId": "fleet-3fbe7596890bdb88002b4c0f",
+  "approvalDigest": "ab9d22e223b36413501ffa66ec4e979540b876a3c984075af8f6c97a6bbeb315",
+  "googleApprovalAt": "2026-10-14T04:57:58.346Z",
+  "fleetState": "completed",
+  "commonStart": "2026-10-14T04:58:02.738Z",
+  "commonDeadline": "2026-10-14T05:03:02.738Z",
+  "eventHashesVerified": 33,
+  "members": [
+    {
+      "id": "live-07b6769d66fc7efc8cb6faa9",
+      "podId": "ff4kluuibmmier",
+      "job": {
+        "id": "range-4f28f751cf84bb3aa353e9d3",
+        "targetId": "puzzle-71",
+        "start": "1180591620717412352000",
+        "end": "1180591620717413400576",
+        "next": "1180591620717413400576",
+        "state": "completed",
+        "epoch": 1,
+        "expiresAt": 1791954092738,
+        "solverSha256": "2fa95f416407975c757497c9d4cc6c4e235211da8a5fa7ac44f20b4383d5e555",
+        "evidence": "authenticated-worker-claim",
+        "hardwareVerified": false,
+        "coverageVerified": false
+      },
+      "archiveDigest": "a5e4f83b00af8877b744d4cf97a8997bad1df30454662990cb75294aa28c89df",
+      "receiptDigest": "9590db4a288a8b9e5c26418a30b624795da12ad9a21bd93cfb97233f29263073",
+      "qualification": [
+        {
+          "schema": "bithash.native-range.v1",
+          "targetId": "range-probe-71",
+          "start": "1180591620717412352007",
+          "end": "1180591620717412352008",
+          "attempted": "1",
+          "status": "completed",
+          "matched": true,
+          "elapsedNanoseconds": "498295942"
+        },
+        {
+          "schema": "bithash.native-range.v1",
+          "targetId": "range-probe-71",
+          "start": "1180591620717412352006",
+          "end": "1180591620717412352007",
+          "attempted": "1",
+          "status": "completed",
+          "matched": false,
+          "elapsedNanoseconds": "441568033"
+        },
+        {
+          "schema": "bithash.native-range.v1",
+          "targetId": "range-probe-71",
+          "start": "1180591620717411303424",
+          "end": "1180591620717412352008",
+          "attempted": "1048584",
+          "status": "completed",
+          "matched": true,
+          "elapsedNanoseconds": "450476725"
+        }
+      ],
+      "result": {
+        "schema": "bithash.native-range.v1",
+        "targetId": "puzzle-71",
+        "start": "1180591620717412352000",
+        "end": "1180591620717413400576",
+        "attempted": "1048576",
+        "status": "completed",
+        "matched": false,
+        "elapsedNanoseconds": "468886225"
+      },
+      "archiveSignatureVerified": true,
+      "completionSignatureVerified": true,
+      "receiptSignatureVerified": true,
+      "deletedAt": "2026-10-14T04:58:43.135Z",
+      "elapsedSeconds": 40.397
+    },
+    {
+      "id": "live-2389d73837b22abb9abc40e4",
+      "podId": "7cvjaezvwe34s6",
+      "job": {
+        "id": "range-7fbb545546713e266877cad7",
+        "targetId": "puzzle-71",
+        "start": "1180591620717413400576",
+        "end": "1180591620717414449152",
+        "next": "1180591620717414449152",
+        "state": "completed",
+        "epoch": 1,
+        "expiresAt": 1791954092738,
+        "solverSha256": "2fa95f416407975c757497c9d4cc6c4e235211da8a5fa7ac44f20b4383d5e555",
+        "evidence": "authenticated-worker-claim",
+        "hardwareVerified": false,
+        "coverageVerified": false
+      },
+      "archiveDigest": "0f2b3ba8d088c0ec26245b83847258ef395fb055547620de8db73559eb178f15",
+      "receiptDigest": "6fcc9072806e303ac275768ba409baefda51f9d48ef4a9883038603914e36c74",
+      "qualification": [
+        {
+          "schema": "bithash.native-range.v1",
+          "targetId": "range-probe-71",
+          "start": "1180591620717412352007",
+          "end": "1180591620717412352008",
+          "attempted": "1",
+          "status": "completed",
+          "matched": true,
+          "elapsedNanoseconds": "508993256"
+        },
+        {
+          "schema": "bithash.native-range.v1",
+          "targetId": "range-probe-71",
+          "start": "1180591620717412352006",
+          "end": "1180591620717412352007",
+          "attempted": "1",
+          "status": "completed",
+          "matched": false,
+          "elapsedNanoseconds": "476359249"
+        },
+        {
+          "schema": "bithash.native-range.v1",
+          "targetId": "range-probe-71",
+          "start": "1180591620717411303424",
+          "end": "1180591620717412352008",
+          "attempted": "1048584",
+          "status": "completed",
+          "matched": true,
+          "elapsedNanoseconds": "616309416"
+        }
+      ],
+      "result": {
+        "schema": "bithash.native-range.v1",
+        "targetId": "puzzle-71",
+        "start": "1180591620717413400576",
+        "end": "1180591620717414449152",
+        "attempted": "1048576",
+        "status": "completed",
+        "matched": false,
+        "elapsedNanoseconds": "455761189"
+      },
+      "archiveSignatureVerified": true,
+      "completionSignatureVerified": true,
+      "receiptSignatureVerified": true,
+      "deletedAt": "2026-10-14T04:59:03.190Z",
+      "elapsedSeconds": 60.452
+    }
+  ],
+  "newCheckpointedCandidates": "2097152",
+  "totalCheckpointedCandidates": "3145728",
+  "billingFinalized": false,
+  "coverageVerified": false,
+  "evidence": "Authenticated signed worker results plus independent provider deletion readback; exhaustive GPU coverage is not attested.",
+  "acceptanceSourceCommit": "58aacf550edc526374f5c645e0986292d78f376b",
+  "providerDeletion": [
+    {
+      "podId": "ff4kluuibmmier",
+      "status": 404,
+      "detail": "pod not found",
+      "observedAt": "2026-10-14 05:01:10 UTC",
+      "source": "Independent connected Runpod get_pod read",
+      "billingRecordCount": 0
+    },
+    {
+      "podId": "7cvjaezvwe34s6",
+      "status": 404,
+      "detail": "pod not found",
+      "observedAt": "2026-10-14 05:01:10 UTC",
+      "source": "Independent connected Runpod get_pod read",
+      "billingRecordCount": 0
+    }
+  ],
+  "progressAttributionFix": {
+    "reason": "Expired proposal cards inherited cumulative job progress after a later approved fleet completed the same assignments.",
+    "change": "Count only accepted public receipts bound to each member Pod; retain attribution across partial resume and restart.",
+    "tests": 46,
+    "providerMocked": true,
+    "ownLedgerDuplicateCredit": false
+  }
+}

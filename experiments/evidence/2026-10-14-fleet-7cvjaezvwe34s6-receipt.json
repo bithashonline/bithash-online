@@ -1,0 +1,36 @@
+{
+  "digest": "6fcc9072806e303ac275768ba409baefda51f9d48ef4a9883038603914e36c74",
+  "signature": "X39KR8lCjhwIyEpVvkBM74bkZAIh+sBcbQalZxmPRm9wxkhV+C328ws3IWi4HnaWR4ddpTS2xQSWWxrbsTx2CQ==",
+  "received": 1791953901282,
+  "private": 0,
+  "public_key": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAvhqaeQXmQ/g4BlBB2vRIExh9wtn7k1adDuxK/cK+1c4=\n-----END PUBLIC KEY-----\n",
+  "payload": {
+    "schema": "bithash.own-range-receipt.v1",
+    "request": {
+      "schema": "bithash.own-range-request.v1",
+      "jobId": "range-7fbb545546713e266877cad7",
+      "epoch": 1,
+      "targetId": "puzzle-71",
+      "start": "1180591620717413400576",
+      "end": "1180591620717414449152",
+      "solverSha256": "2fa95f416407975c757497c9d4cc6c4e235211da8a5fa7ac44f20b4383d5e555",
+      "providerPodId": "7cvjaezvwe34s6",
+      "expiresAt": 1791954092738,
+      "recoveryKeyId": "59bcf321e7b90dffaf72307751b4771483c55dbb5304051e82e045ee9a094aab"
+    },
+    "backend": "bitcrack-cuda-exact-range",
+    "result": {
+      "schema": "bithash.native-range.v1",
+      "targetId": "puzzle-71",
+      "start": "1180591620717413400576",
+      "end": "1180591620717414449152",
+      "attempted": "1048576",
+      "status": "completed",
+      "matched": false,
+      "elapsedNanoseconds": "455761189"
+    },
+    "sealedCandidate": null
+  },
+  "signatureVerified": true,
+  "coverageVerified": false
+}
