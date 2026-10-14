@@ -20,3 +20,7 @@
 .lock-dashboard{margin-top:10px}.lock-dashboard button{font:8px var(--mono);padding:7px 0;min-height:32px;border:0;color:#a5b194;background:transparent}.lock-dashboard button:hover{color:#fff}.control-room .control-rail nav{scrollbar-width:thin}.control-room .rental-history .fleet-rentals{margin-top:20px}
 
 @media(min-width:901px){.doc-copy p{font-size:13px}.doc-copy table{font-size:11px}.spec-list>div{font-size:12px}.control-rail nav a{font-size:11px}}
+
+/* The original aggregate strip belongs to the optional simulation view. */
+.control-room:not([data-simulation="true"]) #metrics,.control-room:not([data-simulation="true"]) #notice{display:none!important}
+
