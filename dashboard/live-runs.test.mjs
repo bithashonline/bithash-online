@@ -1,5 +1,11 @@
 import test from 'node:test';import assert from 'node:assert/strict';import {createHash} from 'node:crypto';import {telemetry} from './worker/telemetry.mjs';import {liveRunCards} from './public/live-runs.mjs';
 const env={BITHASH_TELEMETRY_READ_TOKEN:'a'.repeat(64)},req=(p,o)=>new Request('https://bithash.online'+p,o),json=v=>new Response(JSON.stringify(v),{headers:{'Content-Type':'application/json'}});
+test('resumed range review distinguishes remaining work from cumulative assignment checkpoints',()=>{
+ const start='1180591620717411303424',next='1180591620717411303428',end='1180591620717411303432';
+ const terms={gpu:'rtx-4090',durationSeconds:300,capMicrousd:'300000',expiresAt:Date.now()+60000,workload:'fixed-public-puzzle-range',puzzle71Candidates:'4',rangeMission:{jobId:'range-fixture',start,end,resumeFrom:next,solverSha256:'a'.repeat(64),recoveryKeyId:'b'.repeat(64)}};
+ const feed={schema:'bithash.live-executor.v1',mode:'real-provider',runs:[{id:'live-resume',state:'proposed',terms,proofs:[]}],ownRanges:{items:[{id:'range-fixture',start,next:end}]}};
+ const html=liveRunCards(feed,true);assert(html.includes('4 candidates for this run'));assert(html.includes('8 checkpointed in this assignment'));assert(html.includes('Resume from: '+next));assert(html.includes('completed prefix skipped'));assert(html.includes('Approve $0.3000 real GPU run'));assert(!liveRunCards(feed).includes('data-live-approve'));
+});
 test('range owner cards show exact approved assignment, recovery binding and separate checkpoint count',()=>{
  const terms={gpu:'rtx-4090',durationSeconds:300,capMicrousd:'300000',expiresAt:Date.now()+60000,workload:'fixed-public-puzzle-range',puzzle71Candidates:'8',rangeMission:{jobId:'range-fixture',start:'1180591620717411303424',end:'1180591620717411303432',solverSha256:'a'.repeat(64),recoveryKeyId:'b'.repeat(64)}};
  const feed={schema:'bithash.live-executor.v1',mode:'real-provider',runs:[{id:'live-range',digest:'c'.repeat(64),state:'proposed',terms,proofs:[]}],ownRanges:{items:[{id:'range-fixture',start:terms.rangeMission.start,next:'1180591620717411303428'}]}};

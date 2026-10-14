@@ -1,6 +1,14 @@
 import test from 'node:test';import assert from 'node:assert/strict';import {mkdtemp,rm} from 'node:fs/promises';import {tmpdir} from 'node:os';import {join} from 'node:path';
 import {hash} from '../ops/live-executor/executor.mjs';import {liveOptions} from '../ops/live-executor/planning.mjs';import {chooseLive,draftLive} from './operator-live.js';
 const limits={maxDurationSeconds:600,capMicrousd:'300000'};
+test('automatic own-range draft reconciles a lost response using the saved allocated job without another quote or inference',async()=>{
+ const dir=await mkdtemp(join(tmpdir(),'auto-range-planner-')),t=ticket();
+ t.rangeMission={jobId:'range-'+'2'.repeat(24),targetId:'puzzle-71',start:String(1n<<70n),end:String((1n<<70n)+8n),resumeFrom:String((1n<<70n)+4n),solverSha256:'a'.repeat(64),recoveryKeyId:'b'.repeat(64),chunkSize:'4'};
+ t.options=liveOptions(t.quote,t.limits,Date.now(),t.rangeMission);assert.equal(t.options[0].puzzle71Candidates,'4');
+ let quotes=0,models=0,submits=0;const call=async(action,input)=>{if(action==='quote-range-ai'){quotes++;assert.deepEqual(input,{limits});return t;}assert.equal(action,'propose-ai');if(++submits===1)throw Error('executor_outcome_unknown');return {state:'proposed',terms:{rangeMission:t.rangeMission}};};
+ const choose=async()=>{models++;return {schema:'bithash.live-choice.v1',optionId:t.options[0].id,model:'gpt-6.1-sol',responseId:'resp_auto_fixture',generatedAt:new Date().toISOString(),reason:'Resume exact remaining assignment.'};};
+ try{await assert.rejects(()=>draftLive(dir,limits,{call,choose,ownRange:true}),/executor_outcome_unknown/);const d=await draftLive(dir,limits,{call,choose,ownRange:true});assert.equal(d.result.terms.rangeMission.jobId,t.rangeMission.jobId);assert.equal(quotes,1);assert.equal(models,1);assert.equal(submits,2);}finally{await rm(dir,{recursive:true,force:true});}
+});
 test('range model choices retain the fixed mission and use separate resumable drafting state',async()=>{
  const t=ticket();t.observedAt=t.quote.record.observedAt;t.rangeMission={jobId:'range-'+'1'.repeat(24),targetId:'puzzle-71',start:String(1n<<70n),end:String((1n<<70n)+8n),solverSha256:'a'.repeat(64),recoveryKeyId:'b'.repeat(64),chunkSize:'4'};t.options=liveOptions(t.quote,t.limits,Date.now(),t.rangeMission);
  let submitted;const fetcher=async(url,o)=>{assert(JSON.parse(o.body).instructions.includes('exact owned Puzzle #71 assignment'));return new Response('data: '+JSON.stringify({type:'response.completed',response:{id:'resp_range_fixture',status:'completed',output:[{type:'message',content:[{type:'output_text',text:JSON.stringify({optionId:t.options[0].id,reason:'Qualify then search the supplied range.'})}]}]}})+'\n\n',{headers:{'content-type':'text/event-stream'}});};

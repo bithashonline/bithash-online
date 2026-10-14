@@ -1,0 +1,4 @@
+Backend:189/189 pass; real executor:30/30 pass; dashboard:58/58 pass.
+New regressions cover disjoint next-job allocation, persistent reservations, partial resume, old-epoch fencing, duplicate receipts, unapproved sibling proposals, stale checkpoints before rental, active rental/private-review blocks, lost proposal-response reconciliation and separate per-run/assignment counts.
+Tests use mocked provider and known-answer CPU fixtures; no new paid GPU run.
+Existing native GPU build and worker archive are unchanged.

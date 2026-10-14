@@ -20,17 +20,19 @@ export async function chooseLive(ticket,{accessToken,model,fetcher=fetch,now=Dat
 }
 // Persist a completed model choice before sending it. Reusing its server ticket
 // reconciles a lost response instead of making a second proposal or model request.
-export async function draftLive(directory,limits,{call,accessToken,model,choose=chooseLive,rangeJobId=null}={}){
+export async function draftLive(directory,limits,{call,accessToken,model,choose=chooseLive,rangeJobId=null,ownRange=false}={}){
+ if(typeof ownRange!=='boolean')throw Error('invalid_range_terms');
  if(rangeJobId!==null&&!/^range-[a-f0-9]{24}$/.test(rangeJobId))throw Error('invalid_range_terms');
- const file=join(directory,rangeJobId?'live-range-proposal-draft.json':'live-proposal-draft.json');
+ const range=ownRange||rangeJobId!==null;
+ const file=join(directory,range?'live-range-proposal-draft.json':'live-proposal-draft.json');
  const save=async v=>{await writeFile(file+'.tmp',JSON.stringify(v,null,2),{mode:0o600});await rename(file+'.tmp',file);};
  let saved;try{saved=JSON.parse(await readFile(file,'utf8'));}catch(e){if(e.code!=='ENOENT')throw Error('invalid_saved_live_draft');}
  if(saved?.state==='submission_pending'){
-  if((saved.ticket.rangeMission?.jobId??null)!==rangeJobId)throw Error('range_plan_conflict');
+  if(Boolean(saved.ticket.rangeMission)!==range||rangeJobId!==null&&saved.ticket.rangeMission?.jobId!==rangeJobId)throw Error('range_plan_conflict');
   const result=await call('propose-ai',{ticketId:saved.ticket.id,choice:saved.choice});
   const next={...saved,state:result.state==='held'?'held':'submitted',result};await save(next);return next;
  }
- const ticket=await call(rangeJobId?'quote-range-ai':'quote-ai',rangeJobId?{jobId:rangeJobId,limits}:limits);
+ const ticket=await call(range?'quote-range-ai':'quote-ai',range?{...(rangeJobId?{jobId:rangeJobId}:{}),limits}:limits);
  if(!ticket.options.length){const next={state:'held',ticket,reason:'No supported GPU is available or no option fits the spending cap. Preference: A5000, then RTX 4090, then RTX 5090.'};await save(next);return next;}
  const choice=await choose(ticket,{accessToken,model});
  const next={state:'submission_pending',ticket,choice,choiceDigest:hash(choice)};await save(next);

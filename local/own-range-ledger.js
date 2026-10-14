@@ -14,9 +14,11 @@ export class OwnRangeLedger {
   if(now<old)throw rangeFail('clock_rollback');db.prepare("INSERT OR REPLACE INTO own_range_meta VALUES('clock',?)").run(now);return now;}
  row(id){const r=this.controller.db.prepare('SELECT * FROM own_range_jobs WHERE id=?').get(id);if(!r)throw rangeFail('unknown_job');return r;}
  reserve(id,targetId,size,solverSha256){
+  return this.controller.transaction(()=>this.reserveLocked(id,targetId,size,solverSha256));
+ }
+ reserveLocked(id,targetId,size,solverSha256){
   const t=target(targetId);size=BigInt(size);
   if(!/^range-[a-f0-9]{24}$/.test(id)||size<1n||size>MAX_CHUNK||!/^[a-f0-9]{64}$/.test(solverSha256))throw rangeFail('invalid_plan');
-  return this.controller.transaction(()=>{
    const db=this.controller.db,old=db.prepare('SELECT * FROM own_range_jobs WHERE id=?').get(id);
    if(old){if(old.target!==targetId||old.solver!==solverSha256||BigInt(old.end)-BigInt(old.start)!==size)throw rangeFail('conflicting_plan');return old;}
    if(db.prepare("SELECT id FROM own_range_jobs WHERE target=? AND state='private-review'").get(targetId))throw rangeFail('target_paused');
@@ -25,6 +27,17 @@ export class OwnRangeLedger {
    bounds(targetId,String(start),String(start+size));
    db.prepare("INSERT INTO own_range_jobs(id,target,start,end,next,solver,state) VALUES(?,?,?,?,?,?,'planned')")
     .run(id,targetId,String(start),String(start+size),String(start),solverSha256);return this.row(id);
+ }
+ allocate(id,targetId,size,solverSha256,now=Date.now()){
+  return this.controller.transaction(()=>{
+   this.clock(now);const db=this.controller.db;
+   if(db.prepare("SELECT id FROM own_range_jobs WHERE target=? AND state='private-review'").get(targetId))throw rangeFail('target_paused');
+   const unfinished=db.prepare("SELECT * FROM own_range_jobs WHERE target=? AND solver=? AND state IN ('planned','leased')").all(targetId,solverSha256)
+    .sort((a,b)=>BigInt(a.start)<BigInt(b.start)?-1:1);
+   const job=unfinished.find(r=>r.state==='planned'||r.expires<=now);
+   if(job)return job;
+   if(unfinished.length)throw rangeFail('range_job_unavailable');
+   return this.reserveLocked(id,targetId,size,solverSha256);
   });
  }
  // Operator-only enrollment, never a public HTTP endpoint. A benchmark approval
