@@ -17,3 +17,8 @@ secrets/
 credentials/
 .DS_Store
 Thumbs.db
+
+# Private funding credential stores
+*.dpapi
+*.dpapi.tmp
+private/

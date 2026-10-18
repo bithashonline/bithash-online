@@ -1,0 +1,84 @@
+import {productionFundingPanel,productionFundingAction} from './production-funding-ui.js';
+import {continuousFundingPanel,continuousFundingAction} from './continuous-funding-ui.js';
+import {fleetBudgetPanel,fleetBudgetAction} from './fleet-budget-ui.js';
+import {fundingJobsPanel,fundingJobsAction} from './funding-jobs-ui.js';
+import {createServer} from 'node:http';
+import {randomBytes,randomUUID} from 'node:crypto';
+import {fundingAdvice,formatAmount,parseAmount} from './treasury-compute.js';
+import {readTreasuryWallets} from './treasury-wallet.js';
+import {fundingPanel,fundingStatus} from './treasury-funding-ui.js';
+import {automaticFundingPanel,automaticFundingAction} from './automatic-funding-ui.js';
+import {fundingRecordsPanel} from './funding-records-ui.js';
+import {runFundingRehearsal} from './treasury-funding.js';
+
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const usd=v=>v===null?'Unknown':'$'+formatAmount(v,6);
+const btc=v=>v===null?'Refresh required':formatAmount(v,8)+' WBTC';
+const input=(name,label,placeholder='')=>`<label>${esc(label)}<input name="${name}" required autocomplete="off" placeholder="${esc(placeholder)}" maxlength="100"></label>`;
+export function treasuryPage(treasury,{csrf,notice='',base='/treasury',reconciliation=null,records=null,solcardConnection=null,automatic=null,jobs=null,fleet=null,continuous=null,production=null}={}){
+ const s=treasury.snapshot(),rate=treasury.setting('hourlyMicrousd')??'0',advice=fundingAdvice(treasury,{hourlyMicrousd:rate});
+ const form=(action,body,label)=>`<form method="post" action="${base}/${action}"><input type="hidden" name="csrf" value="${csrf}">${body}<button>${esc(label)}</button></form>`;
+ const nextActions={configure_wallets:'Connect the two treasury wallets.',refresh_wallets:'Refresh the wallet observations.',confirm_provider_balance:'Confirm the current Runpod balance.',prepare_topup:'Prepare a top-up to cover the selected 24-hour budget.',hold:'No funding action needed at the entered hourly cost.'};
+ const plans=s.plans.map(p=>{
+  const stage=p.state==='planned'?(p.route==='solcard-wbtc'?'deposit-submitted':'converted'):p.state==='deposit-submitted'?'card-funded':p.state==='converted'?(p.route==='provider-checkout'?'provider-credited':'card-funded'):p.state==='card-funded'?'provider-credited':null;
+  const label=stage==='deposit-submitted'?'WBTC sent to the project card (record only)':stage==='converted'?'Net USDC received from the swap':stage==='card-funded'?'Net USD credited to the project card':'USD credits actually received by Runpod';
+  return `<article><h3>${esc(p.id)}</h3><p>${btc(p.amount)} · ${esc(p.route)} · <strong>${esc(p.state)}</strong></p>${['deposit-submitted','converted','card-funded','provider-credited'].filter(k=>p[k]).map(k=>`<p>${esc(k)}: ${formatAmount(p[k].amount,k==='deposit-submitted'?8:6)} ${k==='deposit-submitted'?'WBTC':k==='converted'?'USDC':'USD'} · ${esc(p[k].reference)}</p>`).join('')}${stage?form('advance',`<input type="hidden" name="id" value="${esc(p.id)}"><input type="hidden" name="stage" value="${stage}">${input('amount',label,'0.00')}${input('reference','Unique transaction or receipt reference','letters, numbers, hyphens or underscores')}`,`Record ${stage}`):''}${p.state==='planned'?form('cancel',`<input type="hidden" name="id" value="${esc(p.id)}"><label class="check"><input type="checkbox" name="noTransferMade" value="yes" required> I confirm no transfer or swap was made for this plan.</label>`,'Cancel unused plan'):''}</article>`;
+ }).join('');
+ return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BitHash · Compute treasury</title><style>
+ :root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#090e16;color:#f2f6ff;font:16px/1.55 system-ui}main{max-width:1100px;margin:auto;padding:36px 24px 80px}a{color:#65dfff}header{display:flex;gap:20px;justify-content:space-between;align-items:center}small,.eyebrow{color:#ffca68;letter-spacing:.13em;font-size:12px;font-weight:750}h1{font-size:clamp(32px,5vw,52px);line-height:1.1;letter-spacing:-.04em;margin:28px 0 16px}h2{font-size:25px;line-height:1.2}h3{font-size:17px;overflow-wrap:anywhere}p{color:#bfccdf;max-width:850px}.lead{font-size:19px}.badge{border:1px solid #bd8b35;color:#ffca68;border-radius:30px;padding:6px 12px;font-size:13px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card,section{background:#101b2b;border:1px solid #2a3d55;border-radius:14px;padding:24px;margin:18px 0}.card{margin:0;min-width:0}.value{display:block;font-size:26px;font-weight:750;color:white;overflow-wrap:anywhere}.accent{border-top:3px solid #ffbd4b}.flow{color:#6ee7ff;font-size:18px;font-weight:650;padding:20px 0}.notice{border-left:4px solid #6ee7ff;padding:14px;background:#142a3b;overflow-wrap:anywhere}label{display:block;margin:12px 0;color:#dce7f7}input{display:block;width:100%;padding:12px;border:1px solid #50657c;border-radius:7px;background:#091321;color:white;font:inherit;margin-top:6px}button{background:#ffc15a;color:#15100a;border:0;border-radius:8px;padding:12px 18px;font:700 16px system-ui;cursor:pointer;margin-top:10px}button:hover{background:#ffdb97}button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #65dfff;outline-offset:3px}form{max-width:620px}article{padding:18px 0;border-top:1px solid #35465b}.wallet{overflow-wrap:anywhere;font-family:monospace;font-size:14px}.check{display:flex;gap:10px}.check input{width:auto}details{margin:20px 0}summary{cursor:pointer;color:#6ee7ff;font-weight:650}.two{display:grid;grid-template-columns:1fr 1fr;gap:24px}@media(max-width:700px){.grid,.two{grid-template-columns:1fr}main{padding:22px 16px}header{align-items:flex-start}.value{font-size:24px}section,.card{padding:20px}}
+ </style></head><body><main><header><a href="http://127.0.0.1:4185/">BITHASH / OPERATOR</a><span class="badge">GPU proposals paused</span></header><h1>Give the treasury<br>a clear path to compute.</h1><p class="lead">Track the project’s 70% compute allocation from WBTC to usable Runpod credit. The other 30% stays in the development and rewards treasury.</p><div class="flow">WBTC fees → 70% compute wallet → Project SolCard (USD) → Runpod credits</div>${notice?`<p role="status" class="notice">${esc(notice)}</p>`:''}${s.mode==='simulation'?'<p class="notice">SIMULATION — these balances cannot fund real rentals.</p>':''}
+ ${productionFundingPanel(production,form)}${continuousFundingPanel(continuous,form)}<details><summary>Earlier independent simulation cases</summary>${fleetBudgetPanel(fleet,form)}${fundingJobsPanel(jobs,form)}</details>${automaticFundingPanel(automatic,form)}${fundingRecordsPanel(records,solcardConnection,form)}${fundingPanel(treasury,form,reconciliation)}<div class="grid"><div class="card accent"><small>COMPUTE ALLOCATION · 70%</small><strong class="value">${btc(s.allocation.compute)}</strong><p>From owner-recorded fee batches</p></div><div class="card"><small>OTHER TREASURY · 30%</small><strong class="value">${btc(s.allocation.other)}</strong><p>Half development · half BTC rewards</p></div><div class="card accent"><small>AVAILABLE COMPUTE CREDIT</small><strong class="value">${usd(s.availableProviderMicrousd)}</strong><p>Recorded project credits, capped by the current Runpod balance</p></div></div>
+ <section><small>OPERATOR / NEXT FUNDING ACTION</small><h2>${nextActions[advice.action]}</h2><p>${s.providerFresh?'Runpod balance was observed within the last five minutes.':'Runpod balance is missing or stale; available credit is unknown.'} ${s.walletFresh?'Wallet observation is fresh.':'Wallet refresh is needed before preparing a conversion.'}</p><p>At ${usd(rate)}/hour: ${advice.runwaySeconds===null?'enter a burn rate and current provider balance to estimate runway':formatAmount((BigInt(advice.runwaySeconds)*100n/3600n).toString(),2)+' hours of estimated runway'}. This is a planning estimate; it does not start or extend rentals.</p>${form('rate',input('amount','Planning cost in USD per hour (0 while idle)',formatAmount(rate,6)),'Update planning rate')}<p><a href="${base}/status">View treasury and Operator data</a></p></section>
+ <section><small>01 / OBSERVE THE TREASURY</small><h2>Two wallets. One fee policy.</h2>${s.wallets?`<p>Compute wallet</p><div class="wallet">${esc(s.wallets.computeWallet)}</div><p>Development / rewards wallet</p><div class="wallet">${esc(s.wallets.otherWallet)}</div><p>Last observed holdings: compute <strong>${s.walletObservation?btc(s.walletObservation.computeAmount):'Unknown'}</strong>; other <strong>${s.walletObservation?btc(s.walletObservation.otherAmount):'Unknown'}</strong>.</p><p>${esc(s.walletObservation?.observedAt??'No observation yet')} · ${s.walletFresh?'Fresh':'Unknown or stale'}</p>${form('refresh','','Refresh WBTC balances')}`:form('configure',input('computeWallet','Compute wallet')+input('otherWallet','Development / rewards wallet'),'Connect public wallets')}<details><summary>Record a received creator-fee batch</summary><p>Enter the total WBTC fees across both wallets for one new batch, before the 70/30 allocation. This records your statement; it does not configure Pump or verify fee origin. Use the same reference when retrying a batch. Do not enter the total wallet balance or personal deposits.</p>${form('fees',input('amount','Total WBTC in this new fee batch','0.00000000')+input('reference','Unique fee-batch reference','fee-batch-001'),'Record fee batch')}</details><p>Token: WBTC (Wormhole Portal), 8 decimals.</p><div class="wallet">${esc(s.asset.mint)}</div></section>
+ <div class="two"><section><small>02 / PREPARE FUNDING</small><h2>Reserve WBTC for a top-up.</h2><p>Available to plan: <strong>${btc(s.availableWbtcUnits)}</strong>. A plan only reserves accounting funds. The direct WBTC route records the transfer, net card credit and net provider credit separately. This form does not send a payment.</p>${form('plan',`<input type="hidden" name="route" value="solcard-wbtc"><input type="hidden" name="id" value="fund-${randomUUID()}">`+input('amount','WBTC to allocate to this plan','0.00000000'),'Create SolCard funding plan')}<p>The tracker works with either SolCard tier. Record actual net credit after its fees. No card details or wallet keys are needed here.</p></section><section><small>03 / CONFIRM PROVIDER CREDIT</small><h2>Check what Runpod can spend.</h2><p>The connected feed above reads the current Runpod balance. This manual entry remains a fallback. Existing personal KAST-funded credits do not become project fee income.</p>${form('provider',input('amount','Current total Runpod credit balance in USD','0.00'),'Record current Runpod balance')}<p>Project credits recorded: ${usd(s.providerCreditMicrousd)}<br>Reserved for proposals: ${usd(s.reservedMicrousd)}<br>Reconciled project spending: ${usd(s.spentMicrousd)}</p><a href="https://console.runpod.io/" target="_blank" rel="noreferrer">Open Runpod billing ↗</a></section></div>
+ <section><small>FUNDING PLANS</small><h2>Follow the money, one step at a time.</h2>${plans||'<p>No funding plans yet. Your first fee-funded top-up will appear here.</p>'}</section><details><summary>What is connected, and what remains manual?</summary><p>Connected locally: exact-mint wallet observations, 70/30 accounting, funding stages, budget reservations and Operator funding evidence. Fees, transfer status, card funding and provider credit are owner-recorded. The rehearsal uses separate simulated funds. Fee routing has not been verified on-chain.</p><p>Manual: claiming fees, WBTC transfers and Runpod top-ups. SolCard performs the WBTC-to-USD conversion. There is no wallet signer or payment API in this connection. GPU proposals are paused. A future rental still needs the existing separate owner approval.</p></details></main></body></html>`;
+}
+
+// The caller supplies its existing loopback session, Origin and CSRF checks.
+export async function treasuryAction(treasury,action,form,{readWallets=readTreasuryWallets,automatic=null,jobs=null,fleet=null,continuous=null,production=null}={}){
+ if(action.startsWith('production-'))return productionFundingAction(production,action,form);
+ if(action.startsWith('continuous-'))return continuousFundingAction(continuous,action,form);
+ if(action.startsWith('fleet-'))return fleetBudgetAction(fleet,action,form);
+ if(action.startsWith('jobs-'))return fundingJobsAction(jobs,automatic,action,form);
+ if(action.startsWith('automatic-'))return automaticFundingAction(automatic,action,form);
+ const amount=decimals=>parseAmount(form.get('amount'),decimals);
+ switch(action){
+  case 'configure':treasury.configure({computeWallet:form.get('computeWallet'),otherWallet:form.get('otherWallet')});return 'Public wallets connected. No fee routing was changed.';
+  case 'refresh':try{const wallets=treasury.setting('wallets');if(!wallets)throw Error('wallets_not_configured');treasury.observeWallets(await readWallets(wallets));return 'Finalized WBTC balances refreshed.';}catch(e){treasury.walletUnavailable();throw e;}
+  case 'fees':treasury.recordFees({reference:form.get('reference'),amount:amount(8)});return 'Fee batch recorded. Duplicate references are counted once.';
+  case 'preview':treasury.set('fundingRequestAmount',amount(8));return 'Funding preview refreshed. No funds reserved or sent.';
+  case 'rehearsal':treasury.set('fundingRehearsal',runFundingRehearsal());return 'Offline funding rehearsal completed. Real balances are unchanged.';
+  case 'plan':treasury.plan({id:form.get('id'),amount:amount(8),route:form.get('route')||'solcard'});return 'Funding plan saved. No swap or payment has been sent.';
+  case 'advance':treasury.advance({id:form.get('id'),stage:form.get('stage'),amount:amount(form.get('stage')==='deposit-submitted'?8:6),reference:form.get('reference')});return 'Received amount recorded. Confirm the current Runpod balance after a provider top-up.';
+  case 'cancel':treasury.cancel({id:form.get('id'),noTransferMade:form.get('noTransferMade')==='yes'});return 'Unused funding plan cancelled.';
+  case 'provider':treasury.observeProvider({availableMicrousd:amount(6)});return 'Runpod balance recorded as an owner observation.';
+  case 'rate':treasury.set('hourlyMicrousd',amount(6));return 'Planning rate saved. No rental or extension was requested.';
+  default:throw Error('unknown_treasury_action');
+ }
+}
+
+export function createTreasuryServer(treasury,{readWallets}={}){
+ const csrf=randomBytes(32).toString('hex'),session=randomBytes(32).toString('hex');let notice='';
+ const server=createServer(async(req,res)=>{
+  const host='127.0.0.1:'+server.address().port,origin='http://'+host;
+  res.setHeader('Cache-Control','no-store');res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('Referrer-Policy','no-referrer');res.setHeader('Content-Security-Policy',"default-src 'none'; style-src 'unsafe-inline'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'");
+  const json=(status,data)=>res.writeHead(status,{'Content-Type':'application/json'}).end(JSON.stringify(data));
+  if(req.headers.host!==host)return json(403,{error:'invalid_host'});
+  const sessionOK=(req.headers.cookie??'').split(';').some(v=>v.trim()==='bithash_treasury='+session);
+  const url=new URL(req.url,origin);
+  if(url.search)return json(404,{error:'not_found'});
+  if(req.method==='GET'&&['/','/treasury'].includes(url.pathname)){
+   res.setHeader('Set-Cookie',`bithash_treasury=${session}; HttpOnly; SameSite=Strict; Path=/`);
+   return res.writeHead(200,{'Content-Type':'text/html; charset=utf-8'}).end(treasuryPage(treasury,{csrf,notice}));
+  }
+  if(req.method==='GET'&&url.pathname==='/treasury/status')return sessionOK?json(200,{treasury:treasury.snapshot(),operator:fundingAdvice(treasury,{hourlyMicrousd:treasury.setting('hourlyMicrousd')??'0'}),funding:fundingStatus(treasury)}):json(403,{error:'session_required'});
+  if(req.method!=='POST'||!/^\/treasury\/[a-z]+$/.test(url.pathname))return json(404,{error:'not_found'});
+  if(!sessionOK||req.headers.origin!==origin||req.headers['content-type']?.split(';')[0]!=='application/x-www-form-urlencoded')return json(403,{error:'forbidden'});
+  try{
+   let body='';for await(const chunk of req){body+=chunk;if(body.length>4096)return json(413,{error:'body_too_large'});}
+   const form=new URLSearchParams(body);if(form.get('csrf')!==csrf)return json(403,{error:'csrf_rejected'});
+   notice=await treasuryAction(treasury,url.pathname.split('/').at(-1),form,{readWallets});
+  }catch(e){notice='Not recorded: '+(/^[a-z_]{1,80}$/.test(e.message)?e.message:'treasury_request_failed')+'. Existing accounting is retained.';}
+  res.writeHead(303,{Location:'/treasury'}).end();
+ });return server;
+}

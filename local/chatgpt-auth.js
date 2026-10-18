@@ -48,7 +48,7 @@ export function hasPlan(account){return !!account?.access_token&&account.scopes?
 export async function openStore(directory){
  const dir=resolve(directory);await mkdir(dir,{recursive:true,mode:0o700});
  if(process.platform==='win32'){
-  const sid=execFileSync('powershell.exe',['-NoProfile','-NonInteractive','-Command','[System.Security.Principal.WindowsIdentity]::GetCurrent().User.Value'],{encoding:'utf8',windowsHide:true}).trim();
+  const sid=execFileSync(process.env.BITHASH_POWERSHELL_PATH??'pwsh.exe',['-NoProfile','-NonInteractive','-Command','[System.Security.Principal.WindowsIdentity]::GetCurrent().User.Value'],{encoding:'utf8',windowsHide:true,timeout:30000}).trim();
   if(!/^S-1-[0-9-]+$/.test(sid))throw Error('storage_permissions_failed');
   execFileSync('icacls.exe',[dir,'/inheritance:r','/grant:r',`*${sid}:(OI)(CI)F`],{stdio:'pipe',windowsHide:true});
  }else await chmod(dir,0o700);

@@ -1,6 +1,16 @@
 # BitHash
 Public source and evidence for a community-funded attempt at the deliberately public Bitcoin puzzle #71. This release contains working prototypes and bounded tests; it does not establish a production search fleet or a solved puzzle.
 
+## Treasury and automatic funding — October 18, 2026
+
+The local Operator now includes the 70/30 treasury connection, authenticated read-only SolCard/Runpod records, fee-detection rules, restricted transaction inspection and persistent funding jobs. Continuous replenishment and fleet budgets work in **simulation**; the production funding connection is **observe only**. Real signing, broadcasting, automatic credit posting and GPU proposals remain disabled.
+
+**294 local tests pass** in the publication checkout. No real transfer or GPU experiment was performed for this release. Provider receipt attribution, live preflight/custody, fee claiming and durable unattended operation remain incomplete.
+
+[Release and reproduction](experiments/2026-10-18-treasury-funding.md) · [Production observation](local/PRODUCTION-FUNDING.md) · [Continuous replenishment simulation](local/CONTINUOUS-FUNDING.md) · [Read-only provider records](local/FUNDING-RECORDS.md).
+
+Earlier sections below are dated snapshots; use the release above for current funding status.
+
 ## Owned range connection — October 13, 2026
 
 The range-aware executor and owned ledger are deployed. Exact signed chunks advance durable checkpoints; enrollment retries and receipt replay do not add duplicate credit. The first 1,048,576-candidate #71 job is reserved, with zero searched coverage. New native solver checksum: `2fa95f416407975c757497c9d4cc6c4e235211da8a5fa7ac44f20b4383d5e555`. GPU qualification of this binary is still pending fresh exact Google owner approval. The previous successful live benchmark used a different interface and does not qualify it.
