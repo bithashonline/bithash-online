@@ -10,7 +10,7 @@ test('local timestamps honor visitor zone, DST and previous calendar day',()=>{
  assert.equal(localTime('bad'),'Not recorded');assert.equal(localTime(null),'Not recorded');
 });
 test('saved AI timestamps localize only when their UTC date is known; archives stay unchanged',()=>{
- const records=JSON.parse(readFileSync('fixtures/gpu-activity-records.json','utf8'));
+ const records=JSON.parse(readFileSync(new URL('./fixtures/gpu-activity-records.json',import.meta.url),'utf8'));
  const before=JSON.stringify(records),options={locale:'en-US',timeZone:'America/Toronto'};
  for(const {report}of records){const map=new Map(report.evidence.sources.map(s=>[s.id,s]));
   for(const statement of [report.advice.summary,...report.advice.updates]){

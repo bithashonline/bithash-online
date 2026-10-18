@@ -20,6 +20,6 @@ test('AI proxy is read-only, checks rental/hash binding, retains historical reco
  assert.equal((await telemetry(req(path),env,async()=>new Response(null,{status:404}))).status,404);
 });
 test('both actual plan-generated acceptance records retain valid digests and render their source-linked advice',async()=>{
- const records=JSON.parse(readFileSync('fixtures/gpu-activity-records.json'));assert.equal(records.length,2);
+ const records=JSON.parse(readFileSync(new URL('./fixtures/gpu-activity-records.json',import.meta.url)));assert.equal(records.length,2);
  for(const record of records){const s={schema:'bithash.gpu-activity-snapshot.v1',syncReceivedAt:new Date().toISOString(),record};await verifyActivity(s,record.report.podId);const html=activityView(s,record.report.podId,{entries:[],controllerEvents:[],rental:{status:'DELETED'}});assert(html.includes('GPU activity report'));assert(html.includes('/api/gpu-activity-proof/'+record.digest));assert(!html.includes('Awaiting an AI report'));}
 });
