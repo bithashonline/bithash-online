@@ -5,6 +5,7 @@ import {WBTC} from './treasury-compute.js';
 
 export const PUMP='6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P';
 export const PUMP_FEES='pfeeUxB6jkeY1Hxd7CsFCAjcbHA9rWtchMGdZ6VojVZ';
+export const PUMP_AMM='pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA';
 const ATA='ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL';
 const DISC=Buffer.from([255,203,19,79,244,68,8,159]);
 const amount=v=>{if(typeof v!=='string'||!/^(0|[1-9][0-9]{0,19})$/.test(v))throw Error('invalid_fee_amount');return BigInt(v);};
@@ -16,7 +17,15 @@ export function feeAddresses({projectMint,computeWallet,otherWallet}){
  if(new Set([projectMint,computeWallet,otherWallet]).size!==3||projectMint===WBTC.mint)throw Error('invalid_fee_configuration');
  const sharing=pda(PUMP_FEES,Buffer.from('sharing-config'),pk(projectMint).toBuffer());
  const vault=pda(PUMP,Buffer.from('creator-vault'),pk(sharing).toBuffer());
- return {sharing,vault,vaultAta:wbtcAta(vault),computeAta:wbtcAta(computeWallet),otherAta:wbtcAta(otherWallet),curve:pda(PUMP,Buffer.from('bonding-curve'),pk(projectMint).toBuffer()),event:pda(PUMP,Buffer.from('__event_authority'))};
+ const curve=pda(PUMP,Buffer.from('bonding-curve'),pk(projectMint).toBuffer()),poolAuthority=pda(PUMP,Buffer.from('pool-authority'),pk(projectMint).toBuffer()),pool=pda(PUMP_AMM,Buffer.from('pool'),Buffer.from([0,0]),pk(poolAuthority).toBuffer(),pk(projectMint).toBuffer(),pk(WBTC.mint).toBuffer()),ammVault=pda(PUMP_AMM,Buffer.from('creator_vault'),pk(sharing).toBuffer());
+ return {sharing,vault,vaultAta:wbtcAta(vault),computeAta:wbtcAta(computeWallet),otherAta:wbtcAta(otherWallet),curve,curveAta:wbtcAta(curve),event:pda(PUMP,Buffer.from('__event_authority')),global:pda(PUMP,Buffer.from('global')),poolAuthority,pool,poolAta:wbtcAta(pool),ammVault,ammVaultAta:wbtcAta(ammVault),ammGlobal:pda(PUMP_AMM,Buffer.from('global_config')),ammEvent:pda(PUMP_AMM,Buffer.from('__event_authority'))};
+}
+export function collectionAccounts(config,routing){
+ const a=routing.addresses,payer=config.computeWallet,system='11111111111111111111111111111111';
+ return {curveSweep:[payer,a.global,config.projectMint,WBTC.mint,WBTC.program,ATA,system,a.curve,a.curveAta,a.vault,a.vaultAta,a.event,PUMP],
+  poolSweep:[payer,a.ammGlobal,a.pool,WBTC.mint,WBTC.program,a.poolAta,a.ammVault,a.ammVaultAta,system,ATA,a.ammEvent,PUMP_AMM],
+  bridge:[payer,WBTC.mint,WBTC.program,system,ATA,a.sharing,a.ammVault,a.ammVaultAta,a.vault,a.vaultAta,a.ammEvent,PUMP_AMM],
+  distribute:[payer,config.projectMint,a.curve,a.sharing,a.vault,system,a.event,PUMP,a.vaultAta,WBTC.mint,WBTC.program,ATA,...routing.recipients.map(r=>r.wallet),...routing.recipients.map(r=>wbtcAta(r.wallet))]};
 }
 function bytes(account,owner,disc,size){
  if(account?.owner!==owner||account.executable!==false||account.data?.[1]!=='base64')throw Error('fee_account_identity_mismatch');
@@ -69,10 +78,30 @@ export function inspectFeeTransaction(tx,signature,config,routing){
   return amount(list[0].uiTokenAmount.amount);
  }
  const compute=paid.get(a.computeAta),other=paid.get(a.otherAta),total=compute+other;
+ // Sweeps in the same transaction increase the Pump vault before distribution.
+ // Only exact known top-level sweep/bridge accounts and direct token transfers
+ // establish that inflow; arbitrary deposits cannot relax the net balance check.
+ let inflow=0n;const layouts=collectionAccounts(config,routing);
+ for(let n=0;n<index;n++){
+  const ix=instructions[n];if(typeof ix.data!=='string')continue;
+  const data=Buffer.from(bs58.decode(ix.data));let source,authority,expectedAccounts;
+  if(ix.programId===PUMP&&data.equals(Buffer.from([32,246,191,52,8,201,73,186]))){source=a.curveAta;authority=a.curve;expectedAccounts=layouts.curveSweep;}
+  else if(ix.programId===PUMP_AMM&&data.equals(Buffer.from([1,33,78,185,33,67,44,92]))){source=a.ammVaultAta;authority=a.ammVault;expectedAccounts=layouts.bridge;}
+  else continue;
+  if(ix.accounts?.length!==expectedAccounts.length||expectedAccounts.some((key,i)=>i!==0&&ix.accounts[i]!==key))throw Error('unsupported_fee_sweep');
+  const groups=tx.meta.innerInstructions?.filter(g=>g.index===n)??[];if(groups.length>1)throw Error('ambiguous_fee_sweep');
+  for(const innerIx of groups[0]?.instructions??[]){
+   if(innerIx.programId!==WBTC.program||innerIx.stackHeight>2)continue;
+   const parsed=innerIx.parsed,info=parsed?.info;
+   if(!['transfer','transferChecked'].includes(parsed?.type)||innerIx.stackHeight!==2||info?.source!==source||info.authority!==authority||info.destination!==a.vaultAta)throw Error('unsupported_fee_sweep_transfer');
+   if(parsed.type==='transferChecked'&&(info.mint!==WBTC.mint||info.tokenAmount?.decimals!==8))throw Error('fee_asset_mismatch');
+   inflow+=amount(parsed.type==='transfer'?info.amount:info.tokenAmount.amount);
+  }
+ }
  // Allow at most one base unit of integer distribution dust, never a second 70% cut.
  if(compute<total*70n/100n-1n||compute>total*70n/100n+1n)throw Error('fee_split_mismatch');
- for(const [address,owner,n] of [[a.computeAta,config.computeWallet,compute],[a.otherAta,config.otherWallet,other],[a.vaultAta,a.vault,-total]]){
-  const delta=balance(tx.meta.postTokenBalances,address,owner)-balance(tx.meta.preTokenBalances,address,owner,address!==a.vaultAta);
+ for(const [address,owner,n] of [[a.computeAta,config.computeWallet,compute],[a.otherAta,config.otherWallet,other],[a.vaultAta,a.vault,inflow-total]]){
+  const delta=balance(tx.meta.postTokenBalances,address,owner)-balance(tx.meta.preTokenBalances,address,owner,address!==a.vaultAta||inflow>0n);
   if(delta!==n)throw Error('ambiguous_fee_balance_change');
  }
  return {excluded:false,receipts:[{id:signature+':'+index,signature,instructionIndex:index,slot:tx.slot,projectMint:config.projectMint,quoteMint:WBTC.mint,computeWallet:config.computeWallet,otherWallet:config.otherWallet,totalUnits:String(total),computeUnits:String(compute),otherUnits:String(other),source:'finalized-pump-v2'}]};

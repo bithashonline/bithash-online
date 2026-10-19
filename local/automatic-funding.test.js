@@ -6,7 +6,7 @@ import {join} from 'node:path';
 import bs58 from 'bs58';
 import {PublicKey} from '@solana/web3.js';
 import {ComputeTreasury,WBTC} from './treasury-compute.js';
-import {PUMP,PUMP_FEES,feeAddresses,wbtcAta,verifyFeeRouting,inspectFeeTransaction,scanFees,publicFeeRpc} from './fee-detection.js';
+import {PUMP,PUMP_FEES,PUMP_AMM,feeAddresses,wbtcAta,verifyFeeRouting,inspectFeeTransaction,scanFees,publicFeeRpc,collectionAccounts} from './fee-detection.js';
 import {AutomaticFunding,DEFAULT_DRY_RULES,decideFunding,sampleFunding,validateDryRules} from './automatic-funding.js';
 import {automaticFundingPanel,automaticFundingAction,RULE_FIELDS} from './automatic-funding-ui.js';
 import {treasuryPage,treasuryAction} from './treasury-console.js';
@@ -110,4 +110,16 @@ test('failed scan holds old receipts without erasing history or treating it as f
 });
 test('console integrates a labelled sample and escapes observed errors',async()=>{
  const {treasury,service}=setup();try{await service.refresh();await treasuryAction(treasury,'automatic-sample',new URLSearchParams(),{automatic:service});const s=service.status();s.feeError='<script>bad</script>';const html=treasuryPage(treasury,{csrf:'fixture',automatic:s});assert.ok(html.includes('SAMPLE ONLY'));assert.ok(html.includes('&lt;script&gt;'));assert.ok(!html.includes('<script>'));assert.ok(html.includes('70% → Compute wallet'));assert.ok(html.includes('/treasury/automatic-policy'));assert.equal(treasury.snapshot().plans.length,0);}finally{await service.close();treasury.close();}
+});
+
+for(const kind of ['curveSweep','bridge'])test('receipt credits only the distribution after '+kind+' replenishes its vault',()=>{
+ const f=fixture(),a=f.routing.addresses,layout=collectionAccounts(config,f.routing),source=kind==='curveSweep'?a.curveAta:a.ammVaultAta,authority=kind==='curveSweep'?a.curve:a.ammVault;
+ f.tx.transaction.message.instructions.unshift({programId:kind==='curveSweep'?PUMP:PUMP_AMM,data:bs58.encode(Buffer.from(kind==='curveSweep'?[32,246,191,52,8,201,73,186]:[1,33,78,185,33,67,44,92])),accounts:layout[kind]});
+ f.tx.meta.innerInstructions[0].index=1;f.tx.meta.innerInstructions.unshift({index:0,instructions:[{programId:WBTC.program,stackHeight:2,parsed:{type:'transferChecked',info:{source,authority,destination:a.vaultAta,mint:WBTC.mint,tokenAmount:{amount:'1000000',decimals:8}}}}]});
+ f.tx.meta.preTokenBalances[0].uiTokenAmount.amount='0';
+ const r=inspectFeeTransaction(f.tx,signature,config,f.routing);assert.equal(r.receipts.length,1);assert.equal(r.receipts[0].computeUnits,'700000');assert.equal(r.receipts[0].instructionIndex,1);
+ f.tx.meta.innerInstructions[0].instructions[0].parsed.info.source=a.otherAta;assert.throws(()=>inspectFeeTransaction(f.tx,signature,config,f.routing),/unsupported_fee_sweep_transfer/);
+});
+test('unknown incoming vault transfer never masks an ambiguous distribution delta',()=>{
+ const f=fixture();f.tx.meta.preTokenBalances[0].uiTokenAmount.amount='0';assert.throws(()=>inspectFeeTransaction(f.tx,signature,config,f.routing),/ambiguous_fee_balance_change/);
 });

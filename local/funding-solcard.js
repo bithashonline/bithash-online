@@ -29,6 +29,37 @@ export async function solcardFetch(input,init={}){
 }
 function unwrap(result){if(result.isError)throw Error('solcard_read_failed');if(result.structuredContent)return result.structuredContent;const text=result.content?.find(x=>x.type==='text')?.text;if(!text||text.length>2097152)throw Error('solcard_invalid_response');return JSON.parse(text);}
 
+// Bounded history and detail reads under the existing four read-only scopes.
+export async function readSolcardHistory(call,clock=Date.now){
+ const observedAt=new Date(clock()).toISOString();
+ const card=await call('get_card',{slotNumber:1}),addresses=await call('get_perma_addresses',{slotNumber:1});
+ let activity={rows:[],hasMore:false},deposits={deposits:[],pagination:{}},cursor;
+ const cursors=new Set();
+ for(let page=1;page<=3;page++){
+  const a=await call('get_card_activity',{slotNumber:1,limit:100,...(cursor?{cursor}:{})});
+  if(!Array.isArray(a.rows)||a.rows.length>100||typeof a.hasMore!=='boolean')throw Error('solcard_activity_page_invalid');
+  activity.rows.push(...a.rows);activity.hasMore=a.hasMore;
+  if(!a.hasMore)break;
+  if(typeof a.nextCursor!=='string'||!a.nextCursor||a.nextCursor.length>1024||cursors.has(a.nextCursor))throw Error('solcard_activity_cursor_invalid');
+  cursors.add(a.nextCursor);cursor=a.nextCursor;
+ }
+ for(let page=1;page<=3;page++){
+  const d=await call('list_deposits',{limit:100,page});
+  if(!Array.isArray(d.deposits)||d.deposits.length>100||!Number.isInteger(d.pagination?.totalPages)||d.pagination.totalPages<0)throw Error('solcard_deposit_page_invalid');
+  deposits.deposits.push(...d.deposits);deposits.pagination={...d.pagination};
+  if(page>=d.pagination.totalPages)break;
+ }
+ deposits.hasMore=(deposits.pagination.totalPages??0)>3;
+ const eligible=deposits.deposits.filter(d=>d.slotNumber===1&&d.network==='SOLANA'&&d.paymentAddress===addresses.solanaAddress&&activity.rows.some(r=>r.id===d.invoiceId));
+ const invoiceDetails=[];
+ for(const d of eligible.slice(0,10)){
+  if(typeof d.invoiceId!=='string'||!/^[A-Za-z0-9_-]{1,128}$/.test(d.invoiceId))throw Error('solcard_invoice_id_invalid');
+  try{invoiceDetails.push({id:d.invoiceId,state:'read',value:await call('get_invoice',{invoiceId:d.invoiceId})});}
+  catch{invoiceDetails.push({id:d.invoiceId,state:'unavailable'});}
+ }
+ return {observedAt,card,addresses,activity,deposits,invoiceDetails,invoiceDetailsIncomplete:eligible.length>10||invoiceDetails.some(d=>d.state!=='read')};
+}
+
 export class SolcardFundingConnection{
  #store;#data;#clock;#authorize;#pending=null;#pendingCredentials=null;#url=null;#busy=false;#provider;
  constructor(store,{clock=Date.now,authorize=auth}={}){this.#store=store;this.#clock=clock;this.#authorize=authorize;
@@ -74,10 +105,7 @@ export class SolcardFundingConnection{
    const transport=new StreamableHTTPClientTransport(new URL(ENDPOINT),{requestInit:{headers:{Authorization:'Bearer '+this.#data.tokens.access_token}},fetch:solcardFetch,reconnectionOptions:{maxRetries:0,initialReconnectionDelay:1000,maxReconnectionDelay:1000,reconnectionDelayGrowFactor:1}});
    await client.connect(transport);
    const call=async(name,args)=>unwrap(await client.callTool({name,arguments:args},undefined,{timeout:12000}));
-   const card=await call('get_card',{slotNumber:1}),addresses=await call('get_perma_addresses',{slotNumber:1});
-   const activity=await call('get_card_activity',{slotNumber:1,limit:100});
-   const deposits=await call('list_deposits',{limit:100,page:1});
-   return {observedAt:new Date(this.#clock()).toISOString(),card,addresses,activity,deposits};
+   return await readSolcardHistory(call,this.#clock);
   }catch(e){if(e?.code===401)this.#data.expiresAt=0;throw Error(/^[a-z_]{1,80}$/.test(e.message)?e.message:'solcard_read_failed');}
   finally{await client?.close().catch(()=>{});this.#busy=false;}
  }

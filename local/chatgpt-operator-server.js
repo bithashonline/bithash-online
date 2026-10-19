@@ -1,3 +1,10 @@
+import {RunpodAutoPaySimulation} from './runpod-autopay-simulation.js';
+import {HolderRewards} from './holder-rewards.js';
+import {FundingCoordinator} from './funding-coordinator.js';
+import {coordinatorWalkthrough} from './funding-coordinator-sample.js';
+import {ShadowFunding} from './shadow-funding.js';
+import {ReconciliationSimulation} from './reconciliation-simulation.js';
+import {FeeCollection} from './fee-collection.js';
 import {ProductionFundingJobs} from './production-funding-jobs.js';
 import {ReadOnlyFundingPreflight} from './funding-preflight.js';
 import {ContinuousFundingSimulation} from './continuous-funding.js';
@@ -25,7 +32,7 @@ import {openGpuReporter} from './gpu-activity-reporter.js';
 import {writeGpuActivity} from './gpu-activity-model.js';
 import {readGpuActivities,publishGpuActivities} from './gpu-activity-transport.js';
 import {executorConnection} from './live-executor-api.js';
-import {ComputeTreasury,attachTreasuryEvidence,fundingAdvice} from './treasury-compute.js';
+import {ComputeTreasury,attachTreasuryEvidence,fundingAdvice,parseAmount} from './treasury-compute.js';
 import {draftTreasurySession} from './treasury-planner.js';
 import {treasuryPage,treasuryAction} from './treasury-console.js';
 
@@ -37,11 +44,12 @@ if(config.computeTreasury)treasury.configure(config.computeTreasury);
 if(config.fundingProfilePath){const profile=JSON.parse(await readFile(config.fundingProfilePath,'utf8'));validateFundingProfile(profile);treasury.set('fundingProfile',profile);}
 // No UI action enables this. A future, explicitly authorized rollout is required.
 const gpuProposalsEnabled=false;
+if(!treasury.setting('runpodUsageStartTime')){const start=new Date();start.setUTCHours(0,0,0,0);treasury.set('runpodUsageStartTime',start.toISOString());}
 const solcardFunding=await new SolcardFundingConnection(new FundingSecretStore(join(resolve(directory),'solcard-backend-oauth.dpapi'))).initialize();
 const fundingRecords=new FundingRecords(join(resolve(directory),'funding-records.sqlite'),{
  expectedSolcard:config.fundingRecords?.solcard,
  readSolcard:()=>solcardFunding.read(),
- readRunpod:()=>readRunpodFunding({credentialPath:config.fundingRecords?.runpodCredentialPath}),
+ readRunpod:()=>readRunpodFunding({credentialPath:config.fundingRecords?.runpodCredentialPath,usageStartTime:treasury.setting('runpodUsageStartTime')}),
  onFeed:(provider,feed)=>{
   if(provider==='solcard'){
    treasury.set('solcardBackendError',feed.error??null);
@@ -50,18 +58,32 @@ const fundingRecords=new FundingRecords(join(resolve(directory),'funding-records
  }
 });
 fundingRecords.start();
+const shadowFunding=new ShadowFunding(join(resolve(directory),'shadow-funding.sqlite'),{records:fundingRecords,requireUsage:true});
+shadowFunding.start();
+const reconciliationSim=new ReconciliationSimulation(join(resolve(directory),'simulation-reconciliation.sqlite'));
+reconciliationSim.start();
 const automaticFunding=new AutomaticFunding(join(resolve(directory),'automatic-funding.sqlite'),{treasury,records:fundingRecords,projectMint:config.feeDetection?.projectMint??null});
 automaticFunding.start();
+const holderRewards=new HolderRewards(join(resolve(directory),'holder-rewards.sqlite'),{configuration:config.feeDetection?.projectMint&&config.holderRewards?{...config.holderRewards,projectMint:config.feeDetection.projectMint,...treasury.setting('wallets')}:null,observe:()=>({automatic:automaticFunding.coordinatorSnapshot(),treasury:treasury.snapshot()})});
+holderRewards.start();
+const feeCollection=new FeeCollection(join(resolve(directory),'fee-collection.sqlite'),{treasury,automatic:automaticFunding,projectMint:config.feeDetection?.projectMint??null,policy:config.feeCollectionPolicy??null});
+feeCollection.start();
 const fundingJobs=new SimulationFundingJobs(join(resolve(directory),'simulation-funding-jobs.sqlite'));
 fundingJobs.start();
 const fleetBudget=new FleetBudgetSimulation(join(resolve(directory),'simulation-fleet-budget.sqlite'),{fundingJobs});
 fleetBudget.start();
 const continuousFunding=new ContinuousFundingSimulation(join(resolve(directory),'simulation-continuous-funding.sqlite'));
 continuousFunding.start();
-const fundingReconciler=new FundingReconciler(join(resolve(directory),'funding-reconciliation.sqlite'),{readCard:()=>fundingRecords.readCardReceipt(),readProvider:()=>fundingRecords.readProviderReceipt()});
+const fundingReconciler=new FundingReconciler(join(resolve(directory),'funding-reconciliation.sqlite'),{readCard:job=>fundingRecords.readCardReceipt(job),readProvider:job=>fundingRecords.readProviderReceipt(job)});
 fundingReconciler.start();
-const productionFunding=new ProductionFundingJobs(join(resolve(directory),'production-funding-jobs.sqlite'),{treasury,records:fundingRecords,reconciler:fundingReconciler,preflight:new ReadOnlyFundingPreflight()});
+let fundingCoordinator=null;
+const productionFunding=new ProductionFundingJobs(join(resolve(directory),'production-funding-jobs.sqlite'),{treasury,records:fundingRecords,reconciler:fundingReconciler,preflight:new ReadOnlyFundingPreflight(),coordinator:()=>fundingCoordinator?.handoffSnapshot()??null});
+fundingCoordinator=new FundingCoordinator(join(resolve(directory),'funding-coordinator.sqlite'),{observe:()=>({evidenceKind:'real-records',automatic:automaticFunding.coordinatorSnapshot(),collection:feeCollection.status(),treasury:treasury.snapshot(),profile:treasury.setting('fundingProfile'),records:fundingRecords.status(),production:productionFunding.status(),shadow:shadowFunding.status(),planningHourlyMicrousd:treasury.setting('hourlyMicrousd')??'0',quote:null})});
+fundingCoordinator.start();
 productionFunding.start();
+const autopaySim=new RunpodAutoPaySimulation(join(resolve(directory),'simulation-autopay.sqlite'));
+autopaySim.start();
+let coordinatorSample=null;
 const origin='http://127.0.0.1:4185',csrf=randomBytes(32).toString('hex'),session=randomBytes(32).toString('hex');
 let pending=null,models=[],report=null,busy=false,lastReview=0,notice='Connect your ChatGPT plan to review fleet evidence.';
 const gpuReporter=await openGpuReporter(directory,{enabled:config.gpuActivityReporting?.enabled===true,watchUntil:config.gpuActivityReporting?.watchUntil??0,model:config.gpuActivityReporting?.model??'gpt-6.1-sol',access:()=>store.access(),isBusy:()=>busy,setBusy:v=>{busy=v;},write:writeGpuActivity,publish:records=>publishGpuActivities(records,config),read:async()=>{
@@ -85,8 +107,8 @@ const server=createServer(async(req,res)=>{
  const redirect=()=>res.writeHead(303,{Location:'/'}).end();
  try{
   if(req.method==='GET'&&url.pathname==='/'&&!url.search){res.setHeader('Set-Cookie',`bithash_operator=${session}; HttpOnly; SameSite=Lax; Path=/`);res.writeHead(200,{'Content-Type':'text/html; charset=utf-8'}).end(page());return;}
-  if(req.method==='GET'&&url.pathname==='/treasury'&&!url.search){res.setHeader('Set-Cookie',`bithash_operator=${session}; HttpOnly; SameSite=Lax; Path=/`);res.writeHead(200,{'Content-Type':'text/html; charset=utf-8'}).end(treasuryPage(treasury,{csrf,notice,reconciliation:fundingReconciler.status(),records:fundingRecords.status(),solcardConnection:solcardFunding.status(),automatic:automaticFunding.status(),jobs:fundingJobs.status(),fleet:fleetBudget.status(),continuous:continuousFunding.status(),production:productionFunding.status()}));return;}
-  if(req.method==='GET'&&url.pathname==='/treasury/status'&&!url.search){send(sessionOK?200:403,sessionOK?{treasury:treasury.snapshot(),operator:fundingAdvice(treasury,{hourlyMicrousd:treasury.setting('hourlyMicrousd')??'0'}),funding:fundingStatus(treasury),reconciliation:fundingReconciler.status(),records:fundingRecords.status(),solcardConnection:solcardFunding.status(),automatic:automaticFunding.status(),jobs:fundingJobs.status(),fleet:fleetBudget.status(),continuous:continuousFunding.status(),production:productionFunding.status()}:{error:'session_required'});return;}
+  if(req.method==='GET'&&url.pathname==='/treasury'&&!url.search){res.setHeader('Set-Cookie',`bithash_operator=${session}; HttpOnly; SameSite=Lax; Path=/`);res.writeHead(200,{'Content-Type':'text/html; charset=utf-8'}).end(treasuryPage(treasury,{csrf,notice,reconciliation:fundingReconciler.status(),records:fundingRecords.status(),solcardConnection:solcardFunding.status(),automatic:automaticFunding.status(),jobs:fundingJobs.status(),fleet:fleetBudget.status(),continuous:continuousFunding.status(),production:productionFunding.status(),collection:feeCollection.status(),reconciliationSim:reconciliationSim.status(),shadow:shadowFunding.status(),coordinator:fundingCoordinator.status(),coordinatorSample,rewards:holderRewards.status(),autopay:autopaySim.status()}));return;}
+  if(req.method==='GET'&&url.pathname==='/treasury/status'&&!url.search){send(sessionOK?200:403,sessionOK?{treasury:treasury.snapshot(),operator:fundingAdvice(treasury,{hourlyMicrousd:treasury.setting('hourlyMicrousd')??'0'}),funding:fundingStatus(treasury),reconciliation:fundingReconciler.status(),records:fundingRecords.status(),solcardConnection:solcardFunding.status(),automatic:automaticFunding.status(),jobs:fundingJobs.status(),fleet:fleetBudget.status(),continuous:continuousFunding.status(),production:productionFunding.status(),collection:feeCollection.status(),reconciliationSim:reconciliationSim.status(),shadow:shadowFunding.status(),coordinator:fundingCoordinator.status(),coordinatorSample,rewards:holderRewards.status(),autopay:autopaySim.status()}:{error:'session_required'});return;}
   if(req.method==='GET'&&url.pathname==='/funding/solcard/callback'){
    if(!sessionOK)throw Error('invalid_signin_session');
    try{await solcardFunding.finish(url);}catch(e){if(!solcardFunding.status().credentialSavePending)throw e;notice='SolCard approved read access. Encrypted credential storage is pending; refresh funding records to retry the local save. Do not restart yet.';res.writeHead(303,{Location:'/treasury'}).end();return;}
@@ -114,8 +136,31 @@ const server=createServer(async(req,res)=>{
   const form=new URLSearchParams(body);if(form.get('csrf')!==csrf)throw Error('invalid_request');
   if(url.pathname.startsWith('/treasury/')){
    if(url.pathname==='/treasury/solcard-connect'){const authUrl=await solcardFunding.begin();res.writeHead(303,{Location:authUrl}).end();return;}
+   if(url.pathname.startsWith('/treasury/rewards-')){
+    try{
+     const action=url.pathname.slice('/treasury/rewards-'.length);
+     if(action==='refresh'){await holderRewards.refresh();await holderRewards.reconcile();}
+     else if(action==='prepare')holderRewards.prepareRound(form.get('id'),parseAmount(form.get('amount'),8));
+     else if(action==='signature')holderRewards.attachExistingSignature(form.get('round'),form.get('payout'),form.get('signature'));
+     else if(action==='unsigned'){send(200,holderRewards.unsignedPayout(form.get('round'),form.get('payout')));return;}
+     else throw Error('rewards_action_unknown');
+     notice='Holder rewards updated. Signing and transfers remain disabled.';
+    }catch(e){notice='Holder rewards: '+(/^[a-z_]{1,80}$/.test(e.message)?e.message:'request_failed');}
+    res.writeHead(303,{Location:'/treasury#holder-rewards'}).end();return;
+   }
+   if(url.pathname==='/treasury/coordinator-refresh'){await fundingRecords.refresh();await automaticFunding.refresh();await feeCollection.refresh();shadowFunding.refresh();fundingCoordinator.tick();await productionFunding.tick();fundingCoordinator.tick();notice='Coordinator and production handoff evaluated read-only records. No actual funds reserved, signed, sent or spent.';res.writeHead(303,{Location:'/treasury#funding-coordinator'}).end();return;}
+   if(url.pathname==='/treasury/autopay-sim'){
+    const action=form.get('action');
+    if(action==='create')autopaySim.create(form.get('scenario'));
+    else if(action==='step')autopaySim.step(form.get('id'),60);
+    else autopaySim.control(form.get('id'),action);
+    notice='Isolated $100 auto-pay simulation updated. Real auto-pay settings and funds are unchanged.';
+    res.writeHead(303,{Location:'/treasury#runpod-autopay'}).end();return;
+   }
+   if(url.pathname==='/treasury/coordinator-sample'){coordinatorSample=coordinatorWalkthrough();notice='Isolated walkthrough completed with invented records. The real coordinator journal is unchanged.';res.writeHead(303,{Location:'/treasury#funding-coordinator'}).end();return;}
+   if(url.pathname==='/treasury/shadow-refresh'){await fundingRecords.refresh();shadowFunding.refresh();notice='Shadow bookkeeping refreshed from read-only records. No money moved or credit posted.';res.writeHead(303,{Location:'/treasury#shadow-funding'}).end();return;}
    if(url.pathname==='/treasury/funding-refresh'){await fundingRecords.refresh();notice='Funding record refresh checked. No money moved.';res.writeHead(303,{Location:'/treasury'}).end();return;}
-   try{notice=await treasuryAction(treasury,url.pathname.slice('/treasury/'.length),form,{automatic:automaticFunding,jobs:fundingJobs,fleet:fleetBudget,continuous:continuousFunding,production:productionFunding});}catch(e){notice='Treasury update unavailable: '+(/^[a-z_]{1,80}$/.test(e.message)?e.message:'request_failed');}
+   try{notice=await treasuryAction(treasury,url.pathname.slice('/treasury/'.length),form,{automatic:automaticFunding,jobs:fundingJobs,fleet:fleetBudget,continuous:continuousFunding,production:productionFunding,collection:feeCollection,reconciliationSim});}catch(e){notice='Treasury update unavailable: '+(/^[a-z_]{1,80}$/.test(e.message)?e.message:'request_failed');}
    res.writeHead(303,{Location:'/treasury'}).end();return;
   }
   if(url.pathname==='/auth/start'){
@@ -161,4 +206,5 @@ const server=createServer(async(req,res)=>{
 });
 server.listen(4185,'127.0.0.1',()=>console.log('BitHash operator: '+origin));
 gpuReporter.start();
-for(const signal of ['SIGINT','SIGTERM'])process.on(signal,async()=>{await productionFunding.close();continuousFunding.close();fleetBudget.close();fundingJobs.close();await automaticFunding.close();await fundingRecords.close();await fundingReconciler.close();gpuReporter.stop();clearTimeout(publishTimer);server.close();treasury.close();store.close().finally(()=>process.exit());});
+for(const signal of ['SIGINT','SIGTERM'])process.on(signal,async()=>{await holderRewards.close();await productionFunding.close();autopaySim.close();fundingCoordinator.close();shadowFunding.close();reconciliationSim.close();await feeCollection.close();continuousFunding.close();fleetBudget.close();fundingJobs.close();await automaticFunding.close();await fundingRecords.close();await fundingReconciler.close();gpuReporter.stop();clearTimeout(publishTimer);server.close();treasury.close();store.close().finally(()=>process.exit());});
+

@@ -107,9 +107,9 @@ export class FundingReconciler {
       else if(proof.state==='failed'){j.state='chain-failed';j.chain=proof;j.reason='finalized_transaction_failed';}
       else {j.state='awaiting-card';j.chain=proof;j.reason='awaiting_attributable_card_credit';}
      }else if(j.state==='awaiting-card'){
-      const receipt=await this.#card(copy(j));if(!this.#receipt(j,receipt,'card'))j.reason=receipt?.reason??'awaiting_card_receipt';
+      const receipt=await this.#card(copy(j));j.settlement=receipt?.matching??null;if(!this.#receipt(j,receipt,'card'))j.reason=receipt?.reason??'awaiting_card_receipt';
      }else if(j.state==='awaiting-provider'){
-      const receipt=await this.#provider(copy(j));if(!this.#receipt(j,receipt,'provider'))j.reason=receipt?.reason??'awaiting_provider_receipt';
+      const receipt=await this.#provider(copy(j));j.settlement=receipt?.matching??null;if(!this.#receipt(j,receipt,'provider'))j.reason=receipt?.reason??'awaiting_provider_receipt';
      }
      this.#save(j);
     }catch(e){errors++;j.reason=/^[a-z_]{1,80}$/.test(e.message)?e.message:'reconciliation_read_failed';this.#save(j);}

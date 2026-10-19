@@ -1,0 +1,15 @@
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const usd=v=>{const n=BigInt(v);return '$'+(n/1000000n)+'.'+(n%1000000n).toString().padStart(6,'0').slice(0,2);};
+export function settlementMatchingPanel(records,production,form){
+ const s=records?.settlement;if(!s)return '';
+ return `<section class="accent" id="settlement-matching"><small>SETTLEMENT MATCHING · READ ONLY</small><h2>Deposit → card credit → compute credit.</h2>
+ <p>The Operator joins SolCard invoices to card credits by invoice ID, then looks for possible Runpod payment matches. Records refresh every five minutes while this local process runs.</p>
+ <div class="grid"><div><p>Invoice → card activity</p><strong class="value">${s.invoiceCredits.filter(r=>r.state==='provider-linked').length} linked</strong><p>Provider-internal invoice ID match. This does not establish project fee origin.</p></div><div><p>Card charge → Runpod reload</p><strong class="value">${s.reloadCandidates.filter(r=>r.state!=='no-candidate').length} candidates</strong><p>Amount, merchant label and dates are clues; a shared payment reference is still missing.</p></div><div><p>Verified project credit</p><strong class="value">$0.00</strong><p>Matching cannot post credit or authorize spending.</p></div></div>
+ <p class="notice">Deposit transaction signatures are missing from the inspected SolCard invoice data. Runpod reloads have no verified link to a SolCard charge. A unique candidate stays unverified; opening Runpod credit stays separate. Dedicated SolCard funds are classified in shadow bookkeeping above. Signing and broadcasting remain disabled.</p>
+ ${form('funding-refresh','','Refresh settlement records · read only')}
+ <h3>Invoice and card-credit links</h3>${s.invoiceCredits.map(r=>`<p>${esc(r.invoiceId)} · ${usd(r.netMicrousd)} · ${esc(r.asset)} · ${esc(r.state)} · detail ${esc(r.detailState)} · not project-attributed</p>`).join('')||'<p>No completed invoice/card-credit pairs in the current fresh records.</p>'}
+ <h3>Runpod reload candidates</h3>${s.reloadCandidates.map(r=>`<p>${esc(r.reloadId)} · ${usd(r.amountMicrousd)} · ${esc(r.state)}${r.cardActivityIds.length?' · card activities '+r.cardActivityIds.map(esc).join(', '):''}</p>`).join('')||'<p>No completed reloads in the current fresh records.</p>'}
+ <h3>Project deposit matching</h3>${(production?.jobs??[]).map(j=>{const m=j.reconciliation?.settlement;return `<p>${esc(j.planId)} · ${esc(m?.depositState??'awaiting-finalized-transfer')} · ${m?.depositCandidates?.length??0} candidate invoices. No credit posted.</p>`;}).join('')||'<p>No finalized project funding jobs to match yet. No sample transfer is inserted into the real ledger.</p>'}
+ <p>${s.reasons.map(r=>esc(r.replaceAll('_',' '))).join(' · ')}</p>
+ <details><summary>Matching observation history</summary>${(s.history??[]).map(h=>`<p>${esc(h.observedAt)} · ${h.matching.invoiceCredits.length} invoice links · ${h.matching.reloadCandidates.filter(r=>r.state!=='no-candidate').length} reload candidates · no credit posted</p>`).join('')||'<p>No observations saved yet.</p>'}</details></section>`;
+}

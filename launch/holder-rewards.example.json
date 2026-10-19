@@ -1,0 +1,10 @@
+{
+  "holderRewards": {
+    "policyConfirmed": false,
+    "excludedOwners": [],
+    "automaticRounds": false,
+    "roundIntervalHours": 24,
+    "minRoundUnits": "1000",
+    "maxRoundUnits": "100000"
+  }
+}

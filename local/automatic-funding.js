@@ -16,10 +16,8 @@ export function validateDryRules(p){
  if(!Number.isInteger(p.minRunwayHours)||p.minRunwayHours<1||p.minRunwayHours>168||number(p.providerLowMicrousd)>=number(p.providerTargetMicrousd)||number(p.providerTargetMicrousd)+number(p.cardBufferMicrousd)>number(p.maxCardFloatMicrousd)||!number(p.assumedWbtcPriceMicrousd)||!number(p.maxTransferUnits)||number(p.maxTransferUnits)>number(p.maxDailyUnits)||!number(p.maxFeeLamports))throw Error('invalid_dry_rules');
  return structuredClone(p);
 }
-export function decideFunding(input,policy=DEFAULT_DRY_RULES,now=Date.now()){
- const p=validateDryRules(policy),reasons=[];
- const result={mode:'dry-run',sample:input.sample===true,action:'hold',reasons,amountWbtcUnits:'0',estimatedUsdMicros:'0',priceBasis:'Owner-editable simulation assumption; not an executable SolCard quote',paymentsEnabled:false,signingEnabled:false,broadcastEnabled:false,gpuExperimentsEnabled:false};
- const finish=()=>({...result,id:digest(result).slice(0,24)});
+export function fundingReadiness(input,p,now){
+ const reasons=[];
  if(!input.projectMint)reasons.push('awaiting_project_token_mint');
  if(!input.routingVerified)reasons.push('70_30_routing_not_verified');
  if(!input.historyComplete)reasons.push('fee_history_incomplete');
@@ -29,6 +27,12 @@ export function decideFunding(input,policy=DEFAULT_DRY_RULES,now=Date.now()){
  if(input.pendingFunding)reasons.push('reconcile_existing_funding');
  if(!fresh(input.cardLimits?.observedAt,now,86400000))reasons.push('card_limits_need_confirmation');
  if(!input.gas||!fresh(input.gas.observedAt,now)||number(input.gas.lamports)<number(p.minSolLamports)+number(p.maxFeeLamports))reasons.push('sol_reserve_not_confirmed');
+ return reasons;
+}
+export function decideFunding(input,policy=DEFAULT_DRY_RULES,now=Date.now()){
+ const p=validateDryRules(policy),reasons=fundingReadiness(input,p,now);
+ const result={mode:'dry-run',sample:input.sample===true,action:'hold',reasons,amountWbtcUnits:'0',estimatedUsdMicros:'0',priceBasis:'Owner-editable simulation assumption; not an executable SolCard quote',paymentsEnabled:false,signingEnabled:false,broadcastEnabled:false,gpuExperimentsEnabled:false};
+ const finish=()=>({...result,id:digest(result).slice(0,24)});
  if(reasons.length)return finish();
  const eligible=number(input.feeComputeUnits),committed=number(input.committedUnits),wallet=number(input.wallet.amountUnits),dayUsed=number(input.dailyCommittedUnits);
  const available=min(max(eligible-committed,0n),max(wallet-number(p.walletReserveUnits),0n));
@@ -77,7 +81,7 @@ export class AutomaticFunding {
   const fee=this.get('feeObservation'),compute=receipts.reduce((n,r)=>n+BigInt(r.computeUnits),0n);
   return {mode:'dry-run',running:!!this.timer,busy:this.busy,configuration:this.config,state:this.config?(this.get('feeError')?'unavailable':fee?.complete?'observing':'history-incomplete'):'awaiting-token-launch',routing:{computeBps:7000,otherBps:3000,computeWallet:this.treasury.setting('wallets')?.computeWallet,otherWallet:this.treasury.setting('wallets')?.otherWallet},feeObservation:fee,feeError:this.get('feeError'),detectedComputeUnits:String(compute),receiptCount:receipts.length,receipts:receipts.slice(0,20),policy:this.get('policy'),policyApproval:'simulation-only; no spending authorization',decision:this.get('decision'),sample:this.get('sample'),evaluatedAt:this.get('evaluatedAt'),history:this.db.prepare('SELECT at,body FROM auto_decisions ORDER BY id DESC LIMIT 15').all().map(r=>({at:r.at,...JSON.parse(r.body)})),paymentsEnabled:false,broadcastEnabled:false,signingEnabled:false,automaticCreditPosting:false,gpuExperimentsEnabled:false};
  }
- evaluate(){
+ planningInput(){
   const s=this.treasury.snapshot(),f=this.get('feeObservation'),feeds=this.records.status().feeds,card=feeds.solcard,provider=feeds.runpod,profile=this.treasury.setting('fundingProfile'),plans=s.plans.filter(p=>p.state!=='cancelled'),now=this.clock();
   const input={projectMint:this.config?.projectMint,routingVerified:!!f?.routingVerified,historyComplete:!!f?.complete,feeObservedAt:f?.observedAt,feeError:this.get('feeError'),feeComputeUnits:this.status().detectedComputeUnits,
    committedUnits:String(plans.reduce((n,p)=>n+BigInt(p.amount),0n)),dailyCommittedUnits:String(plans.filter(p=>now-Date.parse(p.createdAt)<=86400000).reduce((n,p)=>n+BigInt(p.amount),0n)),pendingFunding:plans.some(p=>p.state!=='provider-credited'),
@@ -86,6 +90,11 @@ export class AutomaticFunding {
    provider:provider?.data?{observedAt:provider.data.observedAt,balanceMicrousd:provider.data.balanceMicrousd,error:provider.error}:null,
    cardLimits:profile?.cardLimits?{observedAt:profile.cardLimits.observedAt,minUnits:profile.cardLimits.minWbtcUnits,maxUnits:profile.cardLimits.maxWbtcUnits}:null,
    gas:this.get('gasObservation')};
+  return input;
+ }
+ coordinatorSnapshot(){return {...this.status(),input:this.planningInput(),receipts:this.db.prepare('SELECT body FROM auto_receipts ORDER BY id').all().map(r=>JSON.parse(r.body))};}
+ evaluate(){
+  const input=this.planningInput(),now=this.clock();
   let decision;try{decision=decideFunding(input,this.get('policy'),now);}catch{decision={mode:'dry-run',action:'hold',reasons:['invalid_observation_or_rules'],amountWbtcUnits:'0',paymentsEnabled:false,gpuExperimentsEnabled:false,id:'invalid_observation_or_rules'};}
   if(this.get('decision')?.id!==decision.id){this.db.prepare('INSERT INTO auto_decisions(at,body) VALUES (?,?)').run(new Date(now).toISOString(),JSON.stringify(decision));this.db.exec('DELETE FROM auto_decisions WHERE id NOT IN (SELECT id FROM auto_decisions ORDER BY id DESC LIMIT 500)');}
   this.set('decision',decision);this.set('evaluatedAt',new Date(now).toISOString());return decision;

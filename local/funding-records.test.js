@@ -21,12 +21,26 @@ test('Runpod reload history remains account-level evidence and exact amounts use
  const result=normalizeRunpodRecords(runpodRaw());assert.equal(result.balanceMicrousd,'8123456');assert.equal(result.records[0].amountMicrousd,'10000000');assert.equal(result.records[0].cardActivityId,null);assert.equal(result.accountRef.length,64);
  assert.equal(dollarsToMicros('-0.01'),'-10000');assert.equal(dollarsToMicros(1e-7),'0');assert.throws(()=>dollarsToMicros(NaN));assert.throws(()=>dollarsToMicros('1e10'));
 });
+
+const usageStartTime='2026-10-18T00:00:00.000Z',usageEndTime='2026-10-19T00:00:00.000Z';
+const billingRaw=()=>({records:[{startTime:usageStartTime,endTime:usageEndTime,totalAmount:12.123456789}],metadata:{query:{startTime:usageStartTime,endTime:usageEndTime,bucketSize:'day'},recordCount:1,totals:{totalAmount:12.123456789}}});
+test('Runpod usage validates fixed billing window, totals, bucket identity and completeness',()=>{
+ const raw={...runpodRaw(),billing:billingRaw(),billingWindow:{start:usageStartTime,end:usageEndTime,bucketSize:'day'}};
+ const d=normalizeRunpodRecords(raw);assert.equal(d.usage.counterMicrousd,'12123456');assert.equal(d.usage.start,usageStartTime);assert.equal(d.records.length,1);assert.ok(!RUNPOD_FUNDING_QUERY.includes('clientLifetimeSpend'));
+ for(const change of [r=>r.billing.metadata.recordCount=2,r=>r.billing.metadata.totals.totalAmount=-1,r=>r.billing.records=null,r=>r.billing.metadata.query.startTime=usageEndTime,r=>r.billing.records[0].endTime=time,r=>r.billing.metadata.totals.totalAmount=15,r=>{r.billing.records.push({...r.billing.records[0]});r.billing.metadata.recordCount=2;}]){const r=structuredClone(raw);change(r);assert.throws(()=>normalizeRunpodRecords(r));}
+});
 test('Runpod adapter only issues fixed authenticated read query and sanitizes provider errors',async()=>{
- const raw=await readRunpodFunding({credentialPath:'test',readSecret:async()=> 'synthetic-key',clock:()=>now,fetcher:async(url,options)=>{
-  assert.equal(url,'https://api.runpod.io/graphql');assert.equal(options.method,'POST');assert.equal(options.redirect,'error');assert.equal(options.headers.Authorization,'Bearer synthetic-key');
+ const calls=[];const raw=await readRunpodFunding({credentialPath:'test',usageStartTime,readSecret:async()=> 'synthetic-key',clock:()=>now,fetcher:async(url,options)=>{
+  calls.push(url);assert.equal(options.redirect,'error');assert.equal(options.headers.Authorization,'Bearer synthetic-key');
+  if(url.startsWith('https://api.runpod.io/v2/billing?')){assert.equal(options.method,'GET');assert.equal(new URL(url).searchParams.get('startTime'),usageStartTime);return new Response(JSON.stringify(billingRaw()));}
+  assert.equal(url,'https://api.runpod.io/graphql');assert.equal(options.method,'POST');
   const body=JSON.parse(options.body);assert.equal(body.query,RUNPOD_FUNDING_QUERY);assert.ok(!body.query.includes('mutation'));assert.ok(!body.query.includes('receiptLink'));return new Response(JSON.stringify({data:{myself:runpodRaw().account}}));
- }});assert.equal(raw.account.id,'synthetic-user');
- await assert.rejects(()=>readRunpodFunding({credentialPath:'test',readSecret:async()=> 'synthetic-key',fetcher:async()=>new Response(JSON.stringify({errors:[{message:'private-provider-error'}]}))}),/^Error: runpod_funding_query_rejected$/);
+ }});assert.equal(raw.account.id,'synthetic-user');assert.equal(calls.length,2);assert.equal(normalizeRunpodRecords(raw).usage.counterMicrousd,'12123456');
+ await assert.rejects(()=>readRunpodFunding({credentialPath:'test',usageStartTime,clock:()=>now,readSecret:async()=> 'synthetic-key',fetcher:async()=>new Response(JSON.stringify({errors:[{message:'private-provider-error'}]}))}),/^Error: runpod_funding_query_rejected$/);
+});
+test('billing authorization failure cannot silently publish a balance-only observation',async()=>{
+ let calls=0;await assert.rejects(()=>readRunpodFunding({credentialPath:'test',usageStartTime,clock:()=>now,readSecret:async()=> 'synthetic-key',fetcher:async()=>++calls===1?new Response(JSON.stringify({data:{myself:runpodRaw().account}})):new Response('{}',{status:403})}),/runpod_funding_authorization_required/);assert.equal(calls,2);
+ for(const start of [undefined,time,'2027-01-01T00:00:00Z','2024-01-01T00:00:00Z'])await assert.rejects(()=>readRunpodFunding({credentialPath:'test',usageStartTime:start,clock:()=>now,readSecret:async()=>{throw Error('must_not_read');}}),/runpod_usage_anchor_invalid_or_expired/);
 });
 test('funding feeds deduplicate refreshes, retain stale evidence on error and cannot credit treasury',async t=>{
  let clock=now,fail=false;const ledger=new ComputeTreasury(':memory:');t.after(()=>ledger.close());

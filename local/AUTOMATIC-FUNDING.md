@@ -1,5 +1,7 @@
 # Fee detection and automatic funding rules — dry run
 
+**October 18 collection update:** [FEE-COLLECTION.md](FEE-COLLECTION.md) adds a read-only sweep/distribution preview. The receipt parser now supports canonical sweep/bridge inflows in the same distribution transaction; previews never count as received fees. Execution stays disabled.
+
 Implemented locally October 18, 2026. Token not yet created (owner confirmed).
 No token mint is guessed and no fee routing, wallet transfer, card charge, invoice,
 Runpod billing setting or GPU operation is performed.
