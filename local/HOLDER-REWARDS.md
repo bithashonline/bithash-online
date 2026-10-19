@@ -33,3 +33,7 @@ The local process checks every minute. Without a token/configuration it performs
 Signing, broadcasting and payments are hard-disabled. Current blockhash, fee, account-rent and simulation checks must be added to the reward execution path before it can send. A separately restricted custody/execution service, funded SOL reserve, approved payout settings and a small authorized end-to-end acceptance test remain necessary. The existing compute-transfer preflight accepts a different instruction structure and must not be substituted for the reward template check.
 
 Tests cover complete holder aggregation, invalid/partial snapshots, fee-budget deduplication, reserve limits, unsigned account creation, restart recovery, failed/unknown outcomes, signature reuse and automatic preparation. No real transfer, card charge or GPU experiment was used.
+
+## October 19 wallet execution update
+
+Live reward fee/rent preflight and the durable wallet executor are now connected. This supersedes the earlier missing-preflight/executor statements above. See [WALLET-EXECUTION.md](WALLET-EXECUTION.md). The console can check each unpaid payout, preserving development and other unpaid liabilities. Production remains hard-disabled with no custody loader or actual wallet key. Configuration, custody deployment and explicitly authorized live acceptance remain required.

@@ -32,3 +32,8 @@ No real transfer, card charge, auto-pay change or GPU experiment is authorized o
 Use Node.js 22.16 or newer. From the repository root, run `npm ci --prefix local` and `node --test local/*.test.js`. The isolated release passes 499 tests. The development workspace's additional existing tests bring its count to 538; these are distinct test inventories. No test requires actual wallet signing, card billing or a GPU rental. Some fixtures start localhost servers or child processes, which requires a local environment that permits those operations.
 
 Publication review inspected intended files, all reachable Git history and embedded source archives. Pattern matches were rejection fixtures and synthetic test credentials; runtime credentials, account records, databases and browser/session exports are excluded.
+
+
+## Wallet execution update
+
+The wallet job executor, custody/broadcast adapters, attempt journal and live reward fee/rent checks are now implemented and connected with production signing/broadcasting hard-disabled. This replaces the implementation portions of remaining items 1 and 2 above. See [wallet execution](../local/WALLET-EXECUTION.md). Secure custody configuration/deployment, token/eligibility/cost settings, current deposit pricing, explicit spendable-credit/fleet policy and authorized live acceptance remain. No real money-flow test has been performed.

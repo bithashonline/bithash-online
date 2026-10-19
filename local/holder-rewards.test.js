@@ -17,13 +17,13 @@ function snapshotInput(){
  const row=(owner,amount)=>({pubkey:Keypair.generate().publicKey.toBase58(),account:{owner:program,executable:false,data:{parsed:{type:'account',info:{mint,owner,isNative:false,state:'initialized',tokenAmount:{amount,decimals:6}}}}}});
  return {mint,before,after:structuredClone(before),accounts:{context:{slot:123},value:[row(owners[0],'200'),row(owners[0],'300'),row(owners[1],'500')]},observedAt:at};
 }
-async function setup(t,{persistent=false}={}){
+async function setup(t,{persistent=false,preflight,payoutPolicy}={}){
  const raw=snapshotInput(),snap=normalizeHolderSnapshot(raw),data=coordinatorFixture(now),owner=Keypair.generate();data.automatic.configuration.projectMint=raw.mint;
  data.automatic.configuration.otherWallet=owner.publicKey.toBase58();for(const r of data.automatic.receipts){r.projectMint=raw.mint;r.otherWallet=owner.publicKey.toBase58();}
  data.treasury.walletFresh=true;data.treasury.walletObservation={otherAmount:'300000',source:'finalized-rpc',mint:WBTC.mint,otherWallet:owner.publicKey.toBase58(),computeWallet:data.automatic.configuration.computeWallet};
- const config={...data.automatic.configuration,excludedOwners:[owner.publicKey.toBase58(),data.automatic.configuration.computeWallet],policyConfirmed:true};
+ const config={...data.automatic.configuration,excludedOwners:[owner.publicKey.toBase58(),data.automatic.configuration.computeWallet],policyConfirmed:true,...(payoutPolicy?{payoutPolicy}: {})};
  const dir=persistent?mkdtempSync(join(tmpdir(),'holder-rewards-')):null,path=dir?join(dir,'rewards.sqlite'):':memory:';let rawTx=null;
- const options={configuration:config,observe:()=>data,clock:()=>now,readSnapshot:async()=>snap,readTransaction:async()=>rawTx};let rewards=new HolderRewards(path,options);
+ const options={...(preflight?{preflight}:{}),configuration:config,observe:()=>data,clock:()=>now,readSnapshot:async()=>snap,readTransaction:async()=>rawTx};let rewards=new HolderRewards(path,options);
  t.after(()=>{rewards.close();if(dir)rmSync(dir,{recursive:true,force:true});});await rewards.refresh();
  return {data,owner,snap,config,get rewards(){return rewards;},restart(){rewards.close();rewards=new HolderRewards(path,options);},tx:v=>rawTx=v};
 }
@@ -77,4 +77,14 @@ test('automatic preparation produces one persistent round and performs no payout
  const f=await setup(t);
  const r=new HolderRewards(':memory:',{configuration:{...f.config,automaticRounds:true,roundIntervalHours:24,minRoundUnits:'1000',maxRoundUnits:'10000'},observe:()=>f.data,clock:()=>now,readSnapshot:async()=>f.snap,readTransaction:async()=>{throw Error('unexpected transaction read');}});
  t.after(()=>r.close());await r.tick();await r.tick();assert.equal(r.status().rounds.length,1);assert.equal(r.status().rounds[0].budgetUnits,'10000');assert.equal(r.status().paymentsEnabled,false);
+});
+
+// Uses an injected read-only check; no RPC, signing or transfer is performed.
+test('payout preflight preserves development and other unpaid payouts, survives restart and binds manifest',async t=>{
+ let checked;
+ const preflight={check:async terms=>{checked=terms;return {state:'checks-passed',kind:'reward',observedAt:at,reasons:[],simulation:'passed',networkFeeLamports:'5000',accountRentLamports:'2039280',totalCostLamports:'2044280'};}};
+ const f=await setup(t,{persistent:true,preflight,payoutPolicy:{maxTransferWbtcUnits:'10000',maxNetworkFeeLamports:'10000',maxTotalCostLamports:'3000000',minSolReserveLamports:'1000000'}});
+ const r=f.rewards.prepareRound('fee-check','10000');assert.equal(f.rewards.executionIntents().length,2);
+ await f.rewards.preflightPayout(r.id,r.payouts[0].id);assert.equal(checked.policy.retainedWbtcUnits,'155000');assert.equal(checked.amount,'5000');
+ await f.restart();assert.equal(f.rewards.executionIntents()[0].manifestHash,r.manifestHash);assert.equal(f.rewards.status().rounds[0].payouts[0].preflight.state,'checks-passed');
 });

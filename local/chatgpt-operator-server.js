@@ -1,3 +1,4 @@
+import {connectDisabledWalletExecution} from './wallet-execution-bridge.js';
 import {RunpodAutoPaySimulation} from './runpod-autopay-simulation.js';
 import {HolderRewards} from './holder-rewards.js';
 import {FundingCoordinator} from './funding-coordinator.js';
@@ -81,6 +82,8 @@ const productionFunding=new ProductionFundingJobs(join(resolve(directory),'produ
 fundingCoordinator=new FundingCoordinator(join(resolve(directory),'funding-coordinator.sqlite'),{observe:()=>({evidenceKind:'real-records',automatic:automaticFunding.coordinatorSnapshot(),collection:feeCollection.status(),treasury:treasury.snapshot(),profile:treasury.setting('fundingProfile'),records:fundingRecords.status(),production:productionFunding.status(),shadow:shadowFunding.status(),planningHourlyMicrousd:treasury.setting('hourlyMicrousd')??'0',quote:null})});
 fundingCoordinator.start();
 productionFunding.start();
+const walletExecution=connectDisabledWalletExecution(join(resolve(directory),'wallet-execution.sqlite'),{funding:productionFunding,collection:feeCollection,rewards:holderRewards});
+walletExecution.start();
 const autopaySim=new RunpodAutoPaySimulation(join(resolve(directory),'simulation-autopay.sqlite'));
 autopaySim.start();
 let coordinatorSample=null;
@@ -107,8 +110,8 @@ const server=createServer(async(req,res)=>{
  const redirect=()=>res.writeHead(303,{Location:'/'}).end();
  try{
   if(req.method==='GET'&&url.pathname==='/'&&!url.search){res.setHeader('Set-Cookie',`bithash_operator=${session}; HttpOnly; SameSite=Lax; Path=/`);res.writeHead(200,{'Content-Type':'text/html; charset=utf-8'}).end(page());return;}
-  if(req.method==='GET'&&url.pathname==='/treasury'&&!url.search){res.setHeader('Set-Cookie',`bithash_operator=${session}; HttpOnly; SameSite=Lax; Path=/`);res.writeHead(200,{'Content-Type':'text/html; charset=utf-8'}).end(treasuryPage(treasury,{csrf,notice,reconciliation:fundingReconciler.status(),records:fundingRecords.status(),solcardConnection:solcardFunding.status(),automatic:automaticFunding.status(),jobs:fundingJobs.status(),fleet:fleetBudget.status(),continuous:continuousFunding.status(),production:productionFunding.status(),collection:feeCollection.status(),reconciliationSim:reconciliationSim.status(),shadow:shadowFunding.status(),coordinator:fundingCoordinator.status(),coordinatorSample,rewards:holderRewards.status(),autopay:autopaySim.status()}));return;}
-  if(req.method==='GET'&&url.pathname==='/treasury/status'&&!url.search){send(sessionOK?200:403,sessionOK?{treasury:treasury.snapshot(),operator:fundingAdvice(treasury,{hourlyMicrousd:treasury.setting('hourlyMicrousd')??'0'}),funding:fundingStatus(treasury),reconciliation:fundingReconciler.status(),records:fundingRecords.status(),solcardConnection:solcardFunding.status(),automatic:automaticFunding.status(),jobs:fundingJobs.status(),fleet:fleetBudget.status(),continuous:continuousFunding.status(),production:productionFunding.status(),collection:feeCollection.status(),reconciliationSim:reconciliationSim.status(),shadow:shadowFunding.status(),coordinator:fundingCoordinator.status(),coordinatorSample,rewards:holderRewards.status(),autopay:autopaySim.status()}:{error:'session_required'});return;}
+  if(req.method==='GET'&&url.pathname==='/treasury'&&!url.search){res.setHeader('Set-Cookie',`bithash_operator=${session}; HttpOnly; SameSite=Lax; Path=/`);res.writeHead(200,{'Content-Type':'text/html; charset=utf-8'}).end(treasuryPage(treasury,{csrf,notice,reconciliation:fundingReconciler.status(),records:fundingRecords.status(),solcardConnection:solcardFunding.status(),automatic:automaticFunding.status(),jobs:fundingJobs.status(),fleet:fleetBudget.status(),continuous:continuousFunding.status(),production:productionFunding.status(),collection:feeCollection.status(),reconciliationSim:reconciliationSim.status(),shadow:shadowFunding.status(),coordinator:fundingCoordinator.status(),coordinatorSample,rewards:holderRewards.status(),walletExecution:walletExecution.status(),autopay:autopaySim.status()}));return;}
+  if(req.method==='GET'&&url.pathname==='/treasury/status'&&!url.search){send(sessionOK?200:403,sessionOK?{treasury:treasury.snapshot(),operator:fundingAdvice(treasury,{hourlyMicrousd:treasury.setting('hourlyMicrousd')??'0'}),funding:fundingStatus(treasury),reconciliation:fundingReconciler.status(),records:fundingRecords.status(),solcardConnection:solcardFunding.status(),automatic:automaticFunding.status(),jobs:fundingJobs.status(),fleet:fleetBudget.status(),continuous:continuousFunding.status(),production:productionFunding.status(),collection:feeCollection.status(),reconciliationSim:reconciliationSim.status(),shadow:shadowFunding.status(),coordinator:fundingCoordinator.status(),coordinatorSample,rewards:holderRewards.status(),walletExecution:walletExecution.status(),autopay:autopaySim.status()}:{error:'session_required'});return;}
   if(req.method==='GET'&&url.pathname==='/funding/solcard/callback'){
    if(!sessionOK)throw Error('invalid_signin_session');
    try{await solcardFunding.finish(url);}catch(e){if(!solcardFunding.status().credentialSavePending)throw e;notice='SolCard approved read access. Encrypted credential storage is pending; refresh funding records to retry the local save. Do not restart yet.';res.writeHead(303,{Location:'/treasury'}).end();return;}
@@ -140,6 +143,7 @@ const server=createServer(async(req,res)=>{
     try{
      const action=url.pathname.slice('/treasury/rewards-'.length);
      if(action==='refresh'){await holderRewards.refresh();await holderRewards.reconcile();}
+     else if(action==='preflight')await holderRewards.preflightPayout(form.get('round'),form.get('payout'));
      else if(action==='prepare')holderRewards.prepareRound(form.get('id'),parseAmount(form.get('amount'),8));
      else if(action==='signature')holderRewards.attachExistingSignature(form.get('round'),form.get('payout'),form.get('signature'));
      else if(action==='unsigned'){send(200,holderRewards.unsignedPayout(form.get('round'),form.get('payout')));return;}
@@ -206,5 +210,5 @@ const server=createServer(async(req,res)=>{
 });
 server.listen(4185,'127.0.0.1',()=>console.log('BitHash operator: '+origin));
 gpuReporter.start();
-for(const signal of ['SIGINT','SIGTERM'])process.on(signal,async()=>{await holderRewards.close();await productionFunding.close();autopaySim.close();fundingCoordinator.close();shadowFunding.close();reconciliationSim.close();await feeCollection.close();continuousFunding.close();fleetBudget.close();fundingJobs.close();await automaticFunding.close();await fundingRecords.close();await fundingReconciler.close();gpuReporter.stop();clearTimeout(publishTimer);server.close();treasury.close();store.close().finally(()=>process.exit());});
+for(const signal of ['SIGINT','SIGTERM'])process.on(signal,async()=>{await walletExecution.close();await holderRewards.close();await productionFunding.close();autopaySim.close();fundingCoordinator.close();shadowFunding.close();reconciliationSim.close();await feeCollection.close();continuousFunding.close();fleetBudget.close();fundingJobs.close();await automaticFunding.close();await fundingRecords.close();await fundingReconciler.close();gpuReporter.stop();clearTimeout(publishTimer);server.close();treasury.close();store.close().finally(()=>process.exit());});
 

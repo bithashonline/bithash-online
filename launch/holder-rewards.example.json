@@ -5,6 +5,12 @@
     "automaticRounds": false,
     "roundIntervalHours": 24,
     "minRoundUnits": "1000",
-    "maxRoundUnits": "100000"
+    "maxRoundUnits": "100000",
+    "payoutPolicy": {
+      "maxTransferWbtcUnits": "100000",
+      "maxNetworkFeeLamports": "10000",
+      "maxTotalCostLamports": "3000000",
+      "minSolReserveLamports": "10000000"
+    }
   }
 }

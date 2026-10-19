@@ -7,9 +7,12 @@ import {readFundingTransactionBySignature} from './funding-reconciler.js';
 import {buildRewardTransfer,verifyRewardTransfer} from './reward-transfer.js';
 import {readHolderSnapshot} from './holder-snapshot.js';
 import {decode58} from './solana-evidence.js';
+import {RewardPreflight} from './reward-preflight.js';
+import {preflightView} from './funding-preflight.js';
 const hash=v=>createHash('sha256').update(JSON.stringify(v)).digest('hex'),copy=v=>structuredClone(v);
 const n=v=>{if(typeof v!=='string'||!/^(0|[1-9][0-9]{0,19})$/.test(v))throw Error('rewards_invalid_units');return BigInt(v);};
 const addr=v=>new PublicKey(v).toBase58(),fresh=(at,now)=>Number.isFinite(Date.parse(at))&&now>=Date.parse(at)&&now-Date.parse(at)<=300000;
+const manifest=r=>({id:r.id,state:'signing-disabled',mint:r.mint,owner:r.owner,budgetUnits:r.budgetUnits,createdAt:r.createdAt,snapshotHash:r.snapshotHash,snapshotSlot:r.snapshotSlot,policyHash:r.policyHash,feeHashes:r.feeHashes,payouts:r.payouts.map(p=>({owner:p.owner,holdingUnits:p.holdingUnits,amount:p.amount,id:p.id,state:'signing-disabled',attempts:[],signature:null}))});
 export const REWARDS_FLAGS=Object.freeze({signingEnabled:false,broadcastEnabled:false,paymentsEnabled:false,automaticCreditPosting:false});
 export function allocateHolderRewards(snapshot,budget,exclusions){
  const excluded=new Set(exclusions.map(addr)),eligible=snapshot.holders.filter(h=>!excluded.has(h.owner));
@@ -25,9 +28,9 @@ export function allocateHolderRewards(snapshot,budget,exclusions){
 // Durable unpaid liabilities and read-only payout reconciliation. No key,
 // transaction submission, swap, card or GPU adapter exists in this manager.
 export class HolderRewards {
- #db;#observe;#clock;#reader;#readTx;#config;#busy=false;#timer=null;#stopped=true;#flight=null;
- constructor(path,{observe,configuration=null,clock=Date.now,readSnapshot=readHolderSnapshot,readTransaction=readFundingTransactionBySignature}={}){
-  this.#observe=observe;this.#clock=clock;this.#reader=readSnapshot;this.#readTx=readTransaction;
+ #db;#observe;#clock;#reader;#readTx;#config;#preflight;#busy=false;#timer=null;#stopped=true;#flight=null;
+ constructor(path,{observe,configuration=null,clock=Date.now,readSnapshot=readHolderSnapshot,readTransaction=readFundingTransactionBySignature,preflight=new RewardPreflight()}={}){
+  this.#observe=observe;this.#clock=clock;this.#reader=readSnapshot;this.#readTx=readTransaction;this.#preflight=preflight;
   if(configuration){for(const k of ['projectMint','computeWallet','otherWallet'])addr(configuration[k]);if(!Array.isArray(configuration.excludedOwners))throw Error('rewards_exclusions_required');configuration.excludedOwners.forEach(addr);}
   if(configuration?.automaticRounds===true&&(!Number.isInteger(configuration.roundIntervalHours)||configuration.roundIntervalHours<1||configuration.roundIntervalHours>168||!n(configuration.minRoundUnits)||n(configuration.maxRoundUnits)<n(configuration.minRoundUnits)))throw Error('rewards_round_limits_required');
   this.#config=copy(configuration);this.#db=new DatabaseSync(path);
@@ -77,6 +80,24 @@ export class HolderRewards {
   round.manifestHash=hash(round);w.rounds.push(round);return copy(round);
  });}
  unsignedPayout(roundId,payoutId){const r=this.get().rounds.find(r=>r.id===roundId),p=r?.payouts.find(p=>p.id===payoutId);if(!p||p.signature||p.state==='paid')throw Error('rewards_payout_not_available');const {tx}=buildRewardTransfer({owner:r.owner,recipient:p.owner,amount:p.amount,blockhash:OFFLINE_BLOCKHASH});return {roundId,payoutId,manifestHash:r.manifestHash,wireBase64:tx.serialize({requireAllSignatures:false,verifySignatures:false}).toString('base64'),blockhashSource:'offline-placeholder',createsRecipientWbtcAccountIfMissing:true,requiresLiveFeeAndRentPreflight:true,...REWARDS_FLAGS};}
+ executionIntents(){
+  if(!this.#config||this.#busy)return [];const w=this.get();if(w.error)return [];
+  for(const r of w.rounds)if(hash(manifest(r))!==r.manifestHash||r.owner!==this.#config.otherWallet||r.policyHash!==hash(this.#config))throw Error('rewards_manifest_changed');
+  return w.rounds.filter(r=>r.state!=='complete').flatMap(r=>r.payouts.filter(p=>!p.signature&&p.state!=='paid').map(p=>({id:p.id,kind:'reward',roundId:r.id,payoutId:p.id,owner:r.owner,recipient:p.owner,amount:p.amount,minContextSlot:r.snapshotSlot,manifestHash:r.manifestHash,rewardPolicyHash:r.policyHash})));
+ }
+ async preflightPayout(roundId,payoutId){
+  this.syncFees();if(this.#busy)throw Error('rewards_busy');
+  const w=this.get(),r=w.rounds.find(r=>r.id===roundId),p=r?.payouts.find(p=>p.id===payoutId);
+  if(!p||p.signature||p.state==='paid'||w.error)throw Error('rewards_payout_not_available');
+  if(hash(manifest(r))!==r.manifestHash||r.policyHash!==hash(this.#config))throw Error('rewards_manifest_changed');
+  const original=hash(r),pending=w.rounds.flatMap(r=>r.payouts).filter(p=>p.state!=='paid').reduce((v,p)=>v+n(p.amount),0n),policy=this.#config.payoutPolicy??null;
+  this.#busy=true;
+  try{
+   const result=await this.#preflight.check({owner:r.owner,recipient:p.owner,amount:p.amount,minContextSlot:r.snapshotSlot,policy:policy?{...policy,retainedWbtcUnits:String(n(this.#funds(w).devUnits)+pending-n(p.amount))}:null});
+   const next=this.get(),rr=next.rounds.find(x=>x.id===r.id);if(hash(rr)!==original)throw Error('rewards_round_changed_during_preflight');
+   rr.payouts.find(x=>x.id===p.id).preflight=result;this.#save(next);return result;
+  }finally{this.#busy=false;}
+ }
  attachExistingSignature(roundId,payoutId,signature){decode58(signature,64);return this.#mutate(w=>{
   const r=w.rounds.find(r=>r.id===roundId),p=r?.payouts.find(p=>p.id===payoutId);if(!p)throw Error('rewards_payout_missing');
   if(p.signature===signature)return;if(p.signature||p.state==='paid')throw Error('rewards_pending_signature_locked');
@@ -96,7 +117,7 @@ export class HolderRewards {
   }}finally{this.#busy=false;}return this.status();
  }
  sign(){throw Error('live_signing_disabled');} broadcast(){throw Error('broadcast_disabled');}
- status(){const w=this.get();return {mode:'read-only-preparation',configured:!!this.#config,busy:this.#busy,state:!this.#config?'awaiting-token-launch':w.error?'held':'preparation-only',configuration:this.#config,...this.#funds(w),snapshot:w.snapshot?{slot:w.snapshot.slot,digest:w.snapshot.digest,holderCount:w.snapshot.holders.length,observedAt:w.snapshot.observedAt}:null,rounds:w.rounds,error:w.error,...REWARDS_FLAGS};}
+ status(){const w=this.get();return {mode:'read-only-preparation',configured:!!this.#config,busy:this.#busy,state:!this.#config?'awaiting-token-launch':w.error?'held':'preparation-only',configuration:this.#config,...this.#funds(w),snapshot:w.snapshot?{slot:w.snapshot.slot,digest:w.snapshot.digest,holderCount:w.snapshot.holders.length,observedAt:w.snapshot.observedAt}:null,rounds:w.rounds.map(r=>({...r,payouts:r.payouts.map(p=>({...p,preflight:preflightView(p.preflight,this.#clock())}))})),error:w.error,...REWARDS_FLAGS};}
  tick(){if(this.#flight)return this.#flight;this.#flight=(async()=>{
   if(!this.#config)return this.status();await this.reconcile();this.syncFees();const w=this.get(),c=this.#config;
   if(c.automaticRounds===true&&c.policyConfirmed===true&&!w.rounds.some(r=>r.state!=='complete')&&(!w.rounds.length||this.#clock()-Date.parse(w.rounds.at(-1).createdAt)>=c.roundIntervalHours*3600000)){

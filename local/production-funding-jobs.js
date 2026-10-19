@@ -188,6 +188,18 @@ export class ProductionFundingJobs {
    connections:{solcard:{state:feeds.solcard.state,fresh:feeds.solcard.fresh,attribution:'transfer_signature_missing'},runpod:{state:feeds.runpod.state,fresh:feeds.runpod.fresh,attribution:'project_card_link_missing'},reconciler:this.#reconciler.status().mode},
    handoff:{connected:!!this.#coordinator,mode:'observe-only',realReservationsEnabled:false},readiness:{ownerLimitsConfigured:!!profile?.policy,livePreflightConnected:!!this.#preflight,livePreflightVerified:false,feeOriginVerified:false},accountPreflight:preflightView(this.#meta('accountPreflight'),this.#clock()),jobs:this.#db.prepare('SELECT body FROM production_funding_jobs ORDER BY rowid DESC').all().map(r=>{const j=JSON.parse(r.body);return {...j,preflight:preflightView(this.#meta('lastError')?null:j.preflight,this.#clock())};})};
  }
+ executionIntents(){
+  if(this.#busy)return [];
+  return this.status().jobs.filter(j=>j.origin===HANDOFF_ORIGIN&&!j.signature&&!j.reviewLatched&&j.state==='signing-disabled').map(j=>{
+   this.#assertBinding(j);return {id:j.id,kind:'funding',owner:j.terms.owner,recipient:j.terms.recipient,amount:j.terms.amount,sourceHash:j.sourceHash,termsHash:j.termsHash};
+  });
+ }
+ async executionPreflight(id){
+  const j=this.get(id);if(!j||j.signature||j.origin!==HANDOFF_ORIGIN||j.reviewLatched)throw Error('wallet_funding_source_unready');
+  this.#assertBinding(j);if(!this.#preflight)throw Error('live_preflight_not_connected');
+  if(this.#busy)throw Error('funding_observer_busy');this.#busy=true;
+  try{await this.#inspect(j);this.#assertBinding(j);this.#save(j);return j.preflight;}finally{this.#busy=false;}
+ }
  start(){if(!this.#stopped)return;this.#stopped=false;const loop=async()=>{try{await this.tick();}catch{}if(!this.#stopped){this.#timer=setTimeout(loop,60000);this.#timer.unref();}};void loop();}
  async close(){this.#stopped=true;clearTimeout(this.#timer);while(this.#busy)await new Promise(r=>setTimeout(r,10));this.#db.close();}
 }

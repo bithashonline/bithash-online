@@ -124,7 +124,7 @@ export class FeeCollection {
   if(this.#closed)return Promise.resolve();if(this.#flight)return this.#flight;
   this.#flight=(async()=>{
    let result;
-   try{result=await this.#preview(this.#config,{policy:this.#policy,clock:this.#clock});if(this.#config&&JSON.stringify(this.#treasury.setting('wallets'))!==JSON.stringify({computeWallet:this.#config.computeWallet,otherWallet:this.#config.otherWallet}))throw Error('collection_wallets_changed');if(JSON.stringify(this.#automatic.status().configuration??null)!==JSON.stringify(this.#config))throw Error('collection_receipt_observer_mismatch');}
+   try{result=await this.#preview(this.#config,{policy:this.#policy,clock:this.#clock});if(this.#config&&['computeWallet','otherWallet'].some(k=>this.#treasury.setting('wallets')?.[k]!==this.#config[k]))throw Error('collection_wallets_changed');if(JSON.stringify(this.#automatic.status().configuration??null)!==JSON.stringify(this.#config))throw Error('collection_receipt_observer_mismatch');}
    catch(e){result={state:'held',observedAt:new Date(this.#clock()).toISOString(),reasons:[safe(e)],...frozenFlags};}
    this.#db.exec('BEGIN IMMEDIATE');try{this.#set('observation',result);const key=sha256(JSON.stringify({state:result.state,reasons:result.reasons,amounts:result.amounts}));if(this.#get('lastEvent')!==key){this.#db.prepare('INSERT INTO collection_events(body) VALUES(?)').run(JSON.stringify({at:result.observedAt,state:result.state,reasons:result.reasons,amounts:result.amounts??null}));this.#set('lastEvent',key);this.#db.exec('DELETE FROM collection_events WHERE id NOT IN(SELECT id FROM collection_events ORDER BY id DESC LIMIT 100)');}this.#db.exec('COMMIT');}catch(e){this.#db.exec('ROLLBACK');throw e;}
    return result;
