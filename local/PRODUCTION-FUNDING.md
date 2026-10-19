@@ -1,5 +1,7 @@
 # Production funding jobs — observe only
 
+**October 18 update:** live mainnet preflight is now connected separately from the offline structural inspector. See [TRANSACTION-PREFLIGHT.md](TRANSACTION-PREFLIGHT.md) for exact checks, current missing-account hold, validation and remaining authority limitations. The offline-only preflight limitation below describes the earlier implementation; signing/broadcast/payment restrictions remain current.
+
 Implemented October 18, 2026. This connects the real owner-recorded treasury to a keyless restricted signer interface and the existing real read-only reconciler. It is a production-path integration, **not an enabled production payment system**.
 
 ## Current behavior

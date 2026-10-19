@@ -15,7 +15,7 @@ import {productionFundingPanel} from './production-funding-ui.js';
 import {treasuryAction} from './treasury-console.js';
 
 const now=Date.parse('2026-10-18T23:40:00Z'),clock=()=>now;
-function fixture(t,{jobPath=':memory:',recPath=':memory:',plans=true}={}){
+function fixture(t,{jobPath=':memory:',recPath=':memory:',plans=true,preflight=null}={}){
  const key=Keypair.generate(),owner=key.publicKey.toBase58(),recipient=Keypair.generate().publicKey.toBase58(),other=Keypair.generate().publicKey.toBase58();
  const ledger=new ComputeTreasury(':memory:',{clock}),profile=rehearsalFixture(now).profile;
  Object.assign(profile,{depositAddress:recipient,confirmedDepositAddress:recipient});ledger.configure({computeWallet:owner,otherWallet:other});ledger.set('fundingProfile',profile);
@@ -24,7 +24,7 @@ function fixture(t,{jobPath=':memory:',recPath=':memory:',plans=true}={}){
  const records={status:()=>({feeds:{solcard:{state:'connected',fresh:true},runpod:{state:'connected',fresh:true}}})};
  const options={clock,readChain:async()=>result,readCard:async()=>({state:'unavailable',reason:'card_records_lack_transfer_signature'}),readProvider:async()=>({state:'unavailable',reason:'provider_records_lack_project_card_link'})};
  let reconciler=new FundingReconciler(recPath,options);
- const managerOptions=()=>({treasury:ledger,records,reconciler,clock,readTransaction:async()=>{reads++;return result;}});
+ const managerOptions=()=>({treasury:ledger,records,reconciler,preflight,clock,readTransaction:async()=>{reads++;return result;}});
  let manager=new ProductionFundingJobs(jobPath,managerOptions());
  t.after(async()=>{await manager.close();await reconciler.close();ledger.close();});
  function proof({amount='1000000',extra=false}={}){
@@ -90,4 +90,29 @@ test('background overlap cannot race signature attachment',async t=>{
 });
 test('console exposes inspection and evidence gaps without offering signing or credit posting',async t=>{
  const f=fixture(t);await treasuryAction(f.ledger,'production-refresh',new URLSearchParams(),{production:f.manager});const s=f.manager.status();assert.equal(s.signer.keyLoaded,false);assert.equal(s.signer.signingEnabled,false);assert.equal(s.signer.broadcastEnabled,false);assert.equal(s.automaticCreditPosting,false);assert.equal(s.paymentsEnabled,false);assert.equal(s.gpuExperimentsEnabled,false);const html=productionFundingPanel(s,()=>'<form>read only</form>');assert.match(html,/OBSERVE ONLY/);assert.match(html,/attribution missing/);assert.match(html,/offline placeholder blockhash/);
+});
+
+const passedPreflight=()=>({kind:'transaction',mode:'read-only',state:'checks-passed',observedAt:new Date(now).toISOString(),reasons:[],simulation:'passed',spendingAuthorized:false,signingEnabled:false,broadcastEnabled:false});
+test('live preflight stays separate from authority and does not mutate the real ledger',async t=>{
+ let calls=0,context;
+ const f=fixture(t,{preflight:{check:async(terms,c)=>{calls++;context=c;assert.equal(terms.owner,f.owner);assert.equal(terms.recipient,f.recipient);return passedPreflight();}}});
+ const before=f.ledger.snapshot();await f.manager.tick();assert.equal(calls,1);assert.equal(context.otherPending,false);assert.equal(context.rolling24hOtherWbtcUnits,'0');assert.equal(f.job().preflight.state,'checks-passed');assert.equal(f.job().state,'signing-disabled');assert.ok(f.job().reasons.includes('independent_daily_spending_authority_required'));assert.deepEqual(f.ledger.snapshot(),before);assert.equal(f.manager.status().paymentsEnabled,false);
+});
+test('other pending plans are included in preflight without double counting the current plan',async t=>{
+ const contexts=[];const f=fixture(t,{preflight:{check:async(terms,c)=>{contexts.push(c);return passedPreflight();}}});
+ f.ledger.plan({id:'second',route:'solcard-wbtc',amount:'500000'});await f.manager.tick();assert.equal(contexts.length,2);assert.ok(contexts.every(c=>c.otherPending));assert.deepEqual(contexts.map(c=>c.rolling24hOtherWbtcUnits).sort(),['1000000','500000']);
+});
+test('changed binding or plan set during async preflight discards the result',async t=>{
+ for(const change of ['policy','plans']){
+  const f=fixture(t,{preflight:{check:async()=>{if(change==='policy'){const p=f.ledger.setting('fundingProfile');p.policy.maxDailyWbtcUnits='3000000';f.ledger.set('fundingProfile',p);}else f.ledger.plan({id:'other-plan',amount:'1',route:'solcard-wbtc'});return passedPreflight();}}});
+  await f.manager.tick();assert.equal(f.job().state,'review-required');assert.equal(f.job().preflight,null);
+ }
+});
+test('account diagnostics on an empty ledger neither create a plan nor simulate a transfer',async t=>{
+ let reads=0;const f=fixture(t,{plans:false,preflight:{accounts:async terms=>{reads++;assert.equal(terms.owner,f.owner);assert.equal(terms.amount,undefined);return {...passedPreflight(),kind:'accounts',state:'held',reasons:['source_account_missing']};},check:()=>{throw Error('unexpected_transaction');}}});
+ const before=f.ledger.snapshot();await treasuryAction(f.ledger,'production-accounts',new URLSearchParams(),{production:f.manager});assert.equal(reads,1);assert.equal(f.manager.status().accountPreflight.state,'held');assert.equal(f.manager.status().jobs.length,0);assert.deepEqual(f.ledger.snapshot(),before);
+ const html=productionFundingPanel(f.manager.status(),()=>'<form>read only</form>');assert.match(html,/Live account check/);assert.match(html,/source account missing/);
+});
+test('preflight results persist across restart without granting execution authority',async t=>{
+ const dir=await mkdtemp(join(tmpdir(),'bithash-preflight-'));const f=fixture(t,{jobPath:join(dir,'jobs.sqlite'),preflight:{check:async()=>passedPreflight()}});t.after(()=>rm(dir,{recursive:true,force:true}));await f.manager.tick();await f.restart();assert.equal(f.job().preflight.state,'checks-passed');assert.equal(f.manager.status().signer.signingEnabled,false);assert.equal(f.manager.status().signer.broadcastEnabled,false);
 });

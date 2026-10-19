@@ -1,4 +1,5 @@
 import {ProductionFundingJobs} from './production-funding-jobs.js';
+import {ReadOnlyFundingPreflight} from './funding-preflight.js';
 import {ContinuousFundingSimulation} from './continuous-funding.js';
 import {FleetBudgetSimulation} from './fleet-budget.js';
 import {SimulationFundingJobs} from './funding-jobs.js';
@@ -59,7 +60,7 @@ const continuousFunding=new ContinuousFundingSimulation(join(resolve(directory),
 continuousFunding.start();
 const fundingReconciler=new FundingReconciler(join(resolve(directory),'funding-reconciliation.sqlite'),{readCard:()=>fundingRecords.readCardReceipt(),readProvider:()=>fundingRecords.readProviderReceipt()});
 fundingReconciler.start();
-const productionFunding=new ProductionFundingJobs(join(resolve(directory),'production-funding-jobs.sqlite'),{treasury,records:fundingRecords,reconciler:fundingReconciler});
+const productionFunding=new ProductionFundingJobs(join(resolve(directory),'production-funding-jobs.sqlite'),{treasury,records:fundingRecords,reconciler:fundingReconciler,preflight:new ReadOnlyFundingPreflight()});
 productionFunding.start();
 const origin='http://127.0.0.1:4185',csrf=randomBytes(32).toString('hex'),session=randomBytes(32).toString('hex');
 let pending=null,models=[],report=null,busy=false,lastReview=0,notice='Connect your ChatGPT plan to review fleet evidence.';

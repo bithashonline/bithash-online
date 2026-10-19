@@ -21,6 +21,7 @@ export function validateFundingProfile(p){
  if(p.cardStatus!=='ACTIVE')throw Error('card_not_active');
  if(p.cardLimits){const lo=positive(p.cardLimits.minWbtcUnits),hi=positive(p.cardLimits.maxWbtcUnits);if(lo>hi)throw Error('invalid_card_limits');}
  if(p.policy){positive(p.policy.maxTransferWbtcUnits);positive(p.policy.maxDailyWbtcUnits);positive(p.policy.minSolReserveLamports);positive(p.policy.maxNetworkFeeLamports);
+  if(p.policy.minRetainedWbtcUnits!==undefined)number(p.policy.minRetainedWbtcUnits);
   if(number(p.policy.maxTransferWbtcUnits)>number(p.policy.maxDailyWbtcUnits))throw Error('invalid_funding_policy');}
  return p;
 }
